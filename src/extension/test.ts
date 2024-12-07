@@ -1,3 +1,3 @@
-import { obj } from '../common/test';
+import { obj } from '@lib/test';
 
 console.log(obj);

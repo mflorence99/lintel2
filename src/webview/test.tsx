@@ -1,5 +1,3 @@
-import { obj } from '../common/test';
-
 import { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
 
@@ -7,6 +5,7 @@ import { asyncReplace } from 'lit-html/directives/async-replace.js';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
+import { obj } from '@lib/test';
 import { property } from 'lit/decorators.js';
 
 console.log(obj);
@@ -18,7 +17,7 @@ async function* countUp(): any {
   let i = 0;
   while (true) {
     yield i++;
-    await wait(1000);
+    await wait(100);
   }
 }
 

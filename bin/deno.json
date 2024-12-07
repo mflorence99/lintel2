@@ -11,7 +11,12 @@
     }
   },
   "imports": {
-    "@david/dax": "jsr:@david/dax@^0.42.0"
+    "@david/dax": "jsr:@david/dax@^0.42.0",
+    "@lib/": "../src/lib/",
+    "@opensrc/deno-open": "jsr:@opensrc/deno-open@^1.0.0",
+    "@std/async": "jsr:@std/async@^1.0.9",
+    "@std/cli": "jsr:@std/cli@^1.0.8",
+    "jsome": "npm:jsome@^2.5.0"
   },
   "tasks": {}
 }

@@ -9,8 +9,10 @@
   "license": "MIT",
   "author": "Mark Florence",
   "scripts": {
-    "build:extension:dev": "rm -rf dist/extension && tsc -p src/extension",
-    "build:webview:dev": "rm -rf dist/webview && tsc -p src/webview",
+    "build:extension": "rm -rf dist/extension && npm run compile:extension",
+    "build:webview": "rm -rf dist/webview && ./bin/watch.ts --dir=src/webview --script=compile:webview",
+    "compile:extension": "tsc --incremental -p src/extension",
+    "compile:webview": "tsc --incremental -p src/webview && cp src/webview/assets/* dist/webview/",
     "lint": "eslint src/ && lit-analyzer && deno lint bin/",
     "prettier": "prettier --write .",
     "serve:simulator": "deno run -A bin/simulator/main.ts",

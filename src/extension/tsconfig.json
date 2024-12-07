@@ -4,7 +4,7 @@
     "outDir": "../../dist/extension"
   },
   "include": [
-    "../common/**/*.ts",
+    "../lib/**/*.ts",
     "**/*.ts"
   ]
 }
