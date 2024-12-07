@@ -27,8 +27,8 @@ export class SimpleGreeting extends LitElement {
   static override styles = css`
     p {
       --xyz: 12;
-      color: red;
 
+      color: red;
       font-weight: bold;
       text-decoration: underline dotted;
       text-transform: uppercase;
