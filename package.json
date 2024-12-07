@@ -1,0 +1,50 @@
+{
+  "name": "munimap",
+  "version": "5.0.5",
+  "description": "Lintel 2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mflorence99/lintel2.git"
+  },
+  "license": "MIT",
+  "author": "Mark Florence",
+  "scripts": {
+    "build:extension:dev": "rm -rf dist/extension && tsc -p src/extension",
+    "build:webview:dev": "rm -rf dist/webview && tsc -p src/webview",
+    "lint": "eslint src/ && lit-analyzer && deno lint bin/",
+    "prettier": "prettier --write .",
+    "serve:simulator": "deno run -A bin/simulator/main.ts",
+    "stylelint": "stylelint --fix **/*.{css,tsx}"
+  },
+  "dependencies": {
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.2.3",
+    "@eslint/config-inspector": "^0.5.6",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.16.0",
+    "@typescript-eslint/parser": "^8.16.0",
+    "eslint": "^9",
+    "eslint-config-mflorence99": "^3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-import-splitnsort": "^1.0.2",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-prettier": "^5.2.1",
+    "lit-analyzer": "^2.0.3",
+    "postcss": "^8.4.49",
+    "postcss-lit": "^1.1.1",
+    "prettier": "^3.4.1",
+    "prettier-eslint": "^16.3.0",
+    "prettier-plugin-css-order": "^2.1.2",
+    "prettier-plugin-package": "^1.4.0",
+    "stylelint": "^16",
+    "stylelint-config-standard": "^36",
+    "stylelint-order": "^6",
+    "ts-lit-plugin": "^2.0.2",
+    "typescript": "^5",
+    "typescript-eslint": "^8.16.0"
+  }
+}

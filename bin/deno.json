@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "deno.ns"],
+    "noImplicitAny": false,
+    "strictNullChecks": false
+  },
+  "fmt": {},
+  "lint": {
+    "rules": {
+      "exclude": ["no-explicit-any"]
+    }
+  },
+  "imports": {
+    "@david/dax": "jsr:@david/dax@^0.42.0"
+  },
+  "tasks": {}
+}

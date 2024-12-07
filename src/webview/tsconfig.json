@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig-app.json",
+  "compilerOptions": {
+    "outDir": "../../dist/webview",
+    "plugins": [
+      {
+        "name": "ts-lit-plugin",
+        "strict": true,
+        "rules": {
+          "no-missing-element-type-definition": "off",
+          "no-missing-import": "off",
+          "no-unknown-attribute": "error",
+          "no-unknown-event": "error",
+          "no-unknown-property": "error",
+          "no-unknown-tag-name": "error"
+        }
+      }
+    ]
+  },
+  "include": [
+    "../common/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
