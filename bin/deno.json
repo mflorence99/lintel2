@@ -16,7 +16,8 @@
     "@opensrc/deno-open": "jsr:@opensrc/deno-open@^1.0.0",
     "@std/async": "jsr:@std/async@^1.0.9",
     "@std/cli": "jsr:@std/cli@^1.0.8",
-    "jsome": "npm:jsome@^2.5.0"
+    "jsome": "npm:jsome@^2.5.0",
+    "open": "npm:open@^10.1.0"
   },
   "tasks": {}
 }

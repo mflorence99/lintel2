@@ -1,21 +1,9 @@
-import { obj } from '@lib/test.ts';
-import { open } from '@opensrc/deno-open';
+import { debounce } from 'jsr:@std/async/debounce';
 
-console.log(obj);
+let theSocket;
 
-const server = Deno.serve(async (req) => {
-  console.log('Method:', req.method);
-
+Deno.serve({ port: 8100 }, async (req) => {
   const url = new URL(req.url);
-  console.log('Path:', url.pathname);
-  console.log('Query parameters:', url.searchParams);
-
-  console.log('Headers:', req.headers);
-
-  if (req.body) {
-    const body = await req.text();
-    console.log('Body:', body);
-  }
 
   if (url.pathname === '/') {
     const html = await Deno.readTextFile(
@@ -34,6 +22,29 @@ const server = Deno.serve(async (req) => {
   } else return new Response(null, { status: 404 });
 });
 
-console.log(server);
+// open('http://localhost:8100');
 
-open('http://localhost:8000');
+Deno.serve({ port: 8101 }, (req) => {
+  if (req.headers.get('upgrade') === 'websocket') {
+    const { socket, response } = Deno.upgradeWebSocket(req);
+    theSocket = socket;
+    socket.addEventListener('open', () => {
+      console.log('a client connected!');
+    });
+    socket.addEventListener('message', (event) => {
+      console.log(`client sent ${event.data}`);
+      if (event.data === 'ping') {
+        socket.send('pong');
+      }
+    });
+    return response;
+  } else return new Response(null, { status: 501 });
+});
+
+const watcher = Deno.watchFs(`${import.meta.dirname}/../../dist/webview`);
+const handler = debounce((_) => {
+  theSocket?.send('reload');
+}, 1000);
+for await (const event of watcher) {
+  handler(event);
+}

@@ -3,7 +3,7 @@
   <head>
     <base href="/" />
 
-    <title>VSCode Extension Simulatorx</title>
+    <title>VSCode Extension Simulator</title>
 
     <meta charset="utf-8" />
 
@@ -11,6 +11,28 @@
   </head>
 
   <body>
-    TBD
+    Will automatically reload on recompile
   </body>
+
+  <script>
+    async function main() {
+      await fetch('http://localhost:8101', {
+        headers: { upgrade: 'websocket' },
+        mode: 'no-cors'
+      });
+      const socket = new WebSocket('ws://localhost:8101');
+      socket.addEventListener('open', (event) => {
+        socket.send('Hello Server!');
+      });
+      socket.addEventListener('message', (event) => {
+        console.log('Message from server ', event.data);
+        if (event.data === 'reload') {
+          document.body.innerHTML = 'Loading ...';
+          setTimeout(() => window.location.reload(), 0);
+        }
+      });
+      // setInterval(() => socket.send('ping'), 1000);
+    }
+    main();
+  </script>
 </html>

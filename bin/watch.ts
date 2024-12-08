@@ -2,19 +2,19 @@
 import { debounce } from 'jsr:@std/async/debounce';
 import { parseArgs } from '@std/cli/parse-args';
 
-import $ from '@david/dax'; // "dax-sh" in Node
+import $ from '@david/dax';
 
 const flags = parseArgs(Deno.args);
 
 const watcher = Deno.watchFs(flags.dir);
 
-const command = $`npm run ${flags.script}`.quiet().printCommand();
-
-await command;
+await $.raw`${flags.cmd}`;
 
 const handler = debounce(async (_) => {
-  await command;
-}, 2000);
+  const now = new Date();
+  console.log(now.toLocaleTimeString());
+  await $.raw`${flags.cmd}`;
+}, 250);
 
 for await (const event of watcher) {
   handler(event);

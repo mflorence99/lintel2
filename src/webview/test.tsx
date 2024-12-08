@@ -25,7 +25,7 @@ async function* countUp(): any {
 export class SimpleGreeting extends LitElement {
   static override styles = css`
     p {
-      --xyz: 12;
+      --xyz: 11;
 
       color: red;
       font-weight: bold;
