@@ -10,15 +10,15 @@
   "author": "Mark Florence",
   "scripts": {
     "build:extension": "npm run clean:extension && npm run compile:extension",
-    "build:webview": "npm run clean:webview && ./bin/watch.ts --dir=src/webview --cmd='npm run compile:webview'",
-    "clean:deps": "rm -rf node_modules && rm -rf package-lock.json && npm i",
-    "clean:extension": "rm -rf dist/extension",
-    "clean:webview": "rm -rf dist/webview",
-    "compile:extension": "tsc --incremental -p src/extension",
-    "compile:webview": "tsc --incremental -p src/webview && cp src/webview/assets/* dist/webview/",
-    "lint": "eslint src/ && lit-analyzer && deno lint bin/",
+    "build:webview": "npm run clean:webview && ./bin/watch.ts --dir=./src/webview --cmd='npm run compile:webview'",
+    "clean:deps": "rm -rf ./node_modules && rm -rf ./package-lock.json && npm i",
+    "clean:extension": "rm -rf ./dist/extension",
+    "clean:webview": "rm -rf ./dist/webview",
+    "compile:extension": "tsc --incremental -p ./src/extension",
+    "compile:webview": "tsc --incremental -p ./src/webview && cp ./src/webview/assets/* ./dist/webview/",
+    "lint": "eslint ./src/ && lit-analyzer && deno lint ./bin/",
     "prettier": "prettier --write .",
-    "serve:simulator": "deno run -A bin/simulator/main.ts",
+    "serve:simulator": "deno run -A ./bin/simulator/main.ts",
     "stylelint": "stylelint --fix **/*.{css,tsx}"
   },
   "dependencies": {
