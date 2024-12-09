@@ -1,34 +1,54 @@
 #!/usr/bin/env -S deno run --allow-all
+
+// 📘 watch files in a directory and run a command on changes
+//    ./bin/watch.ts
+//    --dir=./src/webview
+//    --cmd=npm run compile:webview
+
+import { config } from '@lib/config.ts';
 import { debounce } from 'jsr:@std/async/debounce';
 import { parseArgs } from '@std/cli/parse-args';
 
 import $ from '@david/dax';
 
-const flags = parseArgs(Deno.args);
+const { cmd, dir } = parseArgs(Deno.args);
 
-const watcher = Deno.watchFs(flags.dir);
+// 👇 run the command first time
 
-const commander = async () => {
+await commander([]);
+
+// 👇 now set it up to run whenever files change
+
+const watcher = Deno.watchFs(dir);
+const debounced = debounce(
+  async (event: Deno.FsEvent) => await commander(event.paths),
+  config.debounceMillis
+);
+for await (const event of watcher) debounced(event);
+
+// 👇 run the command when paths have changed
+
+async function commander(paths: string[]) {
+  // 👇 extract shortest changed path
+  const files = paths.map((path) => {
+    const ix = path.indexOf(dir) + dir.length + 1;
+    return path.substring(ix);
+  });
+  // 👇 log the command in detail
   const now = new Date();
   console.log(
-    `%c${now.toLocaleTimeString()} %c${flags.cmd}`,
+    `%c${now.toLocaleTimeString()} %c${cmd} %cchanged:%c[${files.join(',')}]`,
     'color: green',
-    'color: yellow'
+    'color: yellow',
+    'color: white',
+    'color: pink'
   );
   try {
-    const result = await $.raw`${flags.cmd}`.stderr('piped').stdout('piped');
-    if (result.stderr) console.error(`%c${result.stderr}`, 'color: red');
+    // 👇 silently run the command
+    const result = await $.raw`${cmd}`.stderr('piped').stdout('piped');
+    if (result.stderr) throw new Error(result.stderr);
   } catch (e: any) {
+    // 🔥 ooops!
     console.error(`%c${e}`, 'color: red');
   }
-};
-
-await commander();
-
-const handler = debounce(async (_) => {
-  await commander();
-}, 250);
-
-for await (const event of watcher) {
-  handler(event);
 }

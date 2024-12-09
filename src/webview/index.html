@@ -11,7 +11,7 @@
   </head>
 
   <body>
-    Will automatically reload on recompile
+    Will automatically reload on recompile!
   </body>
 
   <script>
@@ -21,9 +21,12 @@
         mode: 'no-cors'
       });
       const socket = new WebSocket('ws://localhost:8101');
-      socket.addEventListener('open', (event) => {
-        socket.send('Hello Server!');
-      });
+      const intervalID = setInterval(() => {
+        if (socket.readyState === 1) {
+          clearInterval(intervalID);
+          socket.send('ready!');
+        }
+      }, 5);
       socket.addEventListener('message', (event) => {
         console.log('Message from server ', event.data);
         if (event.data === 'reload') {
@@ -31,7 +34,6 @@
           setTimeout(() => window.location.reload(), 0);
         }
       });
-      // setInterval(() => socket.send('ping'), 1000);
     }
     main();
   </script>

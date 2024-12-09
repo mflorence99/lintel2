@@ -15,10 +15,10 @@
     "clean:extension": "rm -rf ./dist/extension",
     "clean:webview": "rm -rf ./dist/webview",
     "compile:extension": "tsc --incremental -p ./src/extension",
-    "compile:webview": "tsc --incremental -p ./src/webview && cp ./src/webview/assets/* ./dist/webview/",
+    "compile:webview": "tsc --incremental -p ./src/webview && cp -r ./src/webview/assets ./dist/webview && cp ./src/webview/index.html ./dist/webview",
     "lint": "eslint ./src/ && lit-analyzer && deno lint ./bin/",
     "prettier": "prettier --write .",
-    "serve:simulator": "deno run -A ./bin/simulator/main.ts",
+    "serve:simulator": "deno run -A ./bin/simulator/main.ts --dir=./dist/webview",
     "stylelint": "stylelint --fix **/*.{css,tsx}"
   },
   "dependencies": {

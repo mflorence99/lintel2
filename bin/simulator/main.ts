@@ -1,4 +1,10 @@
+import { config } from '@lib/config.ts';
 import { debounce } from 'jsr:@std/async/debounce';
+import { parseArgs } from '@std/cli/parse-args';
+
+const { dir } = parseArgs(Deno.args);
+
+console.log({ dir, me: import.meta.dirname });
 
 let theSocket;
 
@@ -41,10 +47,22 @@ Deno.serve({ port: 8101 }, (req) => {
   } else return new Response(null, { status: 501 });
 });
 
-const watcher = Deno.watchFs(`${import.meta.dirname}/../../dist/webview`);
-const handler = debounce((_) => {
+const handler = debounce((paths: string[]) => {
+  const files = paths.map((path) => {
+    const ix = path.indexOf(dir) + dir.length + 1;
+    return path.substring(ix);
+  });
+  const now = new Date();
+  console.log(
+    `%c${now.toLocaleTimeString()} %creloading:%c[${files.join(',')}]`,
+    'color: green',
+    'color: white',
+    'color: pink'
+  );
   theSocket?.send('reload');
-}, 1000);
+}, config.debounceMillis);
+
+const watcher = Deno.watchFs(`${import.meta.dirname}/../../dist/webview`);
 for await (const event of watcher) {
-  handler(event);
+  handler(event.paths);
 }

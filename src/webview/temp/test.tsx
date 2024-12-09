@@ -17,7 +17,7 @@ async function* countUp(): any {
   let i = 0;
   while (true) {
     yield i++;
-    await wait(100);
+    await wait(1000);
   }
 }
 
