@@ -1,6 +1,6 @@
 {
-  "name": "munimap",
-  "version": "5.0.5",
+  "name": "lintel2",
+  "version": "0.0.0",
   "description": "Lintel 2",
   "repository": {
     "type": "git",
@@ -18,7 +18,7 @@
     "compile:webview": "tsc --incremental -p ./src/webview && cp -r ./src/webview/assets ./dist/webview && cp ./src/webview/index.html ./dist/webview",
     "lint": "eslint ./src/ && lit-analyzer && deno lint ./bin/",
     "prettier": "prettier --write .",
-    "serve:simulator": "deno run -A ./bin/simulator/main.ts --dir=./dist/webview",
+    "serve:simulator": "deno run -A ./bin/simulator/simulator.ts --dir=./dist/webview --no-open",
     "stylelint": "stylelint --fix **/*.{css,tsx}"
   },
   "dependencies": {

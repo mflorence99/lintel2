@@ -15,20 +15,20 @@ const { cmd, dir } = parseArgs(Deno.args);
 
 // 👇 run the command first time
 
-await commander([]);
+await run();
 
 // 👇 now set it up to run whenever files change
 
 const watcher = Deno.watchFs(dir);
 const debounced = debounce(
-  async (event: Deno.FsEvent) => await commander(event.paths),
+  async (event: Deno.FsEvent) => await run(event.paths),
   config.debounceMillis
 );
 for await (const event of watcher) debounced(event);
 
 // 👇 run the command when paths have changed
 
-async function commander(paths: string[]) {
+async function run(paths: string[] = []) {
   // 👇 extract shortest changed path
   const files = paths.map((path) => {
     const ix = path.indexOf(dir) + dir.length + 1;
@@ -37,11 +37,11 @@ async function commander(paths: string[]) {
   // 👇 log the command in detail
   const now = new Date();
   console.log(
-    `%c${now.toLocaleTimeString()} %c${cmd} %cchanged:%c[${files.join(',')}]`,
-    'color: green',
-    'color: yellow',
-    'color: white',
-    'color: pink'
+    `%c${now.toLocaleTimeString()} %c${cmd} %cchanged: %c[${files.join(',')}]`,
+    `color: ${config.log.color.ts}`,
+    `color: ${config.log.color.cmd}`,
+    `color: ${config.log.color.text}`,
+    `color: ${config.log.color.data}`
   );
   try {
     // 👇 silently run the command
