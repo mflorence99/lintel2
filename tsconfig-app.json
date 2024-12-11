@@ -1,17 +1,11 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "declarationMap": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "importHelpers": true,
-    "inlineSources": true,
-    "lib": [
-      "esnext",
-      "DOM"
-    ],
+    "lib": ["esnext", "DOM"],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
@@ -20,11 +14,8 @@
     "noImplicitThis": true,
     "noUnusedLocals": false,
     "paths": {
-      "@lib/*": [
-        "./src/lib/*"
-      ]
+      "@lib/*": ["./src/lib/*"]
     },
-    "sourceMap": true,
     "strict": true,
     "target": "esnext",
     "useDefineForClassFields": false

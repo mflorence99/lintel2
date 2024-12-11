@@ -11,11 +11,12 @@
   "scripts": {
     "build:extension": "npm run clean:extension && npm run compile:extension",
     "build:webview": "npm run clean:webview && ./bin/watch.ts --dir=./src/webview --cmd='npm run compile:webview'",
+    "bundle:webview": "deno run -A bin/esbuild.ts --root=./dist/webview/webview/index.js --bundle=./dist/webview/webview/bundle.js --tsconfig=./tsconfig-app.json",
     "clean:deps": "rm -rf ./node_modules && rm -rf ./package-lock.json && npm i",
     "clean:extension": "rm -rf ./dist/extension",
     "clean:webview": "rm -rf ./dist/webview",
     "compile:extension": "tsc --incremental -p ./src/extension",
-    "compile:webview": "tsc --incremental -p ./src/webview && cp -r ./src/webview/assets ./dist/webview && cp ./src/webview/index.html ./dist/webview",
+    "compile:webview": "tsc --incremental -p ./src/webview  && npm run bundle:webview && cp -r ./src/webview/assets ./dist/webview && cp ./src/webview/index.html ./dist/webview",
     "lint": "eslint ./src/ && lit-analyzer && deno lint ./bin/",
     "prettier": "prettier --write .",
     "serve:simulator": "deno run -A ./bin/simulator/simulator.ts --dir=./dist/webview --no-open",

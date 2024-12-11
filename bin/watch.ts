@@ -2,8 +2,8 @@
 
 import { config } from '@lib/config.ts';
 import { debounce } from 'jsr:@std/async/debounce';
-import { parseArgs } from '@std/cli/parse-args';
 import { log } from './logger.ts';
+import { parseArgs } from '@std/cli/parse-args';
 
 import $ from '@david/dax';
 
@@ -40,7 +40,7 @@ async function run(paths: string[] = []) {
   try {
     // 👇 silently run the command
     const result = await $.raw`${cmd}`.stderr('piped').stdout('piped');
-    if (result.stderr) throw new Error(result.stderr);
+    if (result.code !== 0) throw new Error(`result code ${result.code}`);
   } catch (e: any) {
     // 🔥 ooops!
     log({ data: e, error: true });
