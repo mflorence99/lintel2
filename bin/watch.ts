@@ -1,15 +1,16 @@
 #!/usr/bin/env -S deno run --allow-all
 
+import { config } from '@lib/config.ts';
+import { debounce } from 'jsr:@std/async/debounce';
+import { parseArgs } from '@std/cli/parse-args';
+import { log } from './logger.ts';
+
+import $ from '@david/dax';
+
 // 📘 watch files in a directory and run a command on changes
 //    ./bin/watch.ts
 //    --dir=./src/webview
 //    --cmd=npm run compile:webview
-
-import { config } from '@lib/config.ts';
-import { debounce } from 'jsr:@std/async/debounce';
-import { parseArgs } from '@std/cli/parse-args';
-
-import $ from '@david/dax';
 
 const { cmd, dir } = parseArgs(Deno.args);
 
@@ -35,20 +36,13 @@ async function run(paths: string[] = []) {
     return path.substring(ix);
   });
   // 👇 log the command in detail
-  const now = new Date();
-  console.log(
-    `%c${now.toLocaleTimeString()} %c${cmd} %cchanged: %c[${files.join(',')}]`,
-    `color: ${config.log.color.ts}`,
-    `color: ${config.log.color.cmd}`,
-    `color: ${config.log.color.text}`,
-    `color: ${config.log.color.data}`
-  );
+  log({ data: files, important: cmd, text: 'changed:' });
   try {
     // 👇 silently run the command
     const result = await $.raw`${cmd}`.stderr('piped').stdout('piped');
     if (result.stderr) throw new Error(result.stderr);
   } catch (e: any) {
     // 🔥 ooops!
-    console.error(`%c${e}`, 'color: red');
+    log({ data: e, error: true });
   }
 }

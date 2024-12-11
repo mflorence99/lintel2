@@ -6,8 +6,9 @@ export class ConfigClass {
 
   log = {
     color: {
-      cmd: 'yellow',
       data: 'pink',
+      error: 'red',
+      important: 'yellow',
       text: 'white',
       ts: 'green'
     }

@@ -1,28 +1,31 @@
+import { config } from '@lib/config.ts';
+import { log } from '../logger.ts';
+
+type Params = {
+  cb: (socket: WebSocket) => void;
+};
+
 // 📘 provides WebSocket services for the simulator
 
-import { config } from '@lib/config.ts';
-
-export function wsServer(
-  controller: AbortController,
-  cb: (socket: WebSocket) => void
-): void {
+export function wsServer({ cb }: Params): void {
+  let oldSocket;
   Deno.serve({ port: config.simulator.ws.port }, (req) => {
     if (req.headers.get('upgrade') === 'websocket') {
       const { response, socket } = Deno.upgradeWebSocket(req);
-      // 👇 listen for open
-      socket.addEventListener('open', webSocketOpened, {
-        signal: controller.signal
-      });
-      // 👇 listen for message
-      socket.addEventListener('message', webSocketMessage, {
-        signal: controller.signal
-      });
-      // 👇 listen for close
-      socket.addEventListener('close', webSocketClosed, {
-        signal: controller.signal
-      });
+      // 👇 got a new socket, free the old one
+      if (oldSocket) {
+        oldSocket.removeEventListener('open', webSocketOpened);
+        oldSocket.removeEventListener('message', webSocketMessage);
+        oldSocket.removeEventListener('close', webSocketClosed);
+        oldSocket.close();
+      }
+      // 👇 listen for events
+      socket.addEventListener('open', webSocketOpened);
+      socket.addEventListener('message', webSocketMessage);
+      socket.addEventListener('close', webSocketClosed);
       // 👇 got a new socket
       cb(socket);
+      oldSocket = socket;
       return response;
     } else {
       // 🔥 just let it go until we get a good request
@@ -32,30 +35,14 @@ export function wsServer(
 }
 
 function webSocketOpened(): void {
-  const now = new Date();
-  console.log(
-    `%c${now.toLocaleTimeString()} %cconnected`,
-    `color: ${config.log.color.ts}`,
-    `color: ${config.log.color.text}`
-  );
+  log({ text: 'connected' });
 }
 
 function webSocketMessage({ data }): void {
-  const now = new Date();
-  console.log(
-    `%c${now.toLocaleTimeString()} %creceived: %c${data}`,
-    `color: ${config.log.color.ts}`,
-    `color: ${config.log.color.text}`,
-    `color: ${config.log.color.data}`
-  );
+  log({ data, text: 'received' });
   // 🔥 do something with message
 }
 
 function webSocketClosed(): void {
-  const now = new Date();
-  console.log(
-    `%c${now.toLocaleTimeString()} %cdisconnected`,
-    `color: ${config.log.color.ts}`,
-    `color: ${config.log.color.text}`
-  );
+  log({ text: 'disconnected' });
 }

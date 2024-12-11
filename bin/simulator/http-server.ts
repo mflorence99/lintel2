@@ -1,11 +1,16 @@
-// 📘 provides HTTP services for the simulator
-
 import { config } from '@lib/config.ts';
 import { wsClient } from './ws-client.ts';
 
 import openBrowser from 'open';
 
-export function httpServer(dir: string, open: boolean): void {
+type Params = {
+  dir: string;
+  open: boolean;
+};
+
+// 📘 provides HTTP services for the simulator
+
+export function httpServer({ dir, open }: Params): void {
   Deno.serve({ port: config.simulator.http.port }, async (req) => {
     const url = new URL(req.url);
 
@@ -58,11 +63,13 @@ export function httpServer(dir: string, open: boolean): void {
 function mungeIndexHTML(html: string): string {
   return html.replace(
     '</head>',
-    `<link rel="icon" type="image/x-icon" href="assets/lintel.png" />
-     <script>
+    `
+    <link rel="icon" type="image/x-icon" href="assets/lintel.png" />
+    <script>
       ${wsClient.toString()}
-      wsClient(${config.simulator.http.port}, ${config.simulator.ws.port});
-     </script>
-     </head>`
+      wsClient({httpPort: ${config.simulator.http.port}, 
+                  wsPort: ${config.simulator.ws.port}});
+    </script>
+    </head>`
   );
 }
