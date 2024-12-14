@@ -3,8 +3,5 @@
   "compilerOptions": {
     "outDir": "../../dist/extension"
   },
-  "include": [
-    "../lib/**/*.ts",
-    "**/*.ts"
-  ]
+  "include": ["../lib/**/*.ts", "**/*.ts"]
 }

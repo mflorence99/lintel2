@@ -1,4 +1,4 @@
-import { config } from '@lib/config.ts';
+import { config } from '../config.ts';
 import { wsClient } from './ws-client.ts';
 
 import openBrowser from 'open';
@@ -13,21 +13,25 @@ type Params = {
 export function httpServer({ dir, open }: Params): void {
   Deno.serve({ port: config.simulator.http.port }, async (req) => {
     const url = new URL(req.url);
+    const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
 
     // 👇 route: from the root
-    if (url.pathname === '/' || url.pathname === '/index.htrml') {
-      const html = await Deno.readTextFile(`${Deno.cwd()}/${dir}/index.html`);
-      return new Response(mungeIndexHTML(html), {
-        headers: { 'Content-Type': 'text/html' }
+    let regex = /^\/(.*).(html|js|map)$/;
+    let match = regex.exec(pathname);
+    if (match) {
+      let contents = await Deno.readTextFile(`${dir}/${match[1]}.${match[2]}`);
+      if (pathname === 'index.html') contents = mungeIndexHTML(contents);
+      return new Response(contents, {
+        headers: { 'Content-Type': `text/${match[2]}` }
       });
     }
 
     // 👇 route: /assets/xxx.png etc
-    let regex = /^\/([a-z0-9]+)\/(.*).(gif|jpeg|jpg|png)$/;
-    let match = regex.exec(url.pathname);
+    regex = /^\/([a-z0-9]+)\/(.*).(gif|jpeg|jpg|png)$/;
+    match = regex.exec(pathname);
     if (match) {
       const file = await Deno.open(
-        `${Deno.cwd()}/${dir}/${match[1]}/${match[2]}.${match[3]}`,
+        `${dir}/${match[1]}/${match[2]}.${match[3]}`,
         {
           read: true
         }
@@ -38,13 +42,13 @@ export function httpServer({ dir, open }: Params): void {
     }
 
     // 👇 route: /assets/xxx.css etc
-    regex = /^\/([a-z0-9]+)\/(.*).(css|js|map)$/;
-    match = regex.exec(url.pathname);
+    regex = /^\/([a-z0-9]+)\/(.*).(css)$/;
+    match = regex.exec(pathname);
     if (match) {
-      const html = await Deno.readTextFile(
-        `${Deno.cwd()}/${dir}/${match[1]}/${match[2]}.${match[3]}`
+      const contents = await Deno.readTextFile(
+        `${dir}/${match[1]}/${match[2]}.${match[3]}`
       );
-      return new Response(mungeIndexHTML(html), {
+      return new Response(contents, {
         headers: { 'Content-Type': `text/${match[3]}` }
       });
     }

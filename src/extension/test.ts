@@ -1,3 +1,3 @@
-import { obj } from '@lib/test';
+import { config } from '@lib/config';
 
-console.log(obj);
+console.log(config);

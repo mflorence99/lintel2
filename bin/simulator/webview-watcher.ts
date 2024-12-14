@@ -1,4 +1,4 @@
-import { config } from '@lib/config.ts';
+import { config } from '../config.ts';
 import { debounce } from 'jsr:@std/async/debounce';
 import { log } from '../logger.ts';
 
@@ -10,7 +10,7 @@ type Params = {
 // 📘 watches for changes in the webview code
 
 export async function webviewWatcher({ dir, cb }: Params): Promise<void> {
-  const watcher = Deno.watchFs(`${Deno.cwd()}/${dir}`);
+  const watcher = Deno.watchFs(dir);
   const debounced = debounce(
     (event: Deno.FsEvent) => changed({ dir, paths: event.paths, cb }),
     config.debounceMillis

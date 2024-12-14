@@ -1,4 +1,4 @@
-import { config } from '@lib/config.ts';
+import { config } from '../config.ts';
 import { log } from '../logger.ts';
 
 type Params = {

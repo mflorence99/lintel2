@@ -1,27 +1,43 @@
+import { analyzeMetafile } from 'esbuild';
 import { build } from 'esbuild';
 import { log } from './logger.ts';
-import { parseArgs } from '@std/cli/parse-args';
 
 import process from 'node:process';
 
+type Params = {
+  bundle: string;
+  prod: boolean;
+  root: string;
+  tsconfig: string;
+};
+
 // 📘 run esbuild
-//    ./bin/esbuild.ts
-//    --root=./dist/webview/webview/index.js
-//    --bundle=./dist/webview/webview/bundle.js
-//    --tsconfig=./tsconfig-app.json
 
-const { root, bundle, tsconfig } = parseArgs(Deno.args);
+export async function esbuild({
+  bundle,
+  prod,
+  root,
+  tsconfig
+}: Params): Promise<any> {
+  // 👇 perform the build
+  const result = await build({
+    bundle: true,
+    entryPoints: [`${root}`],
+    logLevel: 'info',
+    metafile: true,
+    minify: prod,
+    outfile: `${bundle}`,
+    sourcemap: true,
+    tsconfig: `${tsconfig}`
+  }).catch((e: any) => {
+    log({ error: true, data: e.message });
+    process.exit(1);
+  });
 
-// 👇 run the biz
+  // 👇 analyze bundle
+  const analysis = await analyzeMetafile(result.metafile);
+  console.log(analysis);
 
-build({
-  bundle: true,
-  entryPoints: [`${root}`],
-  minify: true,
-  outfile: `${bundle}`,
-  sourcemap: true,
-  tsconfig: `${tsconfig}`
-}).catch((e) => {
-  log({ data: e, error: true });
-  process.exit(1);
-});
+  // 👇 we're done!
+  return result;
+}

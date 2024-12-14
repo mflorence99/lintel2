@@ -33,7 +33,7 @@ body {
 }
 
 .startup-wiggle {
-  animation: startup-wiggler 0.5s linear infinite;
+  animation: startup-wiggler 0.85s linear infinite;
   height: 64px;
   width: 64px;
 }

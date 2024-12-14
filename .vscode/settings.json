@@ -3,9 +3,7 @@
   "deno.codeLens.references": true,
   "deno.codeLens.referencesAllFunctions": true,
   "deno.enable": true,
-  "deno.enablePaths": [
-    "./bin"
-  ],
+  "deno.enablePaths": ["./bin"],
   "deno.lint": true,
   "deno.suggest.imports.autoDiscover": true,
   "deno.suggest.imports.hosts": {
@@ -14,5 +12,5 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "[jsonc]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
+  }
 }
