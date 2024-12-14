@@ -97,11 +97,6 @@ const allTasks = [
   }),
 
   new TaskClass({
-    name: 'lint',
-    subTasks: ['eslint', 'lit-analyzer', 'denolint']
-  }),
-
-  new TaskClass({
     name: 'esbuild:webview',
     func: () =>
       esbuild({
@@ -116,6 +111,11 @@ const allTasks = [
   new TaskClass({
     name: 'eslint',
     cmd: `npx eslint ${config.paths['extension-ts']} ${config.paths['lib']} ${config.paths['webview-ts']}`
+  }),
+
+  new TaskClass({
+    name: 'lint',
+    subTasks: ['eslint', 'lit-analyzer', 'denolint']
   }),
 
   new TaskClass({
