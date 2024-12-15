@@ -19,6 +19,7 @@
     "jsr:@std/path@~0.218.2": "0.218.2",
     "jsr:@std/streams@0.221": "0.221.0",
     "npm:esbuild@0.24": "0.24.0",
+    "npm:figlet@^1.8.0": "1.8.0",
     "npm:jsome@^2.5.0": "2.5.0",
     "npm:open@*": "10.1.0",
     "npm:open@^10.1.0": "10.1.0"
@@ -296,6 +297,9 @@
         "signal-exit",
         "strip-eof"
       ]
+    },
+    "figlet@1.8.0": {
+      "integrity": "sha512-chzvGjd+Sp7KUvPHZv6EXV5Ir3Q7kYNpCr4aHrRW79qFtTefmQZNny+W1pW9kf5zeE6dikku2W50W/wAH2xWgw=="
     },
     "find-up@2.1.0": {
       "integrity": "sha512-NWzkk0jSJtTt08+FBFMvXoeZnOJD+jTtsRmBYbAIzJdX6l7dLgR7CTubCM5/eDdPUBvLCeVasP1brfVR/9/EZQ==",
@@ -577,6 +581,7 @@
       "jsr:@std/async@^1.0.9",
       "jsr:@std/cli@^1.0.8",
       "npm:esbuild@0.24",
+      "npm:figlet@^1.8.0",
       "npm:jsome@^2.5.0",
       "npm:open@^10.1.0"
     ]

@@ -4,7 +4,6 @@
     "noImplicitAny": false,
     "strictNullChecks": false
   },
-  "fmt": {},
   "lint": {
     "rules": {
       "exclude": ["no-explicit-any"]
@@ -16,8 +15,8 @@
     "@std/async": "jsr:@std/async@^1.0.9",
     "@std/cli": "jsr:@std/cli@^1.0.8",
     "esbuild": "npm:esbuild@^0.24.0",
+    "figlet": "npm:figlet@^1.8.0",
     "jsome": "npm:jsome@^2.5.0",
     "open": "npm:open@^10.1.0"
-  },
-  "tasks": {}
+  }
 }

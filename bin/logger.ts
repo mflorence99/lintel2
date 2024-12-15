@@ -17,6 +17,8 @@ export function log({ data, error, important, text, warning }: Params): void {
       `color: ${error ? 'red' : warning ? 'yellow' : 'green'}; fontWeight: ${error || warning}: 'bold' : 'normal'`
     ]
   ];
+  if (error) parts.push([`%c🔥`, `color: red`]);
+  if (warning) parts.push([`%c⚠️`, `color: yellow`]);
   if (important) parts.push([`%c${important}`, `color: yellow`]);
   if (text) parts.push([`%c${text}`, `color: white`]);
   if (data) parts.push([`%c${JSON.stringify(data)}`, `color: cyan`]);

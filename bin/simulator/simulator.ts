@@ -1,9 +1,11 @@
+import { config } from '../config.ts';
 import { httpServer } from './http-server.ts';
 import { log } from '../logger.ts';
 import { webviewWatcher } from './webview-watcher.ts';
 import { wsServer } from './ws-server.ts';
 
 import $ from '@david/dax';
+import openBrowser from 'open';
 
 type Params = {
   dir: string;
@@ -12,26 +14,26 @@ type Params = {
 
 // 📘 serve a simulator for a VSCode webview extension
 
-export function simulator({ dir, open }: Params): Promise<void> {
+export async function simulator({ dir, open }: Params): Promise<void> {
   // 👇 get the HTTP server ready
-  httpServer({ dir, open });
+  httpServer({ dir });
+
+  // 👇 if requested, open the browser
+  if (open) openBrowser(`http://localhost:${config.simulator.http.port}`);
 
   // 👇 get the WebSocket server ready ie when a client connects
   let socket: WebSocket;
   // 👉 this only shows for the first socket connection
   //    not on any reload
-  const pb = $.progress('Waiting for client...');
+  const pb = $.progress('waiting for client');
   wsServer({
     cb: (newSocket) => {
-      log({ important: 'Client has connected...' });
-      socket = newSocket;
       pb.finish();
+      log({ important: 'client has connected' });
+      socket = newSocket;
     }
   });
 
   // 👇 now we can start watching for file changes
-  webviewWatcher({ dir, cb: () => socket?.send('reload') });
-
-  // 👇 allows us to await
-  return Promise.resolve();
+  await webviewWatcher({ dir, cb: () => socket?.send('reload') });
 }

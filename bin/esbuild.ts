@@ -7,6 +7,7 @@ import process from 'node:process';
 type Params = {
   bundle: string;
   prod: boolean;
+  verbose: boolean;
   root: string;
   tsconfig: string;
 };
@@ -16,6 +17,7 @@ type Params = {
 export async function esbuild({
   bundle,
   prod,
+  verbose,
   root,
   tsconfig
 }: Params): Promise<any> {
@@ -23,8 +25,8 @@ export async function esbuild({
   const result = await build({
     bundle: true,
     entryPoints: [`${root}`],
-    logLevel: 'info',
-    metafile: true,
+    logLevel: verbose ? 'info' : 'warning',
+    metafile: verbose,
     minify: prod,
     outfile: `${bundle}`,
     sourcemap: true,
@@ -35,8 +37,10 @@ export async function esbuild({
   });
 
   // 👇 analyze bundle
-  const analysis = await analyzeMetafile(result.metafile);
-  console.log(analysis);
+  if (verbose) {
+    const analysis = await analyzeMetafile(result.metafile);
+    console.log(analysis);
+  }
 
   // 👇 we're done!
   return result;

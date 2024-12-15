@@ -11,10 +11,10 @@ const wait = (t: number): unknown =>
   new Promise((resolve) => setTimeout(resolve, t));
 
 async function* countUp(): any {
-  let i = 0;
+  let i = 3;
   while (true) {
     yield i++;
-    await wait(1000);
+    await wait(100);
   }
 }
 
@@ -22,8 +22,7 @@ async function* countUp(): any {
 export class SimpleGreeting extends LitElement {
   static override styles = css`
     p {
-      --xyz: 12;
-
+      --xyz: 14;
       color: red;
       font-weight: bold;
       text-decoration: underline dotted;

@@ -1,16 +1,13 @@
 import { config } from '../config.ts';
 import { wsClient } from './ws-client.ts';
 
-import openBrowser from 'open';
-
 type Params = {
   dir: string;
-  open: boolean;
 };
 
 // 📘 provides HTTP services for the simulator
 
-export function httpServer({ dir, open }: Params): void {
+export function httpServer({ dir }: Params): void {
   Deno.serve({ port: config.simulator.http.port }, async (req) => {
     const url = new URL(req.url);
     const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -20,7 +17,7 @@ export function httpServer({ dir, open }: Params): void {
     let match = regex.exec(pathname);
     if (match) {
       let contents = await Deno.readTextFile(`${dir}/${match[1]}.${match[2]}`);
-      if (pathname === 'index.html') contents = mungeIndexHTML(contents);
+      if (pathname === '/index.html') contents = mungeIndexHTML(contents);
       return new Response(contents, {
         headers: { 'Content-Type': `text/${match[2]}` }
       });
@@ -56,9 +53,6 @@ export function httpServer({ dir, open }: Params): void {
     // 👇 route: anything else is a 404
     return new Response(null, { status: 404 });
   });
-
-  // 👇 if requested, open the browser
-  if (open) openBrowser(`http://localhost:${config.simulator.http.port}`);
 }
 
 // 👇 munge the index.html to add the WebSocket client

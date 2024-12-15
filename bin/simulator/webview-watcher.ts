@@ -2,6 +2,8 @@ import { config } from '../config.ts';
 import { debounce } from 'jsr:@std/async/debounce';
 import { log } from '../logger.ts';
 
+import $ from '@david/dax';
+
 type Params = {
   dir: string;
   cb: () => void;
@@ -11,23 +13,14 @@ type Params = {
 
 export async function webviewWatcher({ dir, cb }: Params): Promise<void> {
   const watcher = Deno.watchFs(dir);
-  const debounced = debounce(
-    (event: Deno.FsEvent) => changed({ dir, paths: event.paths, cb }),
-    config.debounceMillis
-  );
-  for await (const event of watcher) {
-    debounced(event);
-  }
-}
-
-// 👇 webview has changed
-
-function changed({ dir, paths, cb }) {
-  const files = paths.map((path) => {
-    const ix = path.indexOf(dir) + dir.length + 1;
-    return path.substring(ix);
-  });
-  log({ data: files, text: 'reloading:' });
-  // 👇 webview has changed
-  cb();
+  const pb = $.progress('watching for changes');
+  // 👇 create a debounced function that's invoked on changes
+  const debounced = debounce((_) => {
+    pb.finish();
+    log({ important: 'sending "reload" to client' });
+    // 👇 webview has changed
+    cb();
+  }, config.debounceMillis);
+  // 👇 then run it on each change
+  for await (const event of watcher) debounced(event);
 }
