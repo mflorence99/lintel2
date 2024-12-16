@@ -19,7 +19,10 @@ export function httpServer({ dir }: Params): void {
       let contents = await Deno.readTextFile(`${dir}/${match[1]}.${match[2]}`);
       if (pathname === '/index.html') contents = mungeIndexHTML(contents);
       return new Response(contents, {
-        headers: { 'Content-Type': `text/${match[2]}` }
+        headers: {
+          'Content-Type': `text/${match[2]}`,
+          'Cache-Control': 'no-store'
+        }
       });
     }
 
@@ -34,7 +37,10 @@ export function httpServer({ dir }: Params): void {
         }
       );
       return new Response(file.readable, {
-        headers: { 'Content-Type': `image/${match[3]}` }
+        headers: {
+          'Content-Type': `image/${match[3]}`,
+          'Cache-Control': 'no-store'
+        }
       });
     }
 
@@ -46,7 +52,10 @@ export function httpServer({ dir }: Params): void {
         `${dir}/${match[1]}/${match[2]}.${match[3]}`
       );
       return new Response(contents, {
-        headers: { 'Content-Type': `text/${match[3]}` }
+        headers: {
+          'Content-Type': `text/${match[3]}`,
+          'Cache-Control': 'no-store'
+        }
       });
     }
 
@@ -64,9 +73,12 @@ function mungeIndexHTML(html: string): string {
     `
     <link rel="icon" type="image/x-icon" href="assets/lintel.png" />
     <script>
+      var acquireVsCodeApi;
       ${wsClient.toString()}
-      wsClient({httpPort: ${config.simulator.http.port}, 
-                  wsPort: ${config.simulator.ws.port}});
+      wsClient({
+        httpPort: ${config.simulator.http.port}, 
+          wsPort: ${config.simulator.ws.port}
+      });
     </script>
     </head>`
   );

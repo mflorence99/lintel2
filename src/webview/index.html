@@ -29,6 +29,18 @@
       </figure>
     </app-root>
 
+    <script>
+      lintelVSCodeAPI = acquireVsCodeApi();
+
+      // 🔥 TEMP
+      lintelVSCodeAPI.setState({ x: 1, y: 2 });
+      console.log(lintelVSCodeAPI.getState());
+      setTimeout(
+        () => lintelVSCodeAPI.postMessage({ command: 'doit', when: 'now' }),
+        2000
+      );
+    </script>
+
     <script src="bundle.js"></script>
   </body>
 </html>

@@ -35,5 +35,10 @@ export async function simulator({ dir, open }: Params): Promise<void> {
   });
 
   // 👇 now we can start watching for file changes
-  await webviewWatcher({ dir, cb: () => socket?.send('reload') });
+  await webviewWatcher({
+    dir,
+    cb: () => {
+      socket?.send('reload');
+    }
+  });
 }

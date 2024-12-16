@@ -218,14 +218,9 @@ const todos: Task[] = reducer(taskNames);
 
 const run = async (todos: Task[]) => {
   for (const todo of todos) {
-    console.log(
-      `%c${figlet.textSync(todo.name.toUpperCase(), {
-        font: 'Small',
-        horizontalLayout: 'fitted'
-      })}`,
-      'color: cyan'
-    );
     try {
+      // 👇 this looks pretty, but has no other function
+      figletize(todo.cmd);
       // 👇 could be a command
       const cmds = todo.cmds ?? [todo.cmd];
       for (const cmd of cmds) {
@@ -285,6 +280,16 @@ if (watch) {
 process.exit(0);
 
 // =======================================================================
+
+function figletize(str: string): void {
+  console.log(
+    `%c${figlet.textSync(str.toUpperCase(), {
+      font: 'Small',
+      horizontalLayout: 'fitted'
+    })}`,
+    'color: cyan'
+  );
+}
 
 // 📘 see: https://www.30secondsofcode.org/js/s/flatten-unflatten-object/
 

@@ -7,6 +7,8 @@ import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 
+// 🔥 TEMP
+
 const wait = (t: number): unknown =>
   new Promise((resolve) => setTimeout(resolve, t));
 

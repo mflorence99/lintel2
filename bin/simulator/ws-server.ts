@@ -38,8 +38,8 @@ function webSocketOpened(): void {
   log({ text: 'connected' });
 }
 
-function webSocketMessage({ data }): void {
-  log({ data, text: 'received' });
+function webSocketMessage(message: MessageEvent): void {
+  log({ data: message, text: 'received' });
   // 🔥 do something with message
 }
 
