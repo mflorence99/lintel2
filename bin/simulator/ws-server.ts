@@ -38,9 +38,11 @@ function webSocketOpened(): void {
   log({ text: 'connected' });
 }
 
-function webSocketMessage(message: MessageEvent): void {
-  log({ data: message, text: 'received' });
-  // 🔥 do something with message
+function webSocketMessage({ data }): void {
+  log({ important: 'received', text: data });
+  const message = JSON.parse(data);
+  // 🔥 FLOW simulator receives message fronm client
+  message;
 }
 
 function webSocketClosed(): void {

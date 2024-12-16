@@ -38,7 +38,9 @@ export async function simulator({ dir, open }: Params): Promise<void> {
   await webviewWatcher({
     dir,
     cb: () => {
-      socket?.send('reload');
+      log({ important: 'simulator is ready with new socket' });
+      // 🔥 FLOW simulator sends reload to client on file change
+      socket?.send(JSON.stringify({ command: 'reload' }));
     }
   });
 }

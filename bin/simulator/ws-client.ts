@@ -8,10 +8,17 @@ type Params = {
 // 📘 injected into webview's index.html to control websocket
 //    conversations to and from ws-server.ts
 
-declare let acquireVsCodeApi;
+declare let acquireVsCodeApi: any;
+
+declare let lintelIsReady: Promise<unknown>;
 
 export async function wsClient({ httpPort, wsPort }: Params): Promise<any> {
   let socket: WebSocket = null;
+
+  // 👇 lintelIsReady is resolved when the socket connection is open
+
+  const { promise, resolve } = Promise.withResolvers();
+  lintelIsReady = promise;
 
   // 👇 put the simulated VSCode API on the global namespace
 
@@ -35,9 +42,10 @@ export async function wsClient({ httpPort, wsPort }: Params): Promise<any> {
       },
 
       // 👇 post message to the simulated extension from the webview
-      postMessage: (data) => {
-        console.log({ data }); // 🔥 TEMP
-        socket?.send(data);
+      postMessage: (message) => {
+        console.log(message); // 🔥 TEMP
+        // 🔥 FLOW client sends message to simulator
+        socket?.send(JSON.stringify(message));
       }
     };
   };
@@ -53,18 +61,22 @@ export async function wsClient({ httpPort, wsPort }: Params): Promise<any> {
   const intervalID = setInterval(() => {
     if (socket.readyState === 1) {
       clearInterval(intervalID);
-      socket.send('ready');
+      console.log('%cready', 'color: yellow'); // 🔥 TEMP
+      // 🔥 FLOW client sends ready to simulator
+      socket.send(JSON.stringify({ command: 'ready' }));
+      // 👇 Lintel is ready to rock!
+      resolve(true);
     }
   }, 5);
 
   // 👇 listen for messages to the webview from the simulated extension
-  socket.addEventListener('message', (message: MessageEvent) => {
-    console.log(JSON.stringify(message)); // 🔥 TEMP
-    if (message.data === 'reload') location.reload();
-    else globalThis.dispatchEvent(message.data);
+  socket.addEventListener('message', ({ data }) => {
+    const message = JSON.parse(data);
+    console.log(message); // 🔥 TEMP
+    // 🔥 FLOW client receives message from simulator
+    if (message.command === 'reload') location.reload();
+    else globalThis.dispatchEvent(message);
   });
-
-  // 👇 simulate the VSCode appDistPath
 
   return;
 }

@@ -13,10 +13,10 @@ const wait = (t: number): unknown =>
   new Promise((resolve) => setTimeout(resolve, t));
 
 async function* countUp(): any {
-  let i = 3;
+  let i = 0;
   while (true) {
     yield i++;
-    await wait(100);
+    await wait(1000);
   }
 }
 

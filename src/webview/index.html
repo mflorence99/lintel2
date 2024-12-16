@@ -9,6 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link rel="stylesheet" type="text/css" href="assets/startup.css" />
+
+    <script>
+      var lintelVSCodeAPI = null;
+      var lintelIsReady = Promise.resolve(true);
+    </script>
   </head>
 
   <body>
@@ -31,14 +36,12 @@
 
     <script>
       lintelVSCodeAPI = acquireVsCodeApi();
-
       // 🔥 TEMP
-      lintelVSCodeAPI.setState({ x: 1, y: 2 });
-      console.log(lintelVSCodeAPI.getState());
-      setTimeout(
-        () => lintelVSCodeAPI.postMessage({ command: 'doit', when: 'now' }),
-        2000
-      );
+      lintelIsReady.then(() => {
+        lintelVSCodeAPI.setState({ x: 1, y: 2 });
+        console.log(lintelVSCodeAPI.getState());
+        lintelVSCodeAPI.postMessage({ command: 'doit', when: 'now' });
+      });
     </script>
 
     <script src="bundle.js"></script>

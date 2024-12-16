@@ -220,7 +220,7 @@ const run = async (todos: Task[]) => {
   for (const todo of todos) {
     try {
       // 👇 this looks pretty, but has no other function
-      figletize(todo.cmd);
+      figletize(todo.name);
       // 👇 could be a command
       const cmds = todo.cmds ?? [todo.cmd];
       for (const cmd of cmds) {
