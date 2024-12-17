@@ -72,16 +72,28 @@ function mungeIndexHTML(html: string): string {
     '</head>',
     `
     <link rel="icon" type="image/x-icon" href="assets/lintel.png" />
+    <style>
+      ${Deno.readTextFileSync(`${import.meta.dirname}/webview.css`)}
+    </style>
     <script>
       var acquireVsCodeApi;
+      
+      // 🔥 load the webview simulation
       (() => {
         ${webview.toString()}
         webview({
           httpPort: ${config.simulator.http.port}, 
-            wsPort: ${config.simulator.ws.port},
-    pingPongMillis: ${config.pingPongMillis}
+          wsPort: ${config.simulator.ws.port},
+          pingPongMillis: ${config.pingPongMillis}
         });
       })();
+
+      // 🔥 smoke test to check if all setup
+      lintelIsReady.then(() => {
+        lintelVSCodeAPI.setState({ x: 1, y: 2 });
+        console.log(lintelVSCodeAPI.getState());
+        lintelVSCodeAPI.postMessage({ command: 'doit', when: 'now' });
+      });
     </script>
     </head>`
   );

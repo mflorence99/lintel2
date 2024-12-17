@@ -36,12 +36,6 @@
 
     <script>
       lintelVSCodeAPI = acquireVsCodeApi();
-      // 🔥 TEMP
-      lintelIsReady.then(() => {
-        lintelVSCodeAPI.setState({ x: 1, y: 2 });
-        console.log(lintelVSCodeAPI.getState());
-        lintelVSCodeAPI.postMessage({ command: 'doit', when: 'now' });
-      });
     </script>
 
     <script src="bundle.js"></script>

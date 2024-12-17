@@ -73,7 +73,7 @@ export async function webview({
       resolve(true);
     } else if (wasReady) {
       clearInterval(intervalID);
-      alert('The simulator is down. Restart it then hit OK');
+      alert('The simulator is down; restart it then hit OK');
       location.reload();
     }
   }, pingPongMillis);
