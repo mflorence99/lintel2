@@ -17,6 +17,8 @@ export class ConfigClass {
     'webview-ts': `${root}/src/webview`
   };
 
+  pingPongMillis = 1000;
+
   simulator = {
     http: {
       port: 8100

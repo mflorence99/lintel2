@@ -16,7 +16,7 @@ async function* countUp(): any {
   let i = 0;
   while (true) {
     yield i++;
-    await wait(1000);
+    await wait(300);
   }
 }
 
@@ -24,7 +24,7 @@ async function* countUp(): any {
 export class SimpleGreeting extends LitElement {
   static override styles = css`
     p {
-      --xyz: 14;
+      --xyz: 16;
       color: red;
       font-weight: bold;
       text-decoration: underline dotted;

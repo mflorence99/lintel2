@@ -2,18 +2,24 @@
 
 type Params = {
   httpPort: number;
+  pingPongMillis: number;
   wsPort: number;
 };
 
-// 📘 injected into webview's index.html to control websocket
-//    conversations to and from ws-server.ts
+// 📘 injected into index.html to provide a base simulation
+//     of VSCode's webview support via a socket connection to
+//     the extension
 
 declare let acquireVsCodeApi: any;
 
 declare let lintelIsReady: Promise<unknown>;
 
-export async function wsClient({ httpPort, wsPort }: Params): Promise<any> {
-  let socket: WebSocket = null;
+export async function webview({
+  httpPort,
+  pingPongMillis,
+  wsPort
+}: Params): Promise<any> {
+  let theSocket: WebSocket = null;
 
   // 👇 lintelIsReady is resolved when the socket connection is open
 
@@ -43,9 +49,8 @@ export async function wsClient({ httpPort, wsPort }: Params): Promise<any> {
 
       // 👇 post message to the simulated extension from the webview
       postMessage: (message) => {
-        console.log(message); // 🔥 TEMP
         // 🔥 FLOW client sends message to simulator
-        socket?.send(JSON.stringify(message));
+        theSocket?.send(JSON.stringify(message));
       }
     };
   };
@@ -57,25 +62,32 @@ export async function wsClient({ httpPort, wsPort }: Params): Promise<any> {
   });
 
   // 👇 now we can try to connect to the socket
-  socket = new WebSocket(`ws://localhost:${wsPort}`);
+  theSocket = new WebSocket(`ws://localhost:${wsPort}`);
+  let wasReady = false;
   const intervalID = setInterval(() => {
-    if (socket.readyState === 1) {
-      clearInterval(intervalID);
-      console.log('%cready', 'color: yellow'); // 🔥 TEMP
-      // 🔥 FLOW client sends ready to simulator
-      socket.send(JSON.stringify({ command: 'ready' }));
+    if (theSocket.readyState === 1) {
+      wasReady = true;
+      // 🔥 FLOW client pings simulator
+      theSocket.send(JSON.stringify({ command: '__ping__' }));
       // 👇 Lintel is ready to rock!
       resolve(true);
+    } else if (wasReady) {
+      clearInterval(intervalID);
+      alert('The simulator is down. Restart it then hit OK');
+      location.reload();
     }
-  }, 5);
+  }, pingPongMillis);
 
   // 👇 listen for messages to the webview from the simulated extension
-  socket.addEventListener('message', ({ data }) => {
+  theSocket.addEventListener('message', ({ data }) => {
     const message = JSON.parse(data);
-    console.log(message); // 🔥 TEMP
     // 🔥 FLOW client receives message from simulator
-    if (message.command === 'reload') location.reload();
-    else globalThis.dispatchEvent(message);
+    if (message.command === '__reload__') location.reload();
+    else if (message.command !== '__pong__') {
+      console.log(message);
+      const event = new CustomEvent('message', { detail: message });
+      dispatchEvent(event);
+    }
   });
 
   return;

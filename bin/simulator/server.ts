@@ -1,5 +1,5 @@
 import { config } from '../config.ts';
-import { wsClient } from './ws-client.ts';
+import { webview } from './webview.ts';
 
 type Params = {
   dir: string;
@@ -7,7 +7,7 @@ type Params = {
 
 // 📘 provides HTTP services for the simulator
 
-export function httpServer({ dir }: Params): void {
+export function server({ dir }: Params): void {
   Deno.serve({ port: config.simulator.http.port }, async (req) => {
     const url = new URL(req.url);
     const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
@@ -74,11 +74,14 @@ function mungeIndexHTML(html: string): string {
     <link rel="icon" type="image/x-icon" href="assets/lintel.png" />
     <script>
       var acquireVsCodeApi;
-      ${wsClient.toString()}
-      wsClient({
-        httpPort: ${config.simulator.http.port}, 
-          wsPort: ${config.simulator.ws.port}
-      });
+      (() => {
+        ${webview.toString()}
+        webview({
+          httpPort: ${config.simulator.http.port}, 
+            wsPort: ${config.simulator.ws.port},
+    pingPongMillis: ${config.pingPongMillis}
+        });
+      })();
     </script>
     </head>`
   );
