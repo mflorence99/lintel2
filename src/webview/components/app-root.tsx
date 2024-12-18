@@ -11,14 +11,6 @@ import { html } from 'lit';
 @customElement('app-root')
 export class AppRoot extends LitElement {
   static override styles = css`
-    :host {
-      background-color: black;
-      color: white;
-      display: block;
-      height: 100%;
-      padding: 2rem;
-    }
-
     simple-greeting {
       display: inline;
     }

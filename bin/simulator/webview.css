@@ -1,3 +1,5 @@
+/* 📘 a snapshot of VSCode's styles for the webview simulation */
+
 :root {
   --vscode-font-family: 'Segoe WPC', 'Segoe UI', sans-serif;
   --vscode-font-weight: normal;
@@ -801,4 +803,26 @@
     204,
     20%
   );
+}
+
+a {
+  color: var(--vscode-textLink-foreground);
+}
+
+a:hover {
+  color: var(--vscode-textLink-activeForeground);
+}
+
+body {
+  background-color: var(--vscode-editor-background);
+  color: var(--vscode-editor-foreground);
+  font-family: var(--vscode-editor-font-family);
+  font-size: var(--vscode-editor-font-size);
+  font-weight: var(--vscode-editor-font-weight);
+  margin: 0;
+  padding: 0 20px;
+}
+
+code {
+  color: var(--vscode-textPreformat-foreground);
 }
