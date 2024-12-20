@@ -31,26 +31,27 @@ export async function webview({
   acquireVsCodeApi = () => {
     return {
       // 👇 retrieve webview state
-      getState: () => {
+      getState: (): any => {
         const state = {};
         let ix = 0;
         let key;
         while ((key = localStorage.key(ix++)))
-          state[key] = localStorage.getItem(key);
+          state[key] = JSON.parse(localStorage.getItem(key) ?? '{}');
         return state;
       },
 
       // 👇 set webview state
-      setState: (state) => {
+      setState: (state: any): void => {
         Object.keys(state).forEach((key) =>
-          localStorage.setItem(key, state[key])
+          localStorage.setItem(key, JSON.stringify(state[key]))
         );
       },
 
       // 👇 post message to the simulated extension from the webview
-      postMessage: (message) => {
+      postMessage: (message: any): boolean => {
         // 🔥 FLOW client sends message to simulator
         theSocket?.send(JSON.stringify(message));
+        return !!theSocket;
       }
     };
   };

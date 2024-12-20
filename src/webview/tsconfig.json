@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig-app.json",
   "compilerOptions": {
+    "jsx": "preserve",
     "outDir": "../../dist/webview",
     "plugins": [
       {
@@ -17,8 +18,7 @@
         }
       }
     ]
-  }
+  },
 
-,
   "include": ["../lib/**/*.ts", "**/*.ts", "**/*.tsx"]
 }

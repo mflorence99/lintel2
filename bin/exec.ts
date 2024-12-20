@@ -47,7 +47,8 @@ const run = async (todos: Task[]) => {
       }
       // 👇 could be a function
       if (todo.func) {
-        log({ important: todo.name });
+        log({ important: todo.name, text: 'function invoked' });
+        await todo.kill?.();
         await todo.func({ prod, verbose });
       }
     } catch (e: any) {
@@ -57,11 +58,7 @@ const run = async (todos: Task[]) => {
   }
 };
 
-// 👇 run the tasks first time
-
-await run(todos);
-
-// 👇 if in watch mode, lookout for changes and rerun tasks
+// 👇 if in watch mode, lookout for changes and run todos
 
 if (watch) {
   // 👇 consolidate todos by their watchDir
@@ -81,6 +78,7 @@ if (watch) {
     const todos = watchedByDir[watchDir];
     const watcher = Deno.watchFs(watchDir);
     $.progress(`watching for changes in ${watchDir}`);
+    await $`touch ${watchDir}/tickle.me`;
     // 👇 create a debounced function that's invoked on changes
     const debounced = debounce(async (_) => {
       log({ important: 'changes detected', text: watchDir });
@@ -90,6 +88,9 @@ if (watch) {
     for await (const event of watcher) debounced(event);
   }
 }
+
+// 👇 otherwise, just run the todos
+else await run(todos);
 
 // 👇 that's all she wrote!
 

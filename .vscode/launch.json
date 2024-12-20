@@ -6,18 +6,18 @@
   "configurations": [
     {
       "request": "launch",
-      "name": "Debug Lintel2 bin code",
+      "name": "Debug Lintel2 exec",
       "type": "node",
-      "cwd": "${workspaceFolder}/bin",
+      "cwd": "${workspaceFolder}/",
       "env": {},
       "runtimeExecutable": "/home/markf/.deno/bin/deno",
       "runtimeArgs": [
         "run",
         "--inspect-wait",
         "--allow-all",
-        "${file}",
-        "--cmd=npm run compile:webview",
-        "--dir=./src/webview"
+        "./bin/exec.ts",
+        "-w",
+        "simulator"
       ],
       "attachSimplePort": 9229
     }

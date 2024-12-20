@@ -1,3 +1,8 @@
+app-root.ready + .startup-loading {
+  opacity: 0;
+  z-index: -1;
+}
+
 body {
   margin: 0;
 }
@@ -14,7 +19,7 @@ body {
   opacity: 1;
   position: absolute;
   top: 0;
-  transition: opacity 1s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
   width: 100%;
   z-index: 1;
 }
@@ -33,7 +38,7 @@ body {
 }
 
 .startup-wiggle {
-  animation: startup-wiggler 0.75s linear infinite;
+  animation: startup-wiggler 0.5s linear infinite;
   height: 64px;
   width: 64px;
 }

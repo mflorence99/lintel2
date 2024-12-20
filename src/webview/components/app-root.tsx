@@ -1,36 +1,15 @@
 import { LitElement } from 'lit';
-import { TemplateResult } from 'lit';
 
-import { config } from '@lib/config';
-import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { html } from 'lit';
+import { nextTick } from '@lib/delay';
 
-// 🔥 TEMP
+// 📘 the whole enchilada
 
 @customElement('app-root')
 export class AppRoot extends LitElement {
-  static override styles = css`
-    simple-greeting {
-      display: inline;
-    }
-  `;
-
-  #xxx = 'blah';
-
-  handleClick(e: Event): void {
-    console.log(
-      `🔥 ${this.#xxx} ${JSON.stringify(e)} ${JSON.stringify(config)}`
-    );
-  }
-
-  override render(): TemplateResult {
-    return html`
-      <h1>Hello, Lintel!</h1>
-      <simple-greeting
-        @click=${this.handleClick}
-        .name=${'Moon'}></simple-greeting>
-    `;
+  // 👇 hide the startup splash when we're good and ready
+  override firstUpdated(): void {
+    nextTick().then(() => this.classList.add('ready'));
   }
 }
 
