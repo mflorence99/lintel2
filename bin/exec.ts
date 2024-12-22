@@ -43,7 +43,7 @@ const run = async (todos: Task[]) => {
         if (cmd) {
           log({ important: todo.name, text: cmd });
           const plist = await psList();
-          const existing = plist.find((p) => p.cmd.includes(cmd));
+          const existing = plist.find((p) => p.cmd === cmd);
           if (existing) Deno.kill(existing.pid, 'SIGINT');
           await $.raw`${cmd}`; // 🔥 `clean up syntax coloring`
         }

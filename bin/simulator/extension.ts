@@ -13,7 +13,6 @@ type Params = {
 let theSocket: WebSocket = null;
 
 export function extension({ ac, dir, watcher$ }: Params): Promise<void> {
-  log({ important: 'waiting for webview...' });
   Deno.serve(opts(), (req) => {
     if (req.headers.get('upgrade') === 'websocket') {
       const { response, socket } = Deno.upgradeWebSocket(req);
@@ -30,7 +29,7 @@ export function extension({ ac, dir, watcher$ }: Params): Promise<void> {
       theSocket.addEventListener('message', webSocketMessage);
       theSocket.addEventListener('close', webSocketClosed);
       // 👇 got a new socket
-      log({ text: 'webview has connected' });
+      log({ text: 'webview connected' });
       return response;
     } else {
       // 🔥 just let it go until we get a good request

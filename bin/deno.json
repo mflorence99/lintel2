@@ -11,13 +11,16 @@
   },
   "imports": {
     "@david/dax": "jsr:@david/dax@^0.42.0",
+    "@david/which": "jsr:@david/which@^0.4.1",
     "@opensrc/deno-open": "jsr:@opensrc/deno-open@^1.0.0",
     "@std/async": "jsr:@std/async@^1.0.9",
     "@std/cli": "jsr:@std/cli@^1.0.8",
+    "@std/path": "jsr:@std/path@^1.0.8",
     "esbuild": "npm:esbuild@^0.24.0",
     "figlet": "npm:figlet@^1.8.0",
     "jsome": "npm:jsome@^2.5.0",
     "open": "npm:open@^10.1.0",
-    "ps-list": "npm:ps-list@^8.1.1"
+    "ps-list": "npm:ps-list@^8.1.1",
+    "stacktrace-js": "npm:stacktrace-js@^2.0.2"
   }
 }

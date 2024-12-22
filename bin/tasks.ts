@@ -1,5 +1,6 @@
 import { config } from './config.ts';
 import { esbuild } from './esbuild.ts';
+import { whichSync } from '@david/which';
 
 // 📘 define all the tasks we can perform
 
@@ -32,8 +33,20 @@ export const allTasks = [
       `cp ${config.paths['webview-ts']}/index.html ${config.paths['webview-js']}/`,
       `cp -r ${config.paths['webview-ts']}/assets ${config.paths['webview-js']}`
     ],
-    subTasks: ['compile:webview', 'esbuild:webview'],
+    subTasks: ['check:webview', 'esbuild:webview'],
     watchDir: config.paths['webview-ts']
+  }),
+
+  new TaskClass({
+    name: 'check:extension',
+    description: 'Test compile extension without emitting JS',
+    cmd: `npx tsc --noEmit -p ${config.paths['extension-ts']}`
+  }),
+
+  new TaskClass({
+    name: 'check:webview',
+    description: 'Test compile webview without emitting JS',
+    cmd: `npx tsc --noEmit --jsx preserve -p ${config.paths['webview-ts']}`
   }),
 
   new TaskClass({
@@ -52,18 +65,6 @@ export const allTasks = [
       `rm -rf ${config.paths['webview-js']}`,
       `mkdir ${config.paths['webview-js']}`
     ]
-  }),
-
-  new TaskClass({
-    name: 'compile:extension',
-    description: 'Test compile extension without emitting JS',
-    cmd: `npx tsc --noEmit -p ${config.paths['extension-ts']}`
-  }),
-
-  new TaskClass({
-    name: 'compile:webview',
-    description: 'Test compile webview without emitting JS',
-    cmd: `npx tsc --noEmit --jsx preserve -p ${config.paths['webview-ts']}`
   }),
 
   new TaskClass({
@@ -113,8 +114,7 @@ export const allTasks = [
   new TaskClass({
     name: 'simulator',
     description: 'Run the webview simulator',
-    cmd: `deno run -A bin/simulator/simulator.ts ${config.paths['webview-js']}`,
-    // kill: () => killSimulator(),
+    cmd: `${whichSync('deno')} run -A bin/simulator/simulator.ts ${config.paths['webview-js']}`,
     watchDir: config.paths['bin']
   }),
 
