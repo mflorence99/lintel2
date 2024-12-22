@@ -2,7 +2,7 @@
 
 type Params = {
   httpPort: number;
-  pingPongMillis: number;
+  keepAliveMillis: number;
   wsPort: number;
 };
 
@@ -16,7 +16,7 @@ declare let lintelIsReady: Promise<unknown>;
 
 export async function webview({
   httpPort,
-  pingPongMillis,
+  keepAliveMillis,
   wsPort
 }: Params): Promise<any> {
   let theSocket: WebSocket = null;
@@ -77,7 +77,7 @@ export async function webview({
       alert('The simulator is down; restart it then hit OK');
       location.reload();
     }
-  }, pingPongMillis);
+  }, keepAliveMillis);
 
   // 👇 listen for messages to the webview from the simulated extension
   theSocket.addEventListener('message', ({ data }) => {

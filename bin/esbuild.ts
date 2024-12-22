@@ -2,8 +2,6 @@ import { analyzeMetafile } from 'esbuild';
 import { build } from 'esbuild';
 import { log } from './logger.ts';
 
-import process from 'node:process';
-
 type Params = {
   bundle: string;
   prod: boolean;
@@ -33,7 +31,7 @@ export async function esbuild({
     tsconfig: `${tsconfig}`
   }).catch((e: any) => {
     log({ error: true, data: e.message });
-    process.exit(1);
+    Deno.exit(1);
   });
 
   // 👇 analyze bundle

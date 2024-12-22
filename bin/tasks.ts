@@ -1,7 +1,5 @@
 import { config } from './config.ts';
 import { esbuild } from './esbuild.ts';
-import { kill as simulatorKill } from './simulator/simulator.ts';
-import { simulator } from './simulator/simulator.ts';
 
 // 📘 define all the tasks we can perform
 
@@ -10,7 +8,6 @@ class TaskClass {
   cmds?: string[];
   description: string = '';
   func?: (args?: any) => Promise<void>;
-  // 🔥 NOTE: kill only works for functions, not cmd or cmds
   kill?: () => Promise<void>;
   name: string;
   // 🔥 crap - Deno typing makes us do it this way
@@ -116,8 +113,8 @@ export const allTasks = [
   new TaskClass({
     name: 'simulator',
     description: 'Run the webview simulator',
-    func: () => simulator({ dir: config.paths['webview-js'] }),
-    kill: () => simulatorKill(),
+    cmd: `deno run -A bin/simulator/simulator.ts ${config.paths['webview-js']}`,
+    // kill: () => killSimulator(),
     watchDir: config.paths['bin']
   }),
 

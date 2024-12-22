@@ -1,45 +1,36 @@
 import { config } from '../config.ts';
+import { delay } from '@std/async/delay';
 import { extension } from './extension.ts';
-import { server } from './server.ts';
-
-import openBrowser from 'open';
-import process from 'node:process';
-
-type Params = {
-  dir: string;
-  open?: boolean;
-};
-
-type ThreadLocal = {
-  watcher$: Deno.FsWatcher;
-};
-
-const threadLocals: Record<number, ThreadLocal> = {};
+import { http } from './server.ts';
+import { log } from '../logger.ts';
 
 // 📘 serve a simulator for a VSCode webview extension
+//    designed to be called inside of exec.ts, hence the primitive
+//    args parsing - just pass the deploy directrory
 
-export function simulator({ dir, open }: Params): Promise<void> {
-  // 👇 keep track of active watchers
-  const watcher$ = Deno.watchFs(dir);
-  threadLocals[process.pid] = { watcher$ };
+const dir = Deno.args[0];
 
-  // 👇 get the HTTP server ready
-  server({ dir });
+// 👇 this allows us to cancel server
+const ac = new AbortController();
 
-  // 👇 if requested, open the browser
-  if (open) openBrowser(`http://localhost:${config.simulator.http.port}`);
+// 👇 keep track of active watchers
+const watcher$ = Deno.watchFs(dir);
 
-  // 👇 run the extension
-  return extension({ watcher$ });
-}
+// 👇 get the HTTP server ready
+const server = http({ ac, dir });
 
-// 👇 so that the simuylator can be killed
+// 👇 clean up when aborted
+Deno.addSignalListener('SIGINT', async () => {
+  log({ important: 'SIGINT', text: 'simulator shutting down' });
+  // 👇 close the watcher
+  watcher$.close();
+  // 👇 close the server and wait for it to complete
+  ac.abort();
+  await server.finished;
+  // 👇 give the client time to realize the server is down
+  await delay(config.keepAliveMillis * 2);
+  Deno.exit(0);
+});
 
-export function kill(): Promise<void> {
-  const threadLocal = threadLocals[process.pid];
-  if (threadLocal) {
-    threadLocal.watcher$.close();
-    threadLocal[process.pid] = null;
-  }
-  return Promise.resolve();
-}
+// 👇 run the extension
+await extension({ ac, dir, watcher$ });

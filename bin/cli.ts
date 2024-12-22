@@ -8,7 +8,6 @@ import { log } from './logger.ts';
 import { parseArgs } from '@std/cli/parse-args';
 
 import $ from '@david/dax';
-import process from 'node:process';
 
 // 📘 handle the details of the CLI
 
@@ -52,14 +51,14 @@ export async function cli(): Promise<ParsedArgs> {
 
   if (parsedArgs.help) {
     logUsage();
-    process.exit(0);
+    Deno.exit(0);
   }
 
   // 👇 log no tasks error
 
   if (parsedArgs.taskNames.length === 0) {
     logNoop();
-    process.exit(0);
+    Deno.exit(0);
   }
 
   // 👇 validate the requested options
@@ -73,7 +72,7 @@ export async function cli(): Promise<ParsedArgs> {
     .filter((flag) => !allOptionsSet.has(flag));
   if (invalidArgs.length > 0) {
     logUsage(`Unknown option(s) '${invalidArgs}' specified`);
-    process.exit(1);
+    Deno.exit(1);
   }
 
   // 👇 validate the requested tasks
@@ -84,7 +83,7 @@ export async function cli(): Promise<ParsedArgs> {
   );
   if (invalidTasks.length > 0) {
     logUsage(`Unknown task(s) '${invalidTasks}' requested`);
-    process.exit(1);
+    Deno.exit(1);
   }
 
   // 👇 validate all the paths in the config
@@ -92,7 +91,7 @@ export async function cli(): Promise<ParsedArgs> {
   const failures = [];
   for (const path of Object.values(config.paths)) {
     try {
-      await $`test -e ${path}`;
+      Deno.statSync(path);
     } catch (_) {
       failures.push(path);
     }
@@ -120,7 +119,7 @@ export async function cli(): Promise<ParsedArgs> {
       message: 'Production mode requested. Are you sure? [yN]',
       default: false
     });
-    if (!result) process.exit(1);
+    if (!result) Deno.exit(1);
   }
 
   return parsedArgs;

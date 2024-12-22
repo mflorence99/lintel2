@@ -22,7 +22,8 @@
     "npm:figlet@^1.8.0": "1.8.0",
     "npm:jsome@^2.5.0": "2.5.0",
     "npm:open@*": "10.1.0",
-    "npm:open@^10.1.0": "10.1.0"
+    "npm:open@^10.1.0": "10.1.0",
+    "npm:ps-list@^8.1.1": "8.1.1"
   },
   "jsr": {
     "@david/dax@0.42.0": {
@@ -458,6 +459,9 @@
     "path-key@2.0.1": {
       "integrity": "sha512-fEHGKCSmUSDPv4uoj8AlD+joPlq3peND+HRYyxFz4KPw4z926S/b8rIuFs2FYJg3BwsxJf6A9/3eIdLaYC+9Dw=="
     },
+    "ps-list@8.1.1": {
+      "integrity": "sha512-OPS9kEJYVmiO48u/B9qneqhkMvgCxT+Tm28VCEJpheTpl8cJ0ffZRRNgS5mrQRTrX5yRTpaJ+hRDeefXYmmorQ=="
+    },
     "pump@3.0.2": {
       "integrity": "sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==",
       "dependencies": [
@@ -583,7 +587,8 @@
       "npm:esbuild@0.24",
       "npm:figlet@^1.8.0",
       "npm:jsome@^2.5.0",
-      "npm:open@^10.1.0"
+      "npm:open@^10.1.0",
+      "npm:ps-list@^8.1.1"
     ]
   }
 }

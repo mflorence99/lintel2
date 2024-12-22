@@ -6,6 +6,8 @@ const root = Deno.cwd();
 export class ConfigClass {
   debounceMillis = 250;
 
+  keepAliveMillis = 250;
+
   paths = {
     'bin': `${root}/bin`,
     'extension-js': `${root}/dist/extension`,
@@ -16,8 +18,6 @@ export class ConfigClass {
     'webview-js': `${root}/dist/webview`,
     'webview-ts': `${root}/src/webview`
   };
-
-  pingPongMillis = 1000;
 
   simulator = {
     http: {

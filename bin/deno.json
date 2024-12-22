@@ -17,6 +17,7 @@
     "esbuild": "npm:esbuild@^0.24.0",
     "figlet": "npm:figlet@^1.8.0",
     "jsome": "npm:jsome@^2.5.0",
-    "open": "npm:open@^10.1.0"
+    "open": "npm:open@^10.1.0",
+    "ps-list": "npm:ps-list@^8.1.1"
   }
 }

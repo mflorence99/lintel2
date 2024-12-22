@@ -3,79 +3,75 @@ import { log } from '../logger.ts';
 import { webview } from './webview.ts';
 
 type Params = {
+  ac?: AbortController;
   dir: string;
 };
 
 // 📘 provides HTTP services for the simulator
 
-export function server({ dir }: Params): void {
-  Deno.serve(
+export function http({ ac, dir }: Params): Deno.HttpServer {
+  return Deno.serve(opts(), (req) => {
+    const url = new URL(req.url);
+    const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
+
+    // 👇 text contents
     {
+      const { path, file, ext } = match(pathname, ['css', 'html', 'js', 'map']);
+      if (ext) {
+        let contents = Deno.readTextFileSync(`${dir}/${path}/${file}.${ext}`);
+        if (pathname === '/index.html') contents = mungeIndexHTML(contents);
+        return new Response(contents, init(ext));
+      }
+    }
+
+    // 👇 binary contents
+    {
+      const { path, file, ext } = match(pathname, ['gif', 'jpeg', 'png']);
+      if (ext) {
+        const image = Deno.openSync(`${dir}/${path}/${file}.${ext}`, {
+          read: true
+        });
+        return new Response(image.readable, init(ext));
+      }
+    }
+
+    // 👇 anything else is a 404
+    return new Response(null, { status: 404 });
+  });
+
+  // 👇 make response init
+
+  function init(mimeType: string): ResponseInit {
+    return {
+      headers: {
+        'Content-Type': `text/${mimeType}`,
+        'Cache-Control': 'no-store'
+      }
+    };
+  }
+
+  // 👇 extract path, file, ext from URL
+
+  function match(pathname: string, exts: string[]): { path; file; ext } {
+    const regex = new RegExp(`^([/a-z0-9]?)\/(.*).(${exts.join('|')})$`);
+    const match = regex.exec(pathname);
+    return { path: match?.[1], file: match?.[2], ext: match?.[3] };
+  }
+
+  // 👇 make server options
+
+  function opts(): any {
+    return {
       onListen({ port, hostname }) {
         log({
           important: `HTTP server started`,
           text: `http://${hostname}:${port}`
         });
       },
-      port: config.simulator.http.port
-    },
-    async (req) => {
-      const url = new URL(req.url);
-      const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
-
-      // 👇 route: from the root
-      let regex = /^\/(.*).(html|js|map)$/;
-      let match = regex.exec(pathname);
-      if (match) {
-        let contents = await Deno.readTextFile(
-          `${dir}/${match[1]}.${match[2]}`
-        );
-        if (pathname === '/index.html') contents = mungeIndexHTML(contents);
-        return new Response(contents, {
-          headers: {
-            'Content-Type': `text/${match[2]}`,
-            'Cache-Control': 'no-store'
-          }
-        });
-      }
-
-      // 👇 route: /assets/xxx.png etc
-      regex = /^\/([a-z0-9]+)\/(.*).(gif|jpeg|jpg|png)$/;
-      match = regex.exec(pathname);
-      if (match) {
-        const file = await Deno.open(
-          `${dir}/${match[1]}/${match[2]}.${match[3]}`,
-          {
-            read: true
-          }
-        );
-        return new Response(file.readable, {
-          headers: {
-            'Content-Type': `image/${match[3]}`,
-            'Cache-Control': 'no-store'
-          }
-        });
-      }
-
-      // 👇 route: /assets/xxx.css etc
-      regex = /^\/([a-z0-9]+)\/(.*).(css)$/;
-      match = regex.exec(pathname);
-      if (match) {
-        const contents = await Deno.readTextFile(
-          `${dir}/${match[1]}/${match[2]}.${match[3]}`
-        );
-        return new Response(contents, {
-          headers: {
-            'Content-Type': `text/${match[3]}`,
-            'Cache-Control': 'no-store'
-          }
-        });
-      }
-
-      // 👇 route: anything else is a 404
-      return new Response(null, { status: 404 });
-    }
-  );
+      port: config.simulator.http.port,
+      signal: ac?.signal
+    };
+  }
 }
 
 // 👇 munge the index.html to add the WebSocket client
@@ -98,7 +94,7 @@ function mungeIndexHTML(html: string): string {
         webview({
           httpPort: ${config.simulator.http.port}, 
           wsPort: ${config.simulator.ws.port},
-          pingPongMillis: ${config.pingPongMillis}
+          keepAliveMillis: ${config.keepAliveMillis}
         });
       })();
 

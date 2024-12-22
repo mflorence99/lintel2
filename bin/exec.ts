@@ -10,7 +10,7 @@ import { figletize } from './figler.ts';
 import { log } from './logger.ts';
 
 import $ from '@david/dax';
-import process from 'node:process';
+import psList from 'ps-list';
 
 // 📘 execute all tasks to build & test Lintel
 //    eg: exec.ts -p -w -v stylelint prettier
@@ -42,7 +42,10 @@ const run = async (todos: Task[]) => {
       for (const cmd of cmds) {
         if (cmd) {
           log({ important: todo.name, text: cmd });
-          await $.raw`${cmd}`; // 🔥 `clean up syntax coloring ???`
+          const plist = await psList();
+          const existing = plist.find((p) => p.cmd.includes(cmd));
+          if (existing) Deno.kill(existing.pid, 'SIGINT');
+          await $.raw`${cmd}`; // 🔥 `clean up syntax coloring`
         }
       }
       // 👇 could be a function
@@ -53,7 +56,7 @@ const run = async (todos: Task[]) => {
       }
     } catch (e: any) {
       log({ error: true, data: e });
-      process.exit(1);
+      Deno.exit(1);
     }
   }
 };
@@ -77,8 +80,9 @@ if (watch) {
   for (const watchDir of watchDirs) {
     const todos = watchedByDir[watchDir];
     const watcher = Deno.watchFs(watchDir);
-    $.progress(`watching for changes in ${watchDir}`);
-    await $`touch ${watchDir}/tickle.me`;
+    log({ important: 'watching for changes', text: watchDir });
+    // 🔥 this hack trips the loop first time
+    await $`touch ${watchDir}/.tickleme`;
     // 👇 create a debounced function that's invoked on changes
     const debounced = debounce(async (_) => {
       log({ important: 'changes detected', text: watchDir });
@@ -94,4 +98,4 @@ else await run(todos);
 
 // 👇 that's all she wrote!
 
-process.exit(0);
+Deno.exit(0);
