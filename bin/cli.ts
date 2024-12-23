@@ -107,7 +107,7 @@ export async function cli(): Promise<ParsedArgs> {
 
   if (parsedArgs.verbose) {
     Object.entries(flattenObject(config)).forEach((entry) =>
-      log({ important: `${entry[0]}`, text: `${entry[1]}` })
+      log({ important: `${entry.at(0)}`, text: `${entry.at(1)}` })
     );
     log({ data: parsedArgs, important: 'args' });
   }

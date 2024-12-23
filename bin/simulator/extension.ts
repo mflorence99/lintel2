@@ -44,7 +44,7 @@ export function extension({ ac, dir, watcher$ }: Params): Promise<void> {
     theSocket?.send(JSON.stringify({ command: '__reload__' }));
   });
 
-  // 🔥 TEMPORARy
+  // 🔥 TEMPORARY
 
   function _postMessage(message): void {
     theSocket?.send(JSON.stringify(message));

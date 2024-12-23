@@ -1,7 +1,8 @@
 import { LitElement } from 'lit';
 
+import { config } from '@lib/config';
 import { customElement } from 'lit/decorators.js';
-import { nextTick } from '@lib/delay';
+import { delay } from '@lib/delay';
 
 // 📘 the whole enchilada
 
@@ -9,7 +10,7 @@ import { nextTick } from '@lib/delay';
 export class AppRoot extends LitElement {
   // 👇 hide the startup splash when we're good and ready
   override firstUpdated(): void {
-    nextTick().then(() => this.classList.add('ready'));
+    delay(config.delayMillis.short).then(() => this.classList.add('ready'));
   }
 }
 

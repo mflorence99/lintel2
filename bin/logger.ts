@@ -32,7 +32,7 @@ export function log({ data, error, important, text, warning }: Params): void {
   if (data) parts.push([`%c${JSON.stringify(data)}`, `color: cyan`]);
   // 👇 ready to log them
   console.log(
-    parts.map((part) => part[0]).join(' '),
-    ...parts.map((part) => part[1])
+    parts.map((part) => part.at(0)).join(' '),
+    ...parts.map((part) => part.at(1))
   );
 }

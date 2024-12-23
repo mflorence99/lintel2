@@ -8,7 +8,7 @@ import { log } from '../logger.ts';
 //    designed to be called inside of exec.ts, hence the primitive
 //    args parsing - just pass the deploy directrory
 
-const dir = Deno.args[0];
+const dir = Deno.args.at(0);
 
 // 👇 this allows us to cancel server
 const ac = new AbortController();

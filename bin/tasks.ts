@@ -114,8 +114,8 @@ export const allTasks = [
   new TaskClass({
     name: 'simulator',
     description: 'Run the webview simulator',
-    cmd: `${whichSync('deno')} run -A bin/simulator/simulator.ts ${config.paths['webview-js']}`,
-    watchDir: config.paths['bin']
+    cmd: `${whichSync('deno')} run -A ${config.paths['bin']}/simulator/simulator.ts ${config.paths['webview-js']}`,
+    watchDir: `${config.paths['bin']}/simulator`
   }),
 
   new TaskClass({
