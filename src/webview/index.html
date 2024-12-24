@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="assets/startup.css" />
 
     <script>
-      var lintelVSCodeAPI = null;
+      var lintelWebviewAPI = null;
       var lintelIsReady = Promise.resolve(true);
     </script>
   </head>
@@ -35,7 +35,7 @@
     </figure>
 
     <script>
-      lintelVSCodeAPI = acquireVsCodeApi();
+      lintelWebviewAPI = acquireVsCodeApi();
     </script>
 
     <script src="bundle.js"></script>

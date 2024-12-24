@@ -100,11 +100,11 @@ function mungeIndexHTML(html: string): string {
 
       // 🔥 smoke test to check if all setup
       lintelIsReady.then(() => {
-        lintelVSCodeAPI.setState({ x: 1, y: 2 });
-        const { x, y } = lintelVSCodeAPI.getState();
+        lintelWebviewAPI.setState({ x: 1, y: 2 });
+        const { x, y } = lintelWebviewAPI.getState();
         if (x === 1 && y === 2) {
           const ok = 
-            lintelVSCodeAPI.postMessage({ command: 'doit', when: 'now' });
+            lintelWebviewAPI.postMessage({ command: 'doit', when: 'now' });
           if (ok)
             console.log('%cwebview simulator is ready', 'color: lightgreen');
         }
