@@ -13,7 +13,7 @@ class TaskClass {
   name: string;
   // 🔥 crap - Deno typing makes us do it this way
   subTasks?: (string | number)[];
-  watchDir?: string;
+  watchDirs?: string[];
 
   constructor(props: Task) {
     Object.assign(this, props);
@@ -34,7 +34,7 @@ export const allTasks = [
       `cp -r ${config.paths['webview-ts']}/assets ${config.paths['webview-js']}`
     ],
     subTasks: ['check:webview', 'esbuild:webview'],
-    watchDir: config.paths['webview-ts']
+    watchDirs: [config.paths.lib, config.paths['webview-ts']]
   }),
 
   new TaskClass({
@@ -84,7 +84,7 @@ export const allTasks = [
         root: `${config.paths['webview-ts']}/index.ts`,
         tsconfig: config.paths.tsconfig
       }),
-    watchDir: config.paths['webview-ts']
+    watchDirs: [config.paths.lib, config.paths['webview-ts']]
   }),
 
   new TaskClass({
@@ -115,7 +115,7 @@ export const allTasks = [
     name: 'simulator',
     description: 'Run the webview simulator',
     cmd: `${whichSync('deno')} run -A ${config.paths['bin']}/simulator/simulator.ts ${config.paths['webview-js']}`,
-    watchDir: `${config.paths['bin']}/simulator`
+    watchDirs: [`${config.paths['bin']}/simulator`]
   }),
 
   new TaskClass({

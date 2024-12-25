@@ -64,32 +64,32 @@ const run = async (todos: Task[]) => {
 // 👇 if in watch mode, lookout for changes and run todos
 
 if (watch) {
-  // 👇 consolidate todos by their watchDir
-  const watchedByDir = todos
-    .filter((todo) => todo.watchDir)
-    .reduce((acc, todo) => {
-      if (!acc[todo.watchDir]) acc[todo.watchDir] = [todo];
-      else acc[todo.watchDir].push(todo);
+  // 👇 consolidate the directories to watch
+  const allWatchedDirs = Array.from(
+    todos.reduce((acc, todo) => {
+      for (const dir of todo.watchDirs ?? []) acc.add(dir);
       return acc;
-    }, {});
+    }, new Set<string>())
+  );
 
-  // 👇 setup a watcher for each distinct watchDir
-  //    and rerun the associated todos on when anything in it changes
+  // 👇 setup a watcher for the consolidated watchDirs
+  //    we'll run all the todos because after debouncing we
+  //    don't really know what changed
 
-  const watchDirs = Object.keys(watchedByDir);
-  for (const watchDir of watchDirs) {
-    const todos = watchedByDir[watchDir];
-    const watcher = Deno.watchFs(watchDir);
-    log({ important: 'watching for changes', text: watchDir });
+  if (allWatchedDirs.length > 0) {
+    const watcher = Deno.watchFs(allWatchedDirs);
+    log({ important: 'watching for changes', data: allWatchedDirs });
     // 🔥 this hack trips the loop first time
-    await $`touch ${watchDir}/.tickleme`;
+    await $`touch ${allWatchedDirs[0]}/.tickleme`;
     // 👇 create a debounced function that's invoked on changes
-    const debounced = debounce(async (_) => {
-      log({ important: 'changes detected', text: watchDir });
+    const debounced = debounce(async (event) => {
+      log({ important: 'changes detected', data: event.paths });
       await run(todos);
     }, config.debounceMillis);
     // 👇 then run it on each change
-    for await (const event of watcher) debounced(event);
+    for await (const event of watcher) {
+      if (!['any', 'access'].includes(event.kind)) debounced(event);
+    }
   }
 }
 

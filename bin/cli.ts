@@ -170,7 +170,8 @@ function logUsageTasks(): string {
     .reduce((acc, task) => {
       const k = task.name.padEnd(20);
       const v = task.description.padEnd(50);
-      const w = task.watchDir ? '(watchable)' : '';
+      const w =
+        task.watchDirs && task.watchDirs.length > 0 ? '(watchable)' : '';
       return `${acc}${k}${v}${w}\n`;
     }, '')
     .trim();
