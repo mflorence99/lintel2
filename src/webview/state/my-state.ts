@@ -2,7 +2,6 @@ import { storage } from './storage';
 
 import { computed } from '@lib/signals';
 import { effect } from '@lib/signals';
-import { resource } from '@lib/signals';
 import { signal } from '@lit-labs/signals';
 
 const stateKey = 'my-state';
@@ -26,9 +25,3 @@ export function xinc(): number {
 }
 
 effect(() => storage.setItem(stateKey, myState.get()));
-
-resource({
-  loader: () => fetch('http://localhost:8100'),
-  // trigger: computed(() => myState.get())
-  trigger: trigger
-});
