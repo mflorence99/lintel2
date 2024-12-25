@@ -6,6 +6,8 @@ import { signal } from '@lit-labs/signals';
 
 const stateKey = 'my-state';
 
+// 👇 initial state
+
 export const myState = signal(
   storage.getItem(stateKey) ?? {
     x: 1000,
@@ -13,9 +15,15 @@ export const myState = signal(
   }
 );
 
-export const trigger = computed(() => ({ id: myState.get() }));
+// 👇 save the state as it changes
+
+effect(() => storage.setItem(stateKey, myState.get()));
+
+// 👇 some computed states
 
 export const myStateJSON = computed(() => JSON.stringify(myState.get()));
+
+// 👇 mutators
 
 export function xinc(): number {
   const state = myState.get();
@@ -23,5 +31,3 @@ export function xinc(): number {
   myState.set({ ...state });
   return state.x;
 }
-
-effect(() => storage.setItem(stateKey, myState.get()));
