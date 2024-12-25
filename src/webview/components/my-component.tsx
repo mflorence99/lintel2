@@ -1,4 +1,4 @@
-import { myState } from '../state/my-state';
+import { myStateJSON } from '../state/my-state';
 
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
@@ -20,8 +20,7 @@ export class MyComponent extends SignalWatcher(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <p>X is ${myState.get().x}</p>
-      <p>Y is ${myState.get().y}</p>
+      <p>As JSON ${myStateJSON.get()}</p>
     `;
   }
 }

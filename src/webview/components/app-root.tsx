@@ -35,6 +35,7 @@ export class AppRoot extends SignalWatcher(LitElement) {
       <br />
       <br />
       <br />
+      <br />
       <my-component></my-component>
     `;
   }
