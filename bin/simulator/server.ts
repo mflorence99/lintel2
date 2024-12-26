@@ -105,8 +105,11 @@ function mungeIndexHTML(html: string): string {
     </style>
     <script>
       var acquireVsCodeApi;
+            
+      // 👇 yes, we are in a simulation
+      lintelIsSimulated = true;
       
-      // 🔥 load the webview simulation
+      // 👇 load the webview simulation
       (() => {
         ${webview.toString()}
         webview({
@@ -116,7 +119,7 @@ function mungeIndexHTML(html: string): string {
         });
       })();
 
-      // 🔥 smoke test to check if all setup
+      // 👇 smoke test to check if all setup
       lintelIsReady.then(() => {
         lintelWebviewAPI.setState({ x: 1, y: 2 });
         const { x, y } = lintelWebviewAPI.getState();

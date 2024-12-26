@@ -39,9 +39,5 @@ export const myStateJSON = computed(() =>
 // 👇 mutators
 
 export function incrementX(x: number): void {
-  mutate<MyState>(myState, (state: MyState) => {
-    state.x += x;
-    state.z = !state.z;
-    return state;
-  });
+  mutate<MyState>(myState, (state: MyState) => void (state.x += x));
 }
