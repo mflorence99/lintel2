@@ -5,7 +5,7 @@
   "cssDeclarationSorterOrder": "alphabetical",
   "endOfLine": "lf",
   "htmlWhitespaceSensitivity": "ignore",
-  "printWidth": 80,
+  "printWidth": 72,
   "plugins": ["prettier-plugin-css-order", "prettier-plugin-package"],
   "proseWrap": "never",
   "quoteProps": "consistent",

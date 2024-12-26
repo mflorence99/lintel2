@@ -12,7 +12,11 @@ type Params = {
 
 let theSocket: WebSocket = null;
 
-export function extension({ ac, dir, watcher$ }: Params): Promise<void> {
+export function extension({
+  ac,
+  dir,
+  watcher$
+}: Params): Promise<void> {
   Deno.serve(opts(), (req) => {
     if (req.headers.get('upgrade') === 'websocket') {
       const { response, socket } = Deno.upgradeWebSocket(req);

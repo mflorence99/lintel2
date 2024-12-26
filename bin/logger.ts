@@ -12,7 +12,13 @@ type Params = {
 
 // 📘 provides a consistent logging format
 
-export function log({ data, error, important, text, warning }: Params): void {
+export function log({
+  data,
+  error,
+  important,
+  text,
+  warning
+}: Params): void {
   const now = new Date();
   // 👇 get the callers file, line # etc
   const frame = StackTrace.getSync()[1];

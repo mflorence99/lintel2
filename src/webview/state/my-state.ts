@@ -1,33 +1,47 @@
-import { storage } from './storage';
+import { State } from './store';
+
+import { initialize } from './store';
+import { mutate } from './store';
+import { serialize } from './store';
 
 import { computed } from '@lib/signals';
 import { effect } from '@lib/signals';
-import { signal } from '@lit-labs/signals';
 
-const stateKey = 'my-state';
+// 📘 a conceptual model for real states
 
 // 👇 initial state
 
-export const myState = signal(
-  storage.getItem(stateKey) ?? {
-    x: 1000,
-    y: '2000'
-  }
-);
+export interface MyState extends State {
+  x: number;
+  y: string;
+  z: boolean;
+}
+
+const defaultState: MyState = {
+  key: 'my-state',
+  x: 1000,
+  y: '2000',
+  z: false
+};
+
+export const myState = initialize<MyState>(defaultState);
 
 // 👇 save the state as it changes
 
-effect(() => storage.setItem(stateKey, myState.get()));
+effect(() => serialize<MyState>(myState));
 
 // 👇 some computed states
 
-export const myStateJSON = computed(() => JSON.stringify(myState.get()));
+export const myStateJSON = computed(() =>
+  JSON.stringify(myState.get())
+);
 
 // 👇 mutators
 
-export function xinc(): number {
-  const state = myState.get();
-  state.x += 1;
-  myState.set({ ...state });
-  return state.x;
+export function incrementX(x: number): void {
+  mutate<MyState>(myState, (state: MyState) => {
+    state.x += x;
+    state.z = !state.z;
+    return state;
+  });
 }

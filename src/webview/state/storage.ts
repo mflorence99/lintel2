@@ -13,7 +13,7 @@ class StorageService implements Storage {
     lintelWebviewAPI.setState({});
   }
 
-  getItem(key: string): any {
+  getItem<T>(key: string): T {
     const state = lintelWebviewAPI.getState() ?? {};
     return state[key];
   }
@@ -29,9 +29,9 @@ class StorageService implements Storage {
     lintelWebviewAPI.setState(state);
   }
 
-  setItem(key: string, val: any): void {
+  setItem<T>(key: string, item: T): void {
     const state = lintelWebviewAPI.getState() ?? {};
-    state[key] = val;
+    state[key] = item;
     lintelWebviewAPI.setState(state);
   }
 }

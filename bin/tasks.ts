@@ -120,7 +120,8 @@ export const allTasks = [
 
   new TaskClass({
     name: 'stylelint',
-    description: 'Validate styles for CSS files and those embedded in TSX',
+    description:
+      'Validate styles for CSS files and those embedded in TSX',
     cmd: `npx stylelint --fix "${config.paths['webview-ts']}/**/*.{css,tsx}"`
   })
 ];

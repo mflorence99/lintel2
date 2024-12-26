@@ -31,11 +31,11 @@ export async function esbuild({
     tsconfig: `${tsconfig}`
   }).catch((e: any) => {
     log({ error: true, data: e.message });
-    Deno.exit(1);
   });
 
   // 👇 analyze bundle
   if (verbose) {
+    // @ts-ignore 🔥 no metafile in type definition?
     const analysis = await analyzeMetafile(result.metafile);
     console.log(analysis);
   }

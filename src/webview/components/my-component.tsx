@@ -10,6 +10,12 @@ import { html } from 'lit';
 
 // 📘 a test component
 
+declare global {
+  interface HTMLElementTagNameMap {
+    'my-component': MyComponent;
+  }
+}
+
 @customElement('my-component')
 export class MyComponent extends SignalWatcher(LitElement) {
   static override styles = css`

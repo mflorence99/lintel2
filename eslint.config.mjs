@@ -5,7 +5,10 @@ export default [
   {
     languageOptions: {
       parserOptions: {
-        project: ['src/extension/tsconfig.json', 'src/webview/tsconfig.json']
+        project: [
+          'src/extension/tsconfig.json',
+          'src/webview/tsconfig.json'
+        ]
       }
     }
   },

@@ -10,6 +10,7 @@
   "author": "Mark Florence",
   "dependencies": {
     "@lit-labs/signals": "^0.1.1",
+    "immer": "^10.1.1",
     "lit": "^3.2.1",
     "signal-utils": "^0.21.1"
   },

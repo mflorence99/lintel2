@@ -12,21 +12,34 @@ type Params = {
 export function http({ ac, dir }: Params): Deno.HttpServer {
   return Deno.serve(opts(), (req) => {
     const url = new URL(req.url);
-    const pathname = url.pathname === '/' ? '/index.html' : url.pathname;
+    const pathname =
+      url.pathname === '/' ? '/index.html' : url.pathname;
 
     // 👇 text contents
     {
-      const { path, file, ext } = match(pathname, ['css', 'html', 'js', 'map']);
+      const { path, file, ext } = match(pathname, [
+        'css',
+        'html',
+        'js',
+        'map'
+      ]);
       if (ext) {
-        let contents = Deno.readTextFileSync(`${dir}/${path}/${file}.${ext}`);
-        if (pathname === '/index.html') contents = mungeIndexHTML(contents);
+        let contents = Deno.readTextFileSync(
+          `${dir}/${path}/${file}.${ext}`
+        );
+        if (pathname === '/index.html')
+          contents = mungeIndexHTML(contents);
         return new Response(contents, init(ext));
       }
     }
 
     // 👇 binary contents
     {
-      const { path, file, ext } = match(pathname, ['gif', 'jpeg', 'png']);
+      const { path, file, ext } = match(pathname, [
+        'gif',
+        'jpeg',
+        'png'
+      ]);
       if (ext) {
         const image = Deno.openSync(`${dir}/${path}/${file}.${ext}`, {
           read: true
@@ -52,8 +65,13 @@ export function http({ ac, dir }: Params): Deno.HttpServer {
 
   // 👇 extract path, file, ext from URL
 
-  function match(pathname: string, exts: string[]): { path; file; ext } {
-    const regex = new RegExp(`^([/a-z0-9]?)\/(.*).(${exts.join('|')})$`);
+  function match(
+    pathname: string,
+    exts: string[]
+  ): { path; file; ext } {
+    const regex = new RegExp(
+      `^([/a-z0-9]?)\/(.*).(${exts.join('|')})$`
+    );
     const match = regex.exec(pathname);
     return { path: match?.[1], file: match?.[2], ext: match?.[3] };
   }

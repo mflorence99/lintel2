@@ -55,8 +55,10 @@ const run = async (todos: Task[]) => {
         await todo.func({ prod, verbose });
       }
     } catch (e: any) {
-      log({ error: true, data: e });
-      Deno.exit(1);
+      if (!watch) {
+        log({ error: true, data: e });
+        Deno.exit(1);
+      }
     }
   }
 };
