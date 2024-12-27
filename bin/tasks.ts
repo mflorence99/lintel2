@@ -34,7 +34,11 @@ export const allTasks = [
       `cp -r ${config.paths['webview-ts']}/assets ${config.paths['webview-js']}`
     ],
     subTasks: ['check:webview', 'esbuild:webview'],
-    watchDirs: [config.paths.lib, config.paths['webview-ts']]
+    watchDirs: [
+      config.paths.lib,
+      config.paths['webview-ts'],
+      `${config.paths.root}/tsconfig-app.json`
+    ]
   }),
 
   new TaskClass({

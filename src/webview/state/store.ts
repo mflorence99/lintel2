@@ -44,18 +44,20 @@ export function mutate<T extends State>(
   }
   // 👇 the "old" state
   const oldState = signal.get();
-  console.log('%cold state', 'color: palegreen', caller, oldState);
+  if (config.logStateChanges)
+    console.log('%cold state', 'color: palegreen', caller, oldState);
   // 👇 the "new" state and (potentially) the patches that produced it
   const newState = produce(oldState, mutator, (patches) => {
-    if (patches)
+    if (config.logStateChanges && patches)
       console.log(
-        `%cold=> new %c${caller} %c${JSON.stringify(patches)}`,
+        `%cold ⇨ new %c${caller} %c👉${JSON.stringify(patches)}`,
         'color: khaki',
         'color: white',
         'color: wheat'
       );
   });
-  console.log('%cnew state', 'color: skyblue', caller, newState);
+  if (config.logStateChanges)
+    console.log('%cnew state', 'color: skyblue', caller, newState);
   signal.set(newState);
 }
 

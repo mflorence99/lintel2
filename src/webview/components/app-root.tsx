@@ -27,8 +27,9 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
   `;
 
-  // 👇 hide the startup splash when we're good and ready
-  override firstUpdated(): void {
+  constructor() {
+    super();
+    // 👇 hide the startup splash when we're good and ready
     delay(config.delayMillis.short).then(() =>
       this.classList.add('ready')
     );
@@ -44,7 +45,7 @@ export class AppRoot extends SignalWatcher(LitElement) {
       <br />
       <br />
       <br />
-      <my-component></my-component>
+      <my-component .name=${'Mark'}></my-component>
     `;
   }
 }
