@@ -1,5 +1,5 @@
 // 🔥 this must be self-contained, so we can't import any TypeScript code
-import type { WebviewAPI } from '../../src/lib/webview-api.ts';
+import type { WebviewAPI } from '../../src/webview/api.ts';
 
 type Params = {
   httpPort: number;
