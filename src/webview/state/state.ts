@@ -4,16 +4,12 @@ import { Signal } from '@lit-labs/signals';
 
 import { config } from '@lib/config';
 import { effect } from '@lib/signals';
-import { enablePatches } from 'immer';
 import { produce } from 'immer';
 import { signal } from '@lit-labs/signals';
 
 import StackTrace from 'stacktrace-js';
 
-// 👇 we use immer patches for tracing while simulating
-
 declare const lintelIsSimulated: boolean;
-if (lintelIsSimulated) enablePatches();
 
 // 📘 base state class
 
