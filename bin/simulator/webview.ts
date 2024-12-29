@@ -86,7 +86,7 @@ export async function webview({
     // 🔥 FLOW client receives message from simulator
     if (message.command === '__reload__') location.reload();
     else if (message.command !== '__pong__') {
-      console.log(message);
+      console.log(`🗨️ ${message}`);
       const event = new CustomEvent('message', { detail: message });
       dispatchEvent(event);
     }
@@ -101,7 +101,10 @@ export async function webview({
         command: 'doit',
         when: 'now'
       });
-      console.log('%cwebview simulator is ready', 'color: lightgreen');
+      console.log(
+        '%c🖨️ webview simulator is ready',
+        'color: lightgreen'
+      );
     }
   });
 

@@ -34,21 +34,31 @@ export abstract class State<T> {
       caller = frame.functionName;
     }
     // 👇 the "old" state
-    const oldState = this.model.get();
+    const prevState = this.model.get();
     if (config.logStateChanges)
-      console.log('%cold state', 'color: palegreen', caller, oldState);
+      console.log(
+        '%c👈 prev state',
+        'color: palegreen; text-decoration: line-through',
+        caller,
+        prevState
+      );
     // 👇 the "new" state and (potentially) the patches that produced it
-    const newState = produce(oldState, mutator, (patches) => {
+    const newState = produce(prevState, mutator, (patches) => {
       if (config.logStateChanges && patches)
         console.log(
-          `%cold ⇨ new %c${caller} %c👉${JSON.stringify(patches)}`,
+          `%c🆕 patches... %c${caller} %c👉${JSON.stringify(patches)}`,
           'color: khaki',
           'color: white',
           'color: wheat'
         );
     });
     if (config.logStateChanges)
-      console.log('%cnew state', 'color: skyblue', caller, newState);
+      console.log(
+        '%c👉 next state',
+        'color: skyblue',
+        caller,
+        newState
+      );
     this.model.set(newState);
   }
 }
