@@ -28,7 +28,7 @@ export const myState = initialize<MyState>(defaultState);
 
 // 👇 save the state as it changes
 
-effect(() => serialize<MyState>(myState));
+effect(() => serialize<MyState>(myState.get()));
 
 // 👇 some computed states
 

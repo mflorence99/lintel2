@@ -63,9 +63,6 @@ export function mutate<T extends State>(
 
 // 👇 serialize the state
 
-export function serialize<T extends State>(
-  signal: Signal.State<T>
-): void {
-  const state = signal.get();
-  storage.setItem<T>(state.key, state);
+export function serialize<T extends State>(state: T): void {
+  storage.setItem(state.key, state);
 }

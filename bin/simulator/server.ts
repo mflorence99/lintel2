@@ -118,18 +118,6 @@ function mungeIndexHTML(html: string): string {
           keepAliveMillis: ${config.keepAliveMillis}
         });
       })();
-
-      // 👇 smoke test to check if all setup
-      lintelIsReady.then(() => {
-        lintelWebviewAPI.setState({ x: 1, y: 2 });
-        const { x, y } = lintelWebviewAPI.getState();
-        if (x === 1 && y === 2) {
-          const ok = 
-            lintelWebviewAPI.postMessage({ command: 'doit', when: 'now' });
-          if (ok)
-            console.log('%cwebview simulator is ready', 'color: lightgreen');
-        }
-      });
     </script>
     </head>`
   );

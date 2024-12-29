@@ -1,4 +1,5 @@
 // 🔥 this must be self-contained, so we can't import any TypeScript code
+import type { WebviewAPI } from '../../src/lib/webview-api.ts';
 
 type Params = {
   httpPort: number;
@@ -13,6 +14,7 @@ type Params = {
 declare let acquireVsCodeApi: any;
 
 declare let lintelIsReady: Promise<unknown>;
+declare const lintelWebviewAPI: WebviewAPI;
 
 export async function webview({
   httpPort,
@@ -28,7 +30,7 @@ export async function webview({
 
   // 👇 put the simulated VSCode API on the global namespace
 
-  acquireVsCodeApi = () => {
+  acquireVsCodeApi = (): WebviewAPI => {
     return {
       // 👇 retrieve webview state
       getState: (): any => {
@@ -48,10 +50,9 @@ export async function webview({
       },
 
       // 👇 post message to the simulated extension from the webview
-      postMessage: (message: any): boolean => {
+      postMessage: (message: any): void => {
         // 🔥 FLOW client sends message to simulator
         theSocket?.send(JSON.stringify(message));
-        return !!theSocket;
       }
     };
   };
@@ -70,7 +71,7 @@ export async function webview({
       wasReady = true;
       // 🔥 FLOW client pings simulator
       theSocket.send(JSON.stringify({ command: '__ping__' }));
-      // 👇 Lintel is ready to rock!
+      // 👇 lintelIsReady to rock!
       resolve(true);
     } else if (wasReady) {
       clearInterval(intervalID);
@@ -88,6 +89,19 @@ export async function webview({
       console.log(message);
       const event = new CustomEvent('message', { detail: message });
       dispatchEvent(event);
+    }
+  });
+
+  // 👇 smoke test to check if all setup
+  lintelIsReady.then(() => {
+    lintelWebviewAPI.setState({ smokeTest: { x: 1, y: 2 } });
+    const { x, y } = lintelWebviewAPI.getState().smokeTest;
+    if (x === 1 && y === 2) {
+      lintelWebviewAPI.postMessage({
+        command: 'doit',
+        when: 'now'
+      });
+      console.log('%cwebview simulator is ready', 'color: lightgreen');
     }
   });
 
