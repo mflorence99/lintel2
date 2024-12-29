@@ -1,5 +1,4 @@
-import { incrementX } from '../state/my-state';
-import { myState } from '../state/my-state';
+import { appState } from '../state/app-state';
 
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
@@ -37,9 +36,11 @@ export class AppRoot extends SignalWatcher(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <p>X is ${myState.get().x}</p>
-      <p>Y is ${myState.get().y}</p>
-      <button @click=${(): void => incrementX(10)}>Increment</button>
+      <p>X is ${appState.state.get().x}</p>
+      <p>Y is ${appState.state.get().y}</p>
+      <button @click=${(): void => appState.incrementX(10)}>
+        Increment
+      </button>
       <br />
       <br />
       <br />

@@ -1,4 +1,4 @@
-import { myStateJSON } from '../state/my-state';
+import { appState } from '../state/app-state';
 
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
@@ -32,7 +32,7 @@ export class MyComponent extends SignalWatcher(LitElement) {
 
   override render(): TemplateResult {
     return html`
-      <p>As JSON ${myStateJSON.get()}</p>
+      <p>As JSON ${appState.asJSON.get()}</p>
       <br />
       <br />
       <p>My name is ${this.name} and I am a ${this.#job}</p>
