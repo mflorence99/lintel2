@@ -29,7 +29,7 @@ export function http({ ac, dir }: Params): Deno.HttpServer {
         );
         if (pathname === '/index.html')
           contents = mungeIndexHTML(contents);
-        return new Response(contents, init(ext));
+        return new Response(contents, init(`text/${ext}`));
       }
     }
 
@@ -44,7 +44,7 @@ export function http({ ac, dir }: Params): Deno.HttpServer {
         const image = Deno.openSync(`${dir}/${path}/${file}.${ext}`, {
           read: true
         });
-        return new Response(image.readable, init(ext));
+        return new Response(image.readable, init(`image/${ext}`));
       }
     }
 
@@ -54,10 +54,10 @@ export function http({ ac, dir }: Params): Deno.HttpServer {
 
   // 👇 make response init
 
-  function init(mimeType: string): ResponseInit {
+  function init(contentType: string): ResponseInit {
     return {
       headers: {
-        'Content-Type': `text/${mimeType}`,
+        'Content-Type': contentType,
         'Cache-Control': 'no-store'
       }
     };

@@ -1,4 +1,6 @@
-import { appState } from '../state/app-state';
+import { AppState } from '../state/app-state';
+
+import { appStateContext } from '../state/app-state';
 
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
@@ -9,6 +11,7 @@ import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { delay } from '@lib/delay';
 import { html } from 'lit';
+import { provide } from '@lit/context';
 
 // 📘 the whole enchilada
 
@@ -26,6 +29,8 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
   `;
 
+  @provide({ context: appStateContext }) appState = new AppState();
+
   constructor() {
     super();
     // 👇 hide the startup splash when we're good and ready
@@ -35,10 +40,11 @@ export class AppRoot extends SignalWatcher(LitElement) {
   }
 
   override render(): TemplateResult {
+    const model = this.appState.model;
     return html`
-      <p>X is ${appState.state.get().x}</p>
-      <p>Y is ${appState.state.get().y}</p>
-      <button @click=${(): void => appState.incrementX(10)}>
+      <p>X is ${model.get().x}</p>
+      <p>Y is ${model.get().y}</p>
+      <button @click=${(): void => this.appState.incrementX(10)}>
         Increment
       </button>
       <br />

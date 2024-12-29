@@ -18,17 +18,18 @@ if (lintelIsSimulated) enablePatches();
 // 📘 base state class
 
 export abstract class State<T> {
-  persist = true;
-  persistKey = this.constructor.name;
-  state: Signal.State<T>;
+  // 👇 the signal that is the state itself
+  model: Signal.State<T>;
 
-  constructor(defaultState: T) {
-    if (this.persist) {
-      this.state = signal<T>(
-        storage.getItem(this.persistKey) ?? defaultState
+  constructor(defaultState: T, persist = true) {
+    if (persist) {
+      this.model = signal<T>(
+        storage.getItem(this.constructor.name) ?? defaultState
       );
-      effect(() => storage.setItem(this.persistKey, this.state.get()));
-    } else this.state = signal<T>(defaultState);
+      effect(() =>
+        storage.setItem(this.constructor.name, this.model.get())
+      );
+    } else this.model = signal<T>(defaultState);
   }
 
   mutate(mutator: (state: T) => void): void {
@@ -39,7 +40,7 @@ export abstract class State<T> {
       caller = frame.functionName;
     }
     // 👇 the "old" state
-    const oldState = this.state.get();
+    const oldState = this.model.get();
     if (config.logStateChanges)
       console.log('%cold state', 'color: palegreen', caller, oldState);
     // 👇 the "new" state and (potentially) the patches that produced it
@@ -54,6 +55,6 @@ export abstract class State<T> {
     });
     if (config.logStateChanges)
       console.log('%cnew state', 'color: skyblue', caller, newState);
-    this.state.set(newState);
+    this.model.set(newState);
   }
 }

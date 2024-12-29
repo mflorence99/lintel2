@@ -1,9 +1,12 @@
-import { appState } from '../state/app-state';
+import { AppState } from '../state/app-state';
+
+import { appStateContext } from '../state/app-state';
 
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
 import { TemplateResult } from 'lit';
 
+import { consume } from '@lit/context';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
@@ -26,16 +29,18 @@ export class MyComponent extends SignalWatcher(LitElement) {
     }
   `;
 
-  @property() accessor name = 'Bob';
+  @consume({ context: appStateContext }) appState!: AppState;
 
-  @state() accessor #job = 'dishwasher';
+  @state() job = 'dishwasher';
+
+  @property() name = 'Bob';
 
   override render(): TemplateResult {
     return html`
-      <p>As JSON ${appState.asJSON.get()}</p>
+      <p>As JSON ${this.appState.asJSON.get()}</p>
       <br />
       <br />
-      <p>My name is ${this.name} and I am a ${this.#job}</p>
+      <p>My name is ${this.name} and I am a ${this.job}</p>
     `;
   }
 }
