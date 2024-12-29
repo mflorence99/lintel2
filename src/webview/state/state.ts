@@ -9,8 +9,6 @@ import { signal } from '@lit-labs/signals';
 
 import StackTrace from 'stacktrace-js';
 
-declare const lintelIsSimulated: boolean;
-
 // 📘 base state class
 
 export abstract class State<T> {
