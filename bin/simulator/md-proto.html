@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="./webview.css" />
+
+    <script type="importmap">
+      {
+        "imports": {
+          "@material/web/": "https://esm.run/@material/web/"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import '@material/web/all.js';
+      import { styles as typescaleStyles } from '@material/web/typography/md-typescale-styles.js';
+      document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+
+    <style>
+      :root {
+        /* --md-ref-typeface-brand: var(--vscode-editor-font-family);
+        --md-ref-typeface-plain: var(--vscode-editor-font-family); */
+
+        --md-sys-color-primary: var(--vscode-charts-blue);
+        --md-sys-color-on-primary: var(--vscode-editor-foreground);
+        --md-sys-color-secondary: var(--vscode-charts-orange);
+        --md-sys-color-on-secondary: var(--vscode-editor-foreground);
+        --md-sys-color-tertiary: var(--vscode-charts-yellow);
+        --md-sys-color-on-tertiary: var(--vscode-editor-foreground);
+
+        --md-sys-color-error: var(--vscode-editor-foreground);
+
+        --md-sys-color-background: var(--vscode-editor-background);
+
+        --md-sys-color-on-surface: var(--vscode-editor-foreground);
+        --md-sys-color-on-surface-variant: var(
+          --vscode-editor-foreground
+        );
+      }
+    </style>
+  </head>
+
+  <body>
+    <form>
+      <h1 class="md-typescale-display-medium">Hello Material!</h1>
+
+      <p class="md-typescale-body-medium">
+        Check out these controls in a form!
+      </p>
+
+      <md-checkbox></md-checkbox>
+
+      <div>
+        <md-radio name="group"></md-radio>
+        <md-radio name="group"></md-radio>
+        <md-radio name="group"></md-radio>
+      </div>
+
+      <md-outlined-text-field
+        label="Favorite color"
+        value="Purple"></md-outlined-text-field>
+
+      <md-filled-button type="reset">Reset</md-filled-button>
+    </form>
+
+    <style>
+      form {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1rem;
+      }
+    </style>
+  </body>
+</html>

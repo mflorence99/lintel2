@@ -13,13 +13,13 @@ import { html } from 'lit';
 import { property } from 'lit/decorators.js';
 import { state } from 'lit/decorators.js';
 
-// 📘 a test component
-
 declare global {
   interface HTMLElementTagNameMap {
     'my-component': MyComponent;
   }
 }
+
+// 📘 a test component
 
 @customElement('my-component')
 export class MyComponent extends SignalWatcher(LitElement) {

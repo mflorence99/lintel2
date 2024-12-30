@@ -29,7 +29,7 @@ export function http({ ac, dir }: Params): Deno.HttpServer {
         );
         if (pathname === '/index.html')
           contents = mungeIndexHTML(contents);
-        return new Response(contents, init(`text/${ext}`));
+        return new Response(contents, init(contentType(ext)));
       }
     }
 
@@ -44,7 +44,7 @@ export function http({ ac, dir }: Params): Deno.HttpServer {
         const image = Deno.openSync(`${dir}/${path}/${file}.${ext}`, {
           read: true
         });
-        return new Response(image.readable, init(`image/${ext}`));
+        return new Response(image.readable, init(contentType(ext)));
       }
     }
 
@@ -90,6 +90,22 @@ export function http({ ac, dir }: Params): Deno.HttpServer {
       signal: ac?.signal
     };
   }
+}
+
+// 👇 map extension to ContentType
+
+function contentType(ext: string): string {
+  const map = {
+    css: 'text/css',
+    gif: 'image/gif',
+    html: 'text/html',
+    jpeg: 'image/jpeg',
+    jpg: 'image/jpg',
+    js: 'text/javascript',
+    map: 'application.json',
+    png: 'image/png'
+  };
+  return map[ext] ?? 'text/plain';
 }
 
 // 👇 munge the index.html to add the WebSocket client

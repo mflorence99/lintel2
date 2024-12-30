@@ -1,4 +1,5 @@
 import { AppState } from '../state/app-state';
+import { StartupController } from '../controllers/startup';
 
 import { appStateContext } from '../state/app-state';
 
@@ -6,14 +7,10 @@ import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
 import { TemplateResult } from 'lit';
 
-import { config } from '@lib/config';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
-import { delay } from '@lib/delay';
 import { html } from 'lit';
 import { provide } from '@lit/context';
-
-// 📘 the whole enchilada
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -21,32 +18,43 @@ declare global {
   }
 }
 
+// 📘 the whole enchilada
+
 @customElement('app-root')
 export class AppRoot extends SignalWatcher(LitElement) {
   static override styles = css`
     :host {
       display: block;
+      margin: 1rem;
     }
   `;
 
   @provide({ context: appStateContext }) appState = new AppState();
 
-  constructor() {
-    super();
-    // 👇 hide the startup splash when we're good and ready
-    delay(config.delayMillis.short).then(() =>
-      this.classList.add('ready')
-    );
-  }
+  // eslint-disable-next-line no-unused-private-class-members
+  #startup = new StartupController(this);
 
   override render(): TemplateResult {
     const model = this.appState.model;
     return html`
-      <p>X is ${model.get().x}</p>
-      <p>Y is ${model.get().y}</p>
-      <button @click=${(): void => this.appState.incrementX(10)}>
-        Increment
-      </button>
+      <section
+        style="align-items: flex-start; display: flex; flex-direction: column; gap: 1rem">
+        <label>
+          <md-checkbox></md-checkbox>
+          X is ${model.get().x}
+        </label>
+
+        <label>
+          <md-checkbox></md-checkbox>
+          Y is ${model.get().y}
+        </label>
+
+        <md-filled-button
+          @click=${(): void => this.appState.incrementX(10)}>
+          Increment
+        </md-filled-button>
+      </section>
+
       <br />
       <br />
       <br />
