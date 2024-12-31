@@ -8,16 +8,17 @@ import { log } from '../logger.ts';
 //    designed to be called inside of exec.ts, hence the primitive
 //    args parsing - just pass the deploy directrory
 
-const dir = Deno.args.at(0);
+const extdir = config.paths['extension-js'];
+const webdir = config.paths['webview-js'];
 
 // 👇 this allows us to cancel server
 const ac = new AbortController();
 
 // 👇 keep track of active watchers
-const watcher$ = Deno.watchFs(dir);
+const watcher$ = Deno.watchFs([extdir, webdir]);
 
 // 👇 get the HTTP server ready
-const server = http({ ac, dir });
+const server = http({ ac, dir: webdir });
 
 // 👇 clean up when aborted
 Deno.addSignalListener('SIGINT', async () => {
@@ -33,4 +34,4 @@ Deno.addSignalListener('SIGINT', async () => {
 });
 
 // 👇 run the extension
-await extension({ ac, dir, watcher$ });
+await extension({ ac, dirs: [extdir, webdir], watcher$ });

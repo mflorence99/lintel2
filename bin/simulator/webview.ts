@@ -1,5 +1,11 @@
 // 🔥 this must be self-contained, so we can't import any TypeScript code
+import type { Message } from '../../src/lib/messages.ts';
 import type { WebviewAPI } from '../../src/webview/api.ts';
+
+declare let acquireVsCodeApi: any;
+
+declare let lintelIsReady: Promise<unknown>;
+declare const lintelWebviewAPI: WebviewAPI;
 
 type Params = {
   httpPort: number;
@@ -10,11 +16,6 @@ type Params = {
 // 📘 injected into index.html to provide a base simulation
 //     of VSCode's webview support via a socket connection to
 //     the extension
-
-declare let acquireVsCodeApi: any;
-
-declare let lintelIsReady: Promise<unknown>;
-declare const lintelWebviewAPI: WebviewAPI;
 
 export async function webview({
   httpPort,
@@ -50,7 +51,7 @@ export async function webview({
       },
 
       // 👇 post message to the simulated extension from the webview
-      postMessage: (message: any): void => {
+      postMessage: (message: Message): void => {
         // 🔥 FLOW client sends message to simulator
         theSocket?.send(JSON.stringify(message));
       }
@@ -70,7 +71,9 @@ export async function webview({
     if (theSocket.readyState === 1) {
       wasReady = true;
       // 🔥 FLOW client pings simulator
-      theSocket.send(JSON.stringify({ command: '__ping__' }));
+      theSocket.send(
+        JSON.stringify({ command: '__ping__' } satisfies Message)
+      );
       // 👇 lintelIsReady to rock!
       resolve(true);
     } else if (wasReady) {
@@ -82,7 +85,7 @@ export async function webview({
 
   // 👇 listen for messages to the webview from the simulated extension
   theSocket.addEventListener('message', ({ data }) => {
-    const message = JSON.parse(data);
+    const message: Message = JSON.parse(data);
     // 🔥 FLOW client receives message from simulator
     if (message.command === '__reload__') location.reload();
     else if (message.command !== '__pong__') {
@@ -98,9 +101,8 @@ export async function webview({
     const { x, y } = lintelWebviewAPI.getState().smokeTest;
     if (x === 1 && y === 2) {
       lintelWebviewAPI.postMessage({
-        command: 'doit',
-        when: 'now'
-      });
+        command: '__smoke_test__'
+      } satisfies Message);
       console.log(
         '%c🖨️ webview simulator is ready',
         'color: lightgreen'

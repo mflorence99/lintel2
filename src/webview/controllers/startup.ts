@@ -4,6 +4,11 @@ import { ReactiveControllerHost } from 'lit';
 
 import { config } from '@lib/config';
 import { delay } from '@lib/delay';
+import { enablePatches } from 'immer';
+
+// 👇 we use immer patches for tracing while simulating
+declare const lintelIsSimulated: boolean;
+if (lintelIsSimulated) enablePatches();
 
 // 📘 manage startup tasks
 

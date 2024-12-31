@@ -29,7 +29,9 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
   `;
 
-  @provide({ context: appStateContext }) appState = new AppState();
+  @provide({ context: appStateContext }) appState = new AppState(
+    'app-state'
+  );
 
   // eslint-disable-next-line no-unused-private-class-members
   #startup = new StartupController(this);

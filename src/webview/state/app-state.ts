@@ -22,8 +22,8 @@ export class AppState extends State<AppStateModel> {
   // 👇 just an example of a computed property
   asJSON = computed(() => JSON.stringify(this.model.get()));
 
-  constructor() {
-    super(defaultState);
+  constructor(key: string) {
+    super(defaultState, key, true);
   }
 
   // 👇 just an example of a mutator

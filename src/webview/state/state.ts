@@ -15,14 +15,10 @@ export abstract class State<T> {
   // 👇 the signal that is the state itself
   model: Signal.State<T>;
 
-  constructor(defaultState: T, persist = true) {
+  constructor(defaultState: T, key: string, persist: boolean) {
     if (persist) {
-      this.model = signal<T>(
-        storage.getItem(this.constructor.name) ?? defaultState
-      );
-      effect(() =>
-        storage.setItem(this.constructor.name, this.model.get())
-      );
+      this.model = signal<T>(storage.getItem(key) ?? defaultState);
+      effect(() => storage.setItem(key, this.model.get()));
     } else this.model = signal<T>(defaultState);
   }
 

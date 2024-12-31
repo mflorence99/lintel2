@@ -26,6 +26,17 @@ export interface Task extends TaskClass {}
 
 export const allTasks = [
   new TaskClass({
+    name: 'bundle:extension',
+    description: 'Fully bundle extension',
+    subTasks: ['check:extension', 'esbuild:extension'],
+    watchDirs: [
+      config.paths.lib,
+      config.paths['extension-ts'],
+      `${config.paths.root}/tsconfig-app.json`
+    ]
+  }),
+
+  new TaskClass({
     name: 'bundle:webview',
     description: 'Fully bundle webview',
     cmds: [
@@ -78,6 +89,19 @@ export const allTasks = [
   }),
 
   new TaskClass({
+    name: 'esbuild:extension',
+    description: 'Bundle extension with esbuild',
+    func: ({ prod, verbose }) =>
+      esbuild({
+        bundle: `${config.paths['extension-js']}/bundle.js`,
+        prod: !!prod,
+        verbose: !!verbose,
+        root: `${config.paths['extension-ts']}/index.ts`,
+        tsconfig: config.paths.tsconfig
+      })
+  }),
+
+  new TaskClass({
     name: 'esbuild:webview',
     description: 'Bundle webview with esbuild',
     func: ({ prod, verbose }) =>
@@ -87,8 +111,7 @@ export const allTasks = [
         verbose: !!verbose,
         root: `${config.paths['webview-ts']}/index.ts`,
         tsconfig: config.paths.tsconfig
-      }),
-    watchDirs: [config.paths.lib, config.paths['webview-ts']]
+      })
   }),
 
   new TaskClass({
@@ -118,8 +141,11 @@ export const allTasks = [
   new TaskClass({
     name: 'simulator',
     description: 'Run the webview simulator',
-    cmd: `${whichSync('deno')} run -A ${config.paths['bin']}/simulator/simulator.ts ${config.paths['webview-js']}`,
-    watchDirs: [`${config.paths['bin']}/simulator`]
+    cmd: `${whichSync('deno')} run -A ${config.paths['bin']}/simulator/simulator.ts`,
+    watchDirs: [
+      `${config.paths['bin']}/simulator`,
+      `${config.paths['extension-js']}`
+    ]
   }),
 
   new TaskClass({

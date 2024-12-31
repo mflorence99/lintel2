@@ -1,12 +1,8 @@
-import { enablePatches } from 'immer';
-
 // 📘 common configuration settings
 //    NOT designed to be user-settable
 
 // 👇 we use immer patches for tracing while simulating
 declare const lintelIsSimulated: boolean;
-if (lintelIsSimulated) enablePatches();
-
 export class ConfigClass {
   debounceMillis = 250;
 
