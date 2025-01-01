@@ -5,7 +5,7 @@
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "importHelpers": true,
-    "lib": ["es2022", "DOM"],
+    "lib": ["esnext", "DOM"],
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,

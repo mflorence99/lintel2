@@ -16,6 +16,7 @@
         "--inspect-wait",
         "--allow-all",
         "./bin/exec.ts",
+        "-w",
         "simulator"
       ],
       "attachSimplePort": 9229
