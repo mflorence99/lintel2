@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig-app.json",
   "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "outDir": "../../dist/extension"
   },
   "include": ["../lib/**/*.ts", "**/*.ts"]

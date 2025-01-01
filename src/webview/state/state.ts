@@ -1,9 +1,9 @@
+import { effect } from '../types/signals';
 import { storage } from './storage';
 
 import { Signal } from '@lit-labs/signals';
 
 import { config } from '@lib/config';
-import { effect } from '@lib/signals';
 import { produce } from 'immer';
 import { signal } from '@lit-labs/signals';
 

@@ -15,7 +15,7 @@ import psList from 'ps-list';
 // 📘 execute all tasks to build & test Lintel
 //    eg: exec.ts -p -w -v stylelint prettier
 
-const { taskNames, prod, verbose, watch } = await cli();
+const { taskNames, prod, tedious, verbose, watch } = await cli();
 
 // 👇 flatten all the tasks and their subtasks into a sequense of todos
 
@@ -52,7 +52,7 @@ const run = async (todos: Task[]) => {
       if (todo.func) {
         log({ important: todo.name, text: 'function invoked' });
         await todo.kill?.();
-        await todo.func({ prod, verbose });
+        await todo.func({ prod, tedious, verbose });
       }
     } catch (e: any) {
       if (!watch) {

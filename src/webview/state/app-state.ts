@@ -1,6 +1,7 @@
 import { State } from './state';
 
-import { computed } from '@lib/signals';
+import { computed } from '../types/signals';
+
 import { createContext } from '@lit/context';
 
 // 📘 a conceptual model for real states

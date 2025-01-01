@@ -1,6 +1,6 @@
-// 🔥 this must be self-contained, so we can't import any TypeScript code
+// 🔥 steal some types from the real code
 import type { Message } from '../../src/lib/messages.ts';
-import type { WebviewAPI } from '../../src/webview/api.ts';
+import type { WebviewAPI } from '../../src/webview/types/api.ts';
 
 declare let acquireVsCodeApi: any;
 

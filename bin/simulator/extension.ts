@@ -2,7 +2,9 @@ import { config } from '../config.ts';
 import { debounce } from 'jsr:@std/async/debounce';
 import { log } from '../logger.ts';
 
+// 🔥 steal some types from the real code
 import type { ExtensionAPI } from '../../src/extension/api.ts';
+import type { ExtensionEnv } from '../../src/extension/env.ts';
 import type { Message } from '../../src/lib/messages.ts';
 
 type Params = {
@@ -31,7 +33,7 @@ export async function extension({
       theSocket?.send(JSON.stringify(message));
     }
   } satisfies ExtensionAPI;
-  await import('../../dist/extension/bundle.js');
+  await import('../../dist/extension/bundle.cjs');
 
   // 👇 just a shortcut
   const api: ExtensionAPI = globalThis.lintelExtensionAPI;

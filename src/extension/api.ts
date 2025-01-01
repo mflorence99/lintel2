@@ -12,8 +12,8 @@ type LogParams = {
 
 // 📘 abstract the VSCode API for extension
 
-export interface ExtensionAPI {
+export type ExtensionAPI = {
   log(data: LogParams): void;
   onDidReceiveMessage(message: Message): void;
   postMessage(message: Message): void;
-}
+};

@@ -16,6 +16,7 @@ export type ParsedArgs = {
   taskNames: string[];
   help: boolean;
   prod: boolean;
+  tedious: boolean;
   verbose: boolean;
   watch: boolean;
 };
@@ -28,9 +29,21 @@ interface ExtendedParseOptions extends ParseOptions {
 //    non-boolean options, or options without aliases
 
 const parseOptions: ExtendedParseOptions = {
-  alias: { h: ['help'], p: ['prod'], v: ['verbose'], w: ['watch'] },
-  boolean: ['help', 'prod', 'verbose', 'watch'],
-  default: { help: false, prod: false, verbose: false, watch: false },
+  alias: {
+    h: ['help'],
+    p: ['prod'],
+    t: ['tedious'],
+    v: ['verbose'],
+    w: ['watch']
+  },
+  boolean: ['help', 'prod', 'tedious', 'verbose', 'watch'],
+  default: {
+    help: false,
+    prod: false,
+    tedious: false,
+    verbose: false,
+    watch: false
+  },
   description: {
     h: 'Show this help information',
     p: 'Build for production',

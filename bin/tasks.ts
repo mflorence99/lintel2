@@ -91,10 +91,12 @@ export const allTasks = [
   new TaskClass({
     name: 'esbuild:extension',
     description: 'Bundle extension with esbuild',
-    func: ({ prod, verbose }) =>
+    func: ({ prod, tedious, verbose }) =>
       esbuild({
-        bundle: `${config.paths['extension-js']}/bundle.js`,
+        bundle: `${config.paths['extension-js']}/bundle.cjs`,
+        platform: 'node',
         prod: !!prod,
+        tedious: !!tedious,
         verbose: !!verbose,
         root: `${config.paths['extension-ts']}/index.ts`,
         tsconfig: config.paths.tsconfig
@@ -104,12 +106,29 @@ export const allTasks = [
   new TaskClass({
     name: 'esbuild:webview',
     description: 'Bundle webview with esbuild',
-    func: ({ prod, verbose }) =>
+    func: ({ prod, tedious, verbose }) =>
       esbuild({
         bundle: `${config.paths['webview-js']}/bundle.js`,
+        platform: 'browser',
         prod: !!prod,
+        tedious: !!tedious,
         verbose: !!verbose,
         root: `${config.paths['webview-ts']}/index.ts`,
+        tsconfig: config.paths.tsconfig
+      })
+  }),
+
+  new TaskClass({
+    name: 'esbuild:xxx',
+    description: 'Test esbuild harness',
+    func: ({ prod, tedious, verbose }) =>
+      esbuild({
+        bundle: `${config.paths.root}/dist/xxx.js`,
+        platform: 'node',
+        prod: !!prod,
+        tedious: !!tedious,
+        verbose: !!verbose,
+        root: `${config.paths.root}/eslint.config.mjs`,
         tsconfig: config.paths.tsconfig
       })
   }),
@@ -141,7 +160,7 @@ export const allTasks = [
   new TaskClass({
     name: 'simulator',
     description: 'Run the webview simulator',
-    cmd: `${whichSync('deno')} run -A ${config.paths['bin']}/simulator/simulator.ts`,
+    cmd: `${whichSync('deno')} run -A --unstable-detect-cjs ${config.paths['bin']}/simulator/simulator.ts`,
     watchDirs: [
       `${config.paths['bin']}/simulator`,
       `${config.paths['extension-js']}`

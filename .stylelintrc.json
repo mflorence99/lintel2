@@ -1,6 +1,6 @@
 {
   "extends": "stylelint-config-standard",
-  "ignoreFiles": ["**/*.ts"],
+  "ignoreFiles": ["**/*.js", "**/*.ts"],
   "overrides": [
     {
       "customSyntax": "postcss-lit",
