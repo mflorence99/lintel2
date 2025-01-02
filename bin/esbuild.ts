@@ -33,7 +33,7 @@ export async function esbuild({
     minify: prod,
     outfile: `${bundle}`,
     platform,
-    sourcemap: true,
+    sourcemap: prod ? true : 'inline',
     tsconfig: `${tsconfig}`
   }).catch((e: any) => {
     log({ error: true, data: e.message });

@@ -6,7 +6,7 @@
   "configurations": [
     {
       "request": "launch",
-      "name": "Debug Lintel2 exec",
+      "name": "Debug Lintel2 simulator",
       "type": "node",
       "cwd": "${workspaceFolder}/",
       "env": {},
@@ -14,10 +14,9 @@
       "runtimeArgs": [
         "run",
         "--inspect-wait",
+        "--unstable-detect-cjs",
         "--allow-all",
-        "./bin/exec.ts",
-        "-w",
-        "simulator"
+        "./bin/simulator/simulator.ts"
       ],
       "attachSimplePort": 9229
     }

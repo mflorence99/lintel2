@@ -22,14 +22,14 @@ const api: ExtensionAPI =
   // @ts-ignore
   globalThis.lintelExtensionAPI ?? {};
 
-const env: ExtensionEnv = {
-  cwd: process.cwd(),
-  tmpDir: tmp.dirSync().name
-};
-
 // 📘 if simulating, dispatch on command
 
 if (isSimulated) {
+  const env: ExtensionEnv = {
+    cwd: process.cwd(),
+    tmpDir: tmp.dirSync().name
+  };
+  debugger;
   api.onDidReceiveMessage = async (message: Message): Promise<void> => {
     // 🔥 TEMPORARY
     try {

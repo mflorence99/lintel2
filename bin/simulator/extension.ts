@@ -4,7 +4,6 @@ import { log } from '../logger.ts';
 
 // 🔥 steal some types from the real code
 import type { ExtensionAPI } from '../../src/extension/api.ts';
-import type { ExtensionEnv } from '../../src/extension/env.ts';
 import type { Message } from '../../src/lib/messages.ts';
 
 type Params = {
