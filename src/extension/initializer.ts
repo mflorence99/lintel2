@@ -1,6 +1,5 @@
-import { ExtensionAPI } from './api';
-
 import { ESLint } from 'eslint';
+import { ExtensionAPI } from '~extension/types/api';
 
 import { build } from 'esbuild';
 import { findUp } from 'find-up';

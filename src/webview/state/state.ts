@@ -1,11 +1,10 @@
-import { effect } from '../types/signals';
-import { storage } from './storage';
-
 import { Signal } from '@lit-labs/signals';
 
-import { config } from '@lib/config';
+import { config } from '~lib/config';
+import { effect } from '~webview/types/signals';
 import { produce } from 'immer';
 import { signal } from '@lit-labs/signals';
+import { storage } from '~webview/state//storage';
 
 import StackTrace from 'stacktrace-js';
 

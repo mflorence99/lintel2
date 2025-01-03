@@ -1,4 +1,4 @@
-import { ExtensionRuntime } from '@lib/types';
+import { ExtensionRuntime } from '~lib/types/runtime';
 
 // 📘 common configuration settings
 //    NOT designed to be user-settable

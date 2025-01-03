@@ -1,11 +1,9 @@
-import { AppState } from '../state/app-state';
-
-import { appStateContext } from '../state/app-state';
-
+import { AppState } from '~webview/state/app-state';
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
 import { TemplateResult } from 'lit';
 
+import { appStateContext } from '~webview/state/app-state';
 import { consume } from '@lit/context';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';

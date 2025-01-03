@@ -1,5 +1,5 @@
-import { config } from './config.ts';
-import { esbuild } from './esbuild.ts';
+import { config } from '~bin/config';
+import { esbuild } from '~bin/esbuild';
 import { whichSync } from '@david/which';
 
 // 📘 define all the tasks we can perform

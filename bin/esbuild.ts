@@ -1,6 +1,6 @@
 import { analyzeMetafile } from 'esbuild';
 import { build } from 'esbuild';
-import { log } from './logger.ts';
+import { log } from '~bin/logger';
 
 type Params = {
   bundle: string;

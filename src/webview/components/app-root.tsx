@@ -1,10 +1,9 @@
-import { AppState } from '../state/app-state';
-import { StartupController } from '../controllers/startup';
-
 import { appStateContext } from '../state/app-state';
 
+import { AppState } from '~webview/state/app-state';
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
+import { StartupController } from '~webview/controllers/startup';
 import { TemplateResult } from 'lit';
 
 import { css } from 'lit';

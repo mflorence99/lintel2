@@ -1,7 +1,6 @@
-import { State } from './state';
+import { State } from '~webview/state/state';
 
-import { computed } from '../types/signals';
-
+import { computed } from '~webview/types/signals';
 import { createContext } from '@lit/context';
 
 // 📘 a conceptual model for real states

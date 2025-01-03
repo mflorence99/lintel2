@@ -1,4 +1,4 @@
-import { Message } from '@lib/messages';
+import { Message } from '~lib/types/messages';
 
 // 🔥 TEMPORARY - copied from simulator
 

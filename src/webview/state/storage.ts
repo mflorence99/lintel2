@@ -1,4 +1,4 @@
-import { WebviewAPI } from '../types/api';
+import { WebviewAPI } from '~webview/types/api';
 
 declare const lintelWebviewAPI: WebviewAPI;
 

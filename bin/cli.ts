@@ -1,10 +1,10 @@
 import { ParseOptions } from '@std/cli/parse-args';
 
-import { allTasks } from './tasks.ts';
-import { allTasksLookup } from './tasks.ts';
-import { config } from './config.ts';
-import { flattenObject } from './flatten.ts';
-import { log } from './logger.ts';
+import { allTasks } from '~bin/tasks';
+import { allTasksLookup } from '~bin/tasks';
+import { config } from '~bin/config';
+import { flattenObject } from '~bin/flatten';
+import { log } from '~bin/logger';
 import { parseArgs } from '@std/cli/parse-args';
 
 import $ from '@david/dax';

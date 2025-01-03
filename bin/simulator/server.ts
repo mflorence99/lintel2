@@ -1,6 +1,6 @@
-import { config } from '../config.ts';
-import { log } from '../logger.ts';
-import { webview } from './webview.ts';
+import { config } from '~bin/config';
+import { log } from '~bin/logger';
+import { webview } from '~simulator/webview';
 
 type Params = {
   ac?: AbortController;

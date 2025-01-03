@@ -1,10 +1,9 @@
-export * from './initializer';
+export * from '~extension/initializer';
 
-import { ExtensionAPI } from './api';
+import { ExtensionAPI } from '~extension/types/api';
+import { Message } from '~lib/types/messages';
 
-import { initialize } from './initializer';
-
-import { Message } from '@lib/messages';
+import { initialize } from '~extension/initializer';
 
 declare const lintelExtensionAPI: ExtensionAPI;
 

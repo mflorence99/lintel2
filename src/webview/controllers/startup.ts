@@ -1,10 +1,10 @@
-import { ExtensionRuntime } from '@lib/types';
+import { ExtensionRuntime } from '~lib/types/runtime';
 import { LitElement } from 'lit';
 import { ReactiveController } from 'lit';
 import { ReactiveControllerHost } from 'lit';
 
-import { config } from '@lib/config';
-import { delay } from '@lib/delay';
+import { config } from '~lib/config';
+import { delay } from '~lib/delay';
 import { enablePatches } from 'immer';
 
 // 👇 we use immer patches for tracing while simulating

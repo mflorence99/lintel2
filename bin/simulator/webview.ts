@@ -1,6 +1,6 @@
 // 🔥 steal some types from the real code
-import type { Message } from '../../src/lib/messages.ts';
-import type { WebviewAPI } from '../../src/webview/types/api.ts';
+import type { Message } from '~lib/types/messages';
+import type { WebviewAPI } from '~webview/types/api';
 
 declare let acquireVsCodeApi: any;
 

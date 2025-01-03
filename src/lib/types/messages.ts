@@ -1,6 +1,6 @@
 // 📘 define the messages that flow to and from extension and webview
 
-export interface Message {
+export type Message = {
   command: /* excuse the indentation - blame prettier */
   // 👇 these special commands are used  by the simulator
   | '__ping__'
@@ -9,4 +9,4 @@ export interface Message {
     | '__smoke_test__'
     // 👇 these are REAL commands
     | 'initialize';
-}
+};

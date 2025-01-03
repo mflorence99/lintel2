@@ -1,15 +1,15 @@
-import { config } from '../config.ts';
+import { config } from '~bin/config';
 import { debounce } from 'jsr:@std/async/debounce';
-import { log } from '../logger.ts';
+import { log } from '~bin/logger';
 
 import process from 'node:process';
 
 declare const globalThis: any;
 
 // 🔥 steal some types from the real code
-import type { ExtensionAPI } from '../../src/extension/api.ts';
-import type { ExtensionRuntime } from '../../src/lib/types.ts';
-import type { Message } from '../../src/lib/messages.ts';
+import type { ExtensionAPI } from '~extension/types/api';
+import type { ExtensionRuntime } from '~lib/types/runtime';
+import type { Message } from '~lib/types/messages';
 
 type Params = {
   ac: AbortController;

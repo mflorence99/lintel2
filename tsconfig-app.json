@@ -12,7 +12,9 @@
     "noImplicitThis": true,
     "noUnusedLocals": false,
     "paths": {
-      "@lib/*": ["./src/lib/*"]
+      "~extension/*": ["./src/extension/*"],
+      "~lib/*": ["./src/lib/*"],
+      "~webview/*": ["./src/webview/*"]
     },
     "strict": true,
     "target": "esnext",

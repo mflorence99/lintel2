@@ -1,13 +1,13 @@
 #!/usr/bin/env -S deno run --allow-all
 
-import { Task } from './tasks.ts';
+import { Task } from '~bin/tasks';
 
-import { allTasksLookup } from './tasks.ts';
-import { cli } from './cli.ts';
-import { config } from './config.ts';
+import { allTasksLookup } from '~bin/tasks';
+import { cli } from '~bin/cli';
+import { config } from '~bin/config';
 import { debounce } from 'jsr:@std/async/debounce';
-import { figletize } from './figler.ts';
-import { log } from './logger.ts';
+import { figletize } from '~bin/figler';
+import { log } from '~bin/logger';
 
 import $ from '@david/dax';
 import psList from 'ps-list';
