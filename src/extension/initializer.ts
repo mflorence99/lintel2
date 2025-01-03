@@ -1,8 +1,10 @@
 import { ESLint } from 'eslint';
+import { ESLintConfig } from '~lib/types/eslint';
 import { ExtensionAPI } from '~extension/types/api';
 
 import { build } from 'esbuild';
 import { findUp } from 'find-up';
+import { resolve } from 'mlly';
 
 declare const globalThis: any;
 
@@ -67,13 +69,25 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   await import(url); // 👈 see globalThis.__module__.exports.default
   URL.revokeObjectURL(url); // 👈 GC ObjectURLs
 
+  // 👇 try and load eslint from same directory as config file
+  const eslintPath =
+    (await resolve('eslint/use-at-your-own-risk', {
+      url: api.cwd()
+    }).catch(() => null)) || 'eslint/use-at-your-own-risk';
+  const eslintRules = await import(eslintPath).then(
+    (r) => r.default.builtinRules
+  );
+  for (const [name, rule] of eslintRules.entries()) {
+    console.log({ name, rule });
+  }
+
   // 👇 we now have an array of configs
-  const configs = [
+  const configs: ESLintConfig[] = [
     ...ESLint.defaultConfig,
     // 👉 maybe an arrary, maybe not
     ...[globalThis.__module__.exports.default].flat()
   ];
 
   // 🔥 TEMPORARY smoke test
-  console.log(configs.map((c) => c.rules));
+  console.log(configs.map((c) => c.name));
 }

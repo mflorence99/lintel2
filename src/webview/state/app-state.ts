@@ -6,11 +6,11 @@ import { createContext } from '@lit/context';
 // 📘 a conceptual model for real states
 //    may morph into a real app-state
 
-export interface AppStateModel {
+export type AppStateModel = {
   x: number;
   y: string;
   z: boolean;
-}
+};
 
 const defaultState: AppStateModel = {
   x: 1000,
