@@ -1,8 +1,8 @@
-import { config } from '../config.ts';
+import { config } from './config.ts';
 import { delay } from '@std/async/delay';
-import { extension } from './extension.ts';
-import { http } from './server.ts';
-import { log } from '../logger.ts';
+import { extension } from './simulator/extension.ts';
+import { http } from './simulator/server.ts';
+import { log } from './logger.ts';
 
 // 📘 serve a simulator for a VSCode webview extension
 //    designed to be called inside of exec.ts, hence the primitive

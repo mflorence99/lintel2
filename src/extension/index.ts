@@ -1,51 +1,36 @@
-export * from './initialize';
+export * from './initializer';
 
 import { ExtensionAPI } from './api';
-import { ExtensionEnv } from './env';
 
-import { initialize } from './initialize';
+import { initialize } from './initializer';
 
 import { Message } from '@lib/messages';
 
-import process from 'node:process';
-import tmp from 'tmp';
+declare const lintelExtensionAPI: ExtensionAPI;
 
-tmp.setGracefulCleanup();
+// 🔥 we assume that the API has been established by some
+//    earlier code that loads this bundle -- ATM only
+//    the simulator does this
 
-// 📘 constants potentially set by simulator
+// 👇 just a shortcut
+const api: ExtensionAPI = lintelExtensionAPI;
 
-const isSimulated: boolean =
-  // @ts-ignore
-  globalThis.lintelIsSimulated ?? false;
+// 🔥 TEMPORARY dispatch on command
 
-const api: ExtensionAPI =
-  // @ts-ignore
-  globalThis.lintelExtensionAPI ?? {};
-
-// 📘 if simulating, dispatch on command
-
-if (isSimulated) {
-  const env: ExtensionEnv = {
-    cwd: process.cwd(),
-    tmpDir: tmp.dirSync().name
-  };
-  debugger;
-  api.onDidReceiveMessage = async (message: Message): Promise<void> => {
-    // 🔥 TEMPORARY
-    try {
-      switch (message.command) {
-        case 'initialize':
-          await initialize(api, env);
-          break;
-        default:
-          api.log({
-            warning: true,
-            text: 'unrecognized',
-            data: message
-          });
-      }
-    } catch (e: any) {
-      api.log({ error: true, text: e.message });
+api.onDidReceiveMessage = async (message: Message): Promise<void> => {
+  try {
+    switch (message.command) {
+      case 'initialize':
+        await initialize(api);
+        break;
+      default:
+        api.log({
+          warning: true,
+          text: 'unrecognized',
+          data: message
+        });
     }
-  };
-}
+  } catch (e: any) {
+    api.log({ error: true, text: e.message });
+  }
+};

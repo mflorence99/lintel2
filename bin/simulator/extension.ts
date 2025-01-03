@@ -2,8 +2,13 @@ import { config } from '../config.ts';
 import { debounce } from 'jsr:@std/async/debounce';
 import { log } from '../logger.ts';
 
+import process from 'node:process';
+
+declare const globalThis: any;
+
 // 🔥 steal some types from the real code
 import type { ExtensionAPI } from '../../src/extension/api.ts';
+import type { ExtensionRuntime } from '../../src/lib/types.ts';
 import type { Message } from '../../src/lib/messages.ts';
 
 type Params = {
@@ -11,8 +16,6 @@ type Params = {
   dirs: string[];
   watcher$: Deno.FsWatcher;
 };
-
-declare const lintelExtensionAPI: ExtensionAPI;
 
 // 📘 implements the extension via a socket connection to the webview
 
@@ -24,15 +27,17 @@ export async function extension({
   let theSocket: WebSocket = null;
 
   // 👇 load the extension code
-  globalThis.lintelIsSimulated = true;
+  globalThis.lintelExtensionRuntime =
+    'simulated' satisfies ExtensionRuntime;
   globalThis.lintelExtensionAPI = {
+    cwd: process.cwd,
     log,
     onDidReceiveMessage: null, // 👈 completed later by extension
     postMessage: (message: Message) => {
       theSocket?.send(JSON.stringify(message));
     }
   } satisfies ExtensionAPI;
-  await import('../../dist/extension/bundle.cjs');
+  await import('../../dist/extension/index.cjs');
 
   // 👇 just a shortcut
   const api: ExtensionAPI = globalThis.lintelExtensionAPI;

@@ -15,7 +15,7 @@
     <script>
       var lintelWebviewAPI = null;
       var lintelIsReady = Promise.resolve(true);
-      var lintelIsSimulated = false;
+      var lintelExtensionRuntime = 'vscode';
     </script>
   </head>
 
@@ -41,7 +41,7 @@
       lintelWebviewAPI = acquireVsCodeApi();
     </script>
 
-    <script src="bundle.js" type="module"></script>
+    <script src="index.js" type="module"></script>
 
     <link rel="stylesheet" type="text/css" href="assets/md.css" />
   </body>

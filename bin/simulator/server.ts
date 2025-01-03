@@ -123,7 +123,7 @@ function mungeIndexHTML(html: string): string {
       var acquireVsCodeApi;
             
       // 👇 yes, we are in a simulation
-      lintelIsSimulated = true;
+      lintelExtensionRuntime = 'simulated';
       
       // 👇 load the webview simulation
       (() => {

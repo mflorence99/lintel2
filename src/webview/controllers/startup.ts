@@ -1,3 +1,4 @@
+import { ExtensionRuntime } from '@lib/types';
 import { LitElement } from 'lit';
 import { ReactiveController } from 'lit';
 import { ReactiveControllerHost } from 'lit';
@@ -7,8 +8,8 @@ import { delay } from '@lib/delay';
 import { enablePatches } from 'immer';
 
 // 👇 we use immer patches for tracing while simulating
-declare const lintelIsSimulated: boolean;
-if (lintelIsSimulated) enablePatches();
+declare const lintelExtensionRuntime: ExtensionRuntime;
+if (lintelExtensionRuntime === 'simulated') enablePatches();
 
 // 📘 manage startup tasks
 

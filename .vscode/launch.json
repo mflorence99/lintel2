@@ -16,7 +16,7 @@
         "--inspect-wait",
         "--unstable-detect-cjs",
         "--allow-all",
-        "./bin/simulator/simulator.ts"
+        "./bin/simulator.ts"
       ],
       "attachSimplePort": 9229
     }

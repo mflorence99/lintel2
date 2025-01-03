@@ -1,8 +1,11 @@
+import { ExtensionRuntime } from '@lib/types';
+
 // 📘 common configuration settings
 //    NOT designed to be user-settable
 
 // 👇 we use immer patches for tracing while simulating
-declare const lintelIsSimulated: boolean;
+declare const lintelExtensionRuntime: ExtensionRuntime;
+
 export class ConfigClass {
   debounceMillis = 250;
 
@@ -11,7 +14,7 @@ export class ConfigClass {
     short: 100
   };
 
-  logStateChanges = lintelIsSimulated;
+  logStateChanges = lintelExtensionRuntime === 'simulated';
 }
 
 export const config: Readonly<ConfigClass> = new ConfigClass();

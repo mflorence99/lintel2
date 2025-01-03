@@ -10,9 +10,10 @@ type LogParams = {
   warning?: boolean;
 };
 
-// 📘 abstract the VSCode API for extension
+// 📘 abstract the runtime API for extension
 
 export type ExtensionAPI = {
+  cwd(): string;
   log(data: LogParams): void;
   onDidReceiveMessage(message: Message): void;
   postMessage(message: Message): void;
