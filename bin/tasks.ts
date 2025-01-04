@@ -145,7 +145,7 @@ export const allTasks = [
   new TaskClass({
     name: 'simulator',
     description: 'Run the webview simulator',
-    cmd: `${whichSync('deno')} run -A --unstable-detect-cjs ${config.paths['bin']}/simulator.ts`,
+    cmd: `${whichSync('deno')} run -A --unstable-detect-cjs ${config.paths['bin']}/simulator.ts /home/markf/mflorence99/munimap`,
     watchDirs: [
       `${config.paths['bin']}/simulator`,
       `${config.paths['extension-js']}`

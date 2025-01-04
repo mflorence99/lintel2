@@ -4,10 +4,15 @@ import { extension } from '~simulator/extension';
 import { http } from '~simulator/server';
 import { log } from '~bin/logger';
 
+import process from 'node:process';
+
 // 📘 serve a simulator for a VSCode webview extension
 //    designed to be called inside of exec.ts, hence the primitive
-//    args parsing - just pass the deploy directrory
+//    args parsing - just pass the directrory to simulate
 
+const simdir = Deno.args[0] || process.cwd();
+
+// 👇 this is the code we are running in the simulation
 const extdir = config.paths['extension-js'];
 const webdir = config.paths['webview-js'];
 
@@ -34,4 +39,4 @@ Deno.addSignalListener('SIGINT', async () => {
 });
 
 // 👇 run the extension
-await extension({ ac, dirs: [extdir, webdir], watcher$ });
+await extension({ ac, simdir, watchdirs: [extdir, webdir], watcher$ });

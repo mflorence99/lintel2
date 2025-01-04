@@ -1,10 +1,9 @@
-import { ESLint } from 'eslint';
 import { ESLintConfig } from '~lib/types/eslint';
 import { ExtensionAPI } from '~extension/types/api';
 
 import { build } from 'esbuild';
 import { findUp } from 'find-up';
-import { resolve } from 'mlly';
+import { resolve$ } from '~extension/resolve';
 
 declare const globalThis: any;
 
@@ -69,24 +68,26 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   await import(url); // 👈 see globalThis.__module__.exports.default
   URL.revokeObjectURL(url); // 👈 GC ObjectURLs
 
-  // 👇 try and load eslint from same directory as config file
-  const eslintPath =
-    (await resolve('eslint/use-at-your-own-risk', {
-      url: api.cwd()
-    }).catch(() => null)) || 'eslint/use-at-your-own-risk';
-  const eslintRules = await import(eslintPath).then(
-    (r) => r.default.builtinRules
-  );
-  for (const [name, rule] of eslintRules.entries()) {
-    console.log({ name, rule });
-  }
+  // 👇 try and load eslint itself from same directory as config file
+  const eslint = await resolve$('eslint', api.cwd());
 
   // 👇 we now have an array of configs
   const configs: ESLintConfig[] = [
-    ...ESLint.defaultConfig,
+    ...eslint.ESLint.defaultConfig,
     // 👉 maybe an arrary, maybe not
     ...[globalThis.__module__.exports.default].flat()
   ];
+
+  // 👇 try and load eslint rules from same directory as config file
+  // 🔥 see https://github.com/eslint/eslint/blob/df409d8f76555c7baa4353d678d5fc460454a4d7/docs/src/use/migrate-to-8.0.0.md
+  const eslintUnsupported = await resolve$(
+    'eslint/use-at-your-own-risk',
+    api.cwd()
+  );
+  const eslintRules = eslintUnsupported.default.builtinRules;
+  for (const [name /* , rule */] of eslintRules.entries()) {
+    console.log(name);
+  }
 
   // 🔥 TEMPORARY smoke test
   console.log(configs.map((c) => c.name));

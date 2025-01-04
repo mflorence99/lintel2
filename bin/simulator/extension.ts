@@ -2,8 +2,6 @@ import { config } from '~bin/config';
 import { debounce } from 'jsr:@std/async/debounce';
 import { log } from '~bin/logger';
 
-import process from 'node:process';
-
 declare const globalThis: any;
 
 // 🔥 steal some types from the real code
@@ -13,7 +11,8 @@ import type { Message } from '~lib/types/messages';
 
 type Params = {
   ac: AbortController;
-  dirs: string[];
+  simdir: string;
+  watchdirs: string[];
   watcher$: Deno.FsWatcher;
 };
 
@@ -21,7 +20,8 @@ type Params = {
 
 export async function extension({
   ac,
-  dirs,
+  simdir,
+  watchdirs,
   watcher$
 }: Params): Promise<void> {
   let theSocket: WebSocket = null;
@@ -30,7 +30,7 @@ export async function extension({
   globalThis.lintelExtensionRuntime =
     'simulated' satisfies ExtensionRuntime;
   globalThis.lintelExtensionAPI = {
-    cwd: process.cwd,
+    cwd: () => simdir,
     log,
     onDidReceiveMessage: null, // 👈 completed later by extension
     postMessage: (message: Message) => {
@@ -72,7 +72,7 @@ export async function extension({
   });
 
   // 👇 start watching for file changes
-  return watcher(dirs, watcher$, () => {
+  return watcher(watchdirs, watcher$, () => {
     log({ text: 'extension sends reload to webview' });
     // 🔥 FLOW simulator sends reload to webview on file change
     theSocket?.send(
@@ -97,8 +97,8 @@ export async function extension({
 
   // 👇 watch for file changes
 
-  async function watcher(dirs, watcher$, cb): Promise<void> {
-    log({ important: 'watching for changes', data: dirs });
+  async function watcher(watchdirs, watcher$, cb): Promise<void> {
+    log({ important: 'watching for changes', data: watchdirs });
     // 👇 create a debounced function that's invoked on changes
     const debounced = debounce((_) => {
       // 👇 webview has changed
