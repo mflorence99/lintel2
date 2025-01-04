@@ -68,7 +68,7 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   await import(url); // 👈 see globalThis.__module__.exports.default
   URL.revokeObjectURL(url); // 👈 GC ObjectURLs
 
-  // 👇 try and load eslint itself from same directory as config file
+  // 👇 load eslint itself from same directory as config file
   const eslint = await resolve$('eslint', api.cwd());
 
   // 👇 we now have an array of configs
@@ -78,7 +78,7 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
     ...[globalThis.__module__.exports.default].flat()
   ];
 
-  // 👇 try and load eslint rules from same directory as config file
+  // 👇 load eslint rules from same directory as config file
   // 🔥 see https://github.com/eslint/eslint/blob/df409d8f76555c7baa4353d678d5fc460454a4d7/docs/src/use/migrate-to-8.0.0.md
   const eslintUnsupported = await resolve$(
     'eslint/use-at-your-own-risk',

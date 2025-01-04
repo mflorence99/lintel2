@@ -10,6 +10,9 @@ export async function resolve$(
   const path =
     (await resolve(name, {
       url: cwd
-    }).catch(() => null)) || name;
+    }).catch((e) => {
+      console.error(e);
+      return null;
+    })) || name;
   return await import(path);
 }
