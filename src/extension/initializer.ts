@@ -1,9 +1,11 @@
-import { ESLintConfig } from '~lib/types/eslint';
+import { Config } from '~lib/types/eslint';
 import { ExtensionAPI } from '~extension/types/api';
 
 import { build } from 'esbuild';
 import { findUp } from 'find-up';
 import { resolve$ } from '~extension/resolve';
+
+import jsome from 'jsome';
 
 declare const globalThis: any;
 
@@ -35,6 +37,7 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
     external: ['./worker', 'eslint/lib/util/glob-util'],
     format: 'cjs',
     platform: 'node',
+    sourcemap: 'inline',
     write: false
   });
 
@@ -71,9 +74,17 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   // 👇 load eslint itself from same directory as config file
   const eslint = await resolve$('eslint', api.cwd());
 
+  // 👇 pretreat the default configs
+  const defaultConfigs = eslint.ESLint.defaultConfig.map(
+    (config: Config) => ({
+      ...config,
+      name: 'ESLint built-in default'
+    })
+  );
+
   // 👇 we now have an array of configs
-  const configs: ESLintConfig[] = [
-    ...eslint.ESLint.defaultConfig,
+  const allConfigs: Config[] = [
+    ...defaultConfigs,
     // 👉 maybe an arrary, maybe not
     ...[globalThis.__module__.exports.default].flat()
   ];
@@ -85,10 +96,12 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
     api.cwd()
   );
   const eslintRules = eslintUnsupported.default.builtinRules;
-  for (const [name /* , rule */] of eslintRules.entries()) {
-    console.log(name);
-  }
 
   // 🔥 TEMPORARY smoke test
-  console.log(configs.map((c) => c.name));
+  for (const [name, rule] of eslintRules.entries()) {
+    // jsome({ name, rule });
+    break;
+  }
+
+  allConfigs.forEach((config) => console.log(config.name));
 }

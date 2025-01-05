@@ -10,7 +10,11 @@ export default [
           'src/webview/tsconfig.json'
         ]
       }
-    }
+    },
+    name: 'Lintel2 projects'
   },
-  { ignores: ['eslint.config.mjs', 'bin/**/*.ts'] }
+  {
+    ignores: ['eslint.config.mjs', 'bin/**/*.ts'],
+    name: 'Lintel2 file exclusions'
+  }
 ];
