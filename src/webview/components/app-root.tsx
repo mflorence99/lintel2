@@ -26,6 +26,10 @@ export class AppRoot extends SignalWatcher(LitElement) {
       display: block;
       margin: 1rem;
     }
+
+    .material-icons-two-tone {
+      font-family: 'Material Icons';
+    }
   `;
 
   @provide({ context: appStateContext }) appState = new AppState(
@@ -34,6 +38,10 @@ export class AppRoot extends SignalWatcher(LitElement) {
 
   // eslint-disable-next-line no-unused-private-class-members
   #startup = new StartupController(this);
+
+  // override createRenderRoot(): any {
+  //   return this;
+  // }
 
   override render(): TemplateResult {
     const model = this.appState.model;
@@ -49,6 +57,10 @@ export class AppRoot extends SignalWatcher(LitElement) {
           <md-checkbox></md-checkbox>
           Y is ${model.get().y}
         </label>
+
+        <i class="codicon codicon-case-sensitive">case-sensitive</i>
+
+        <span class="material-icons-two-tone">pie_chart</span>
 
         <md-filled-button
           @click=${(): void => this.appState.incrementX(10)}>

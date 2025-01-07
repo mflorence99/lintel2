@@ -4,12 +4,12 @@ import { log } from '~bin/logger';
 
 type Params = {
   bundle: string;
-  platform: 'node' | 'browser';
+  platform?: 'node' | 'browser';
   prod: boolean;
   tedious: boolean;
   verbose: boolean;
   root: string;
-  tsconfig: string;
+  tsconfig?: string;
 };
 
 // 📘 run esbuild
@@ -28,20 +28,21 @@ export async function esbuild({
     bundle: true,
     entryPoints: [`${root}`],
     external: ['esbuild'],
+    loader: { '.ttf': 'binary', '.woff': 'binary', '.woff2': 'binary' },
     logLevel: verbose ? 'info' : 'warning',
     metafile: verbose,
     minify: prod,
-    outfile: `${bundle}`,
+    outfile: bundle,
     platform,
     sourcemap: prod ? true : 'inline',
-    tsconfig: `${tsconfig}`
+    tsconfig
   }).catch((e: any) => {
     log({ error: true, data: e.message });
   });
 
   // 👇 analyze bundle
   // @ts-ignore 🔥 no metafile in type definition?
-  const metafile = result.metafile;
+  const metafile = result?.metafile;
   if (tedious && metafile) {
     const analysis = await analyzeMetafile(metafile);
     console.log(analysis);

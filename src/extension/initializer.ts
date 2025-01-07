@@ -3,7 +3,7 @@ import { ExtensionAPI } from '~extension/types/api';
 
 import { build } from 'esbuild';
 import { findUp } from 'find-up';
-import { resolve$ } from '~extension/resolve';
+import { resolveFromRoot } from '~extension/resolve';
 
 import jsome from 'jsome';
 
@@ -72,7 +72,7 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   URL.revokeObjectURL(url); // 👈 GC ObjectURLs
 
   // 👇 load eslint itself from same directory as config file
-  const eslint = await resolve$('eslint', api.cwd());
+  const eslint = await resolveFromRoot('eslint', api.cwd());
 
   // 👇 pretreat the default configs
   const defaultConfigs = eslint.ESLint.defaultConfig.map(
@@ -91,7 +91,7 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
 
   // 👇 load eslint rules from same directory as config file
   // 🔥 see https://github.com/eslint/eslint/blob/df409d8f76555c7baa4353d678d5fc460454a4d7/docs/src/use/migrate-to-8.0.0.md
-  const eslintUnsupported = await resolve$(
+  const eslintUnsupported = await resolveFromRoot(
     'eslint/use-at-your-own-risk',
     api.cwd()
   );

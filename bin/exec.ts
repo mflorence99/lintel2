@@ -45,18 +45,20 @@ const run = async (todos: Task[]) => {
           const plist = await psList();
           const existing = plist.find((p) => p.cmd === cmd);
           if (existing) Deno.kill(existing.pid, 'SIGINT');
-          await $.raw`${cmd}`; // 🔥 `clean up syntax coloring`
+          const result = await $.raw`${cmd}`; // 🔥 `clean up syntax coloring`
+          if (result.code !== 0) break;
         }
       }
       // 👇 could be a function
       if (todo.func) {
         log({ important: todo.name, text: 'function invoked' });
         await todo.kill?.();
-        await todo.func({ prod, tedious, verbose });
+        const result = await todo.func({ prod, tedious, verbose });
+        if (!result) break;
       }
     } catch (e: any) {
       if (!watch) {
-        log({ error: true, data: e });
+        log({ error: true, data: e.message });
         Deno.exit(1);
       }
     }

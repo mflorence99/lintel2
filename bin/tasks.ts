@@ -8,7 +8,7 @@ class TaskClass {
   cmd?: string;
   cmds?: string[];
   description: string = '';
-  func?: (args?: any) => Promise<void>;
+  func?: (args?: any) => Promise<any>;
   kill?: () => Promise<void>;
   name: string;
   // 🔥 crap - Deno typing makes us do it this way
@@ -44,7 +44,11 @@ export const allTasks = [
       `cp ${config.paths['webview-ts']}/index.html ${config.paths['webview-js']}/`,
       `cp -r ${config.paths['webview-ts']}/assets ${config.paths['webview-js']}`
     ],
-    subTasks: ['check:webview', 'esbuild:webview'],
+    subTasks: [
+      'check:webview',
+      'esbuild:webview:css',
+      'esbuild:webview:js'
+    ],
     watchDirs: [
       config.paths.lib,
       config.paths['webview-ts'],
@@ -104,8 +108,21 @@ export const allTasks = [
   }),
 
   new TaskClass({
-    name: 'esbuild:webview',
-    description: 'Bundle webview with esbuild',
+    name: 'esbuild:webview:css',
+    description: 'Bundle webview CSS with esbuild',
+    func: ({ prod, tedious, verbose }) =>
+      esbuild({
+        bundle: `${config.paths['webview-js']}/index.css`,
+        prod: !!prod,
+        tedious: !!tedious,
+        verbose: !!verbose,
+        root: `${config.paths['webview-ts']}/index.css`
+      })
+  }),
+
+  new TaskClass({
+    name: 'esbuild:webview:js',
+    description: 'Bundle webview Javascript with esbuild',
     func: ({ prod, tedious, verbose }) =>
       esbuild({
         bundle: `${config.paths['webview-js']}/index.js`,
