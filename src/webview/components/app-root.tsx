@@ -28,10 +28,11 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
 
     mat-icon {
-      --mat-icon-filter: invert(8%) sepia(94%) saturate(4590%)
-        hue-rotate(358deg) brightness(101%) contrast(112%);
+      --mat-icon-color: pink;
+      /* --mat-icon-filter: invert(8%) sepia(94%) saturate(4590%)
+        hue-rotate(358deg) brightness(101%) contrast(112%); */
       --mat-icon-size: 32px;
-      --mat-icon-variant: Two Tone;
+      --mat-icon-variant: Sharp;
     }
   `;
 
@@ -60,7 +61,7 @@ export class AppRoot extends SignalWatcher(LitElement) {
         <i class="codicon codicon-case-sensitive">case-sensitive</i>
 
         <div>
-          <mat-icon icon="pie_chart"></mat-icon>
+          <mat-icon icon="add_reaction"></mat-icon>
           PieChart
         </div>
 

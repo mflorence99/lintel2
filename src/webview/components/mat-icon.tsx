@@ -15,6 +15,11 @@ declare global {
 
 // 📘 display material icon
 
+//  --mat-icon-color    any color, default: inherit
+//  --mat-icon-filter   any filter, default: none
+//  --mat-icon-size     any size, default: 1em
+//  --mat-icon-variant  outlined, round, sharp, two tone, default: (empty)
+
 @customElement('mat-icon')
 export class MatIcon extends LitElement {
   static override styles = css`
