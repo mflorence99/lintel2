@@ -26,6 +26,7 @@ export class MatIcon extends LitElement {
       color: var(--mat-icon-color, inherit);
       direction: ltr;
       display: inline-block;
+      filter: var(--mat-icon-filter, none);
       font-family: Material Icons;
       font-feature-settings: 'liga';
       font-size: var(--mat-icon-size, 1em);

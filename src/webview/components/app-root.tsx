@@ -28,9 +28,10 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
 
     mat-icon {
-      --mat-icon-color: yellow;
+      --mat-icon-filter: invert(8%) sepia(94%) saturate(4590%)
+        hue-rotate(358deg) brightness(101%) contrast(112%);
       --mat-icon-size: 32px;
-      --mat-icon-variant: 'Two Tone';
+      --mat-icon-variant: Two Tone;
     }
   `;
 
