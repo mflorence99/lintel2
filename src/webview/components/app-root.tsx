@@ -27,8 +27,10 @@ export class AppRoot extends SignalWatcher(LitElement) {
       margin: 1rem;
     }
 
-    .material-icons-two-tone {
-      font-family: 'Material Icons';
+    mat-icon {
+      --mat-icon-color: yellow;
+      --mat-icon-size: 32px;
+      --mat-icon-variant: 'Two Tone';
     }
   `;
 
@@ -38,10 +40,6 @@ export class AppRoot extends SignalWatcher(LitElement) {
 
   // eslint-disable-next-line no-unused-private-class-members
   #startup = new StartupController(this);
-
-  // override createRenderRoot(): any {
-  //   return this;
-  // }
 
   override render(): TemplateResult {
     const model = this.appState.model;
@@ -60,7 +58,10 @@ export class AppRoot extends SignalWatcher(LitElement) {
 
         <i class="codicon codicon-case-sensitive">case-sensitive</i>
 
-        <span class="material-icons-two-tone">pie_chart</span>
+        <div>
+          <mat-icon icon="pie-chart"></mat-icon>
+          PieChart
+        </div>
 
         <md-filled-button
           @click=${(): void => this.appState.incrementX(10)}>
