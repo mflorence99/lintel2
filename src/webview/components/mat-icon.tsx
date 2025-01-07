@@ -53,7 +53,7 @@ export class MatIcon extends LitElement {
       <i
         class="material-icons"
         style=${styleMap({ 'font-family': fontFamily })}>
-        ${this.icon?.replaceAll('-', '_')}
+        ${this.icon}
       </i>
     `;
   }

@@ -60,7 +60,7 @@ export class AppRoot extends SignalWatcher(LitElement) {
         <i class="codicon codicon-case-sensitive">case-sensitive</i>
 
         <div>
-          <mat-icon icon="pie-chart"></mat-icon>
+          <mat-icon icon="pie_chart"></mat-icon>
           PieChart
         </div>
 
