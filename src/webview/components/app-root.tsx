@@ -27,6 +27,13 @@ export class AppRoot extends SignalWatcher(LitElement) {
       margin: 1rem;
     }
 
+    cod-icon {
+      --cod-icon-color: yellow;
+      /* --cod-icon-filter: invert(8%) sepia(94%) saturate(4590%)
+        hue-rotate(358deg) brightness(101%) contrast(112%); */
+      --cod-icon-size: 48px;
+    }
+
     mat-icon {
       --mat-icon-color: pink;
       /* --mat-icon-filter: invert(8%) sepia(94%) saturate(4590%)
@@ -58,7 +65,10 @@ export class AppRoot extends SignalWatcher(LitElement) {
           Y is ${model.get().y}
         </label>
 
-        <i class="codicon codicon-case-sensitive">case-sensitive</i>
+        <div>
+          <cod-icon icon="lightbulb"></cod-icon>
+          lightbulb
+        </div>
 
         <div>
           <mat-icon icon="add_reaction"></mat-icon>

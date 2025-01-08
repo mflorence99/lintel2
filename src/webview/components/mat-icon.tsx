@@ -15,6 +15,8 @@ declare global {
 
 // 📘 display material icon
 
+// 👉 https://marella.me/material-icons/demo/
+
 //  --mat-icon-color    any color, default: inherit
 //  --mat-icon-filter   any filter, default: none
 //  --mat-icon-size     any size, default: 1em
