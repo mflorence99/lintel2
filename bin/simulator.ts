@@ -13,14 +13,14 @@ import process from 'node:process';
 const simdir = Deno.args[0] || process.cwd();
 
 // 👇 this is the code we are running in the simulation
-const extdir = config.paths['extension-js'];
 const webdir = config.paths['webview-js'];
+const watchdirs = [webdir];
 
 // 👇 this allows us to cancel server
 const ac = new AbortController();
 
 // 👇 keep track of active watchers
-const watcher$ = Deno.watchFs([extdir, webdir]);
+const watcher$ = Deno.watchFs(watchdirs);
 
 // 👇 get the HTTP server ready
 const server = http({ ac, dir: webdir });
@@ -39,4 +39,4 @@ Deno.addSignalListener('SIGINT', async () => {
 });
 
 // 👇 run the extension
-await extension({ ac, simdir, watchdirs: [extdir, webdir], watcher$ });
+await extension({ ac, simdir, watchdirs, watcher$ });

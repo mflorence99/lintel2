@@ -52,6 +52,7 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   globalThis.__filename__ = __filename;
   globalThis.__global__ = global;
   globalThis.__module__ = { ...module };
+
   globalThis.__require__ = require;
   javascript = `
   var __dirname = globalThis.__dirname__;
