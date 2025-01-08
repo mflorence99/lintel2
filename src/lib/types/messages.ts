@@ -5,7 +5,6 @@ export type Message = {
   // 👇 these special commands are used  by the simulator
   | '__ping__'
     | '__pong__'
-    | '__reload__'
     | '__smoke_test__'
     // 👇 these are REAL commands
     | 'initialize';

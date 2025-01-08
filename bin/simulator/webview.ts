@@ -87,8 +87,7 @@ export async function webview({
   theSocket.addEventListener('message', ({ data }) => {
     const message: Message = JSON.parse(data);
     // 🔥 FLOW client receives message from simulator
-    if (message.command === '__reload__') location.reload();
-    else if (message.command !== '__pong__') {
+    if (message.command !== '__pong__') {
       console.log(`🗨️ ${message}`);
       const event = new CustomEvent('message', { detail: message });
       dispatchEvent(event);

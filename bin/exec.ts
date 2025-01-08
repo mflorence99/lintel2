@@ -32,7 +32,7 @@ const todos: Task[] = reducer(taskNames);
 
 // 👇 this closure will run each requested task
 
-const run = async (todos: Task[]) => {
+const run = async (todos: Task[]): Promise<void> => {
   for (const todo of todos) {
     try {
       // 👇 this looks pretty, but has no other function

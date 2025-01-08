@@ -1,5 +1,4 @@
 import { config } from '~bin/config';
-import { debounce } from 'jsr:@std/async/debounce';
 import { log } from '~bin/logger';
 
 declare const globalThis: any;
@@ -12,18 +11,11 @@ import type { Message } from '~lib/types/messages';
 type Params = {
   ac: AbortController;
   simdir: string;
-  watchdirs: string[];
-  watcher$: Deno.FsWatcher;
 };
 
 // 📘 implements the extension via a socket connection to the webview
 
-export async function extension({
-  ac,
-  simdir,
-  watchdirs,
-  watcher$
-}: Params): Promise<void> {
+export async function extension({ ac, simdir }: Params): Promise<void> {
   let theSocket: WebSocket = null;
 
   // 👇 load the extension code
@@ -71,17 +63,7 @@ export async function extension({
     }
   });
 
-  // 👇 start watching for file changes
-  return watcher(watchdirs, watcher$, () => {
-    log({ text: 'extension sends reload to webview' });
-    // 🔥 FLOW simulator sends reload to webview on file change
-    theSocket?.send(
-      JSON.stringify({ command: '__reload__' } satisfies Message)
-    );
-  });
-
   // 👇 make server options
-
   function opts(): any {
     return {
       onListen({ port, hostname }) {
@@ -95,23 +77,10 @@ export async function extension({
     };
   }
 
-  // 👇 watch for file changes
-
-  async function watcher(watchdirs, watcher$, cb): Promise<void> {
-    log({ important: 'watching for changes', data: watchdirs });
-    // 👇 create a debounced function that's invoked on changes
-    const debounced = debounce((_) => {
-      // 👇 webview has changed
-      cb();
-    }, config.debounceMillis);
-    // 👇 then run it on each change
-    for await (const event of watcher$) debounced(event);
-  }
-
   // 👇 event handlers
 
   function webSocketOpened(): void {
-    log({ text: 'socket connected' });
+    log({ text: 'extension connected' });
   }
 
   function webSocketMessage({ data }): void {
