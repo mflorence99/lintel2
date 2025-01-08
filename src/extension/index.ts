@@ -20,7 +20,7 @@ api.onDidReceiveMessage = async (message: Message): Promise<void> => {
   try {
     switch (message.command) {
       case 'initialize':
-        // await initialize(api);
+        await initialize(api);
         break;
       default:
         api.log({

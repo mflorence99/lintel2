@@ -17,13 +17,10 @@ declare global {
 //    simply as regular styles as needed
 
 const codiconStyles = new Map<string | null, string>();
-
-const regex = /\.codicon-(.*)::before/gm;
-
 for (const styleSheet of Array.from(document.styleSheets)) {
   for (const cssRule of Array.from(styleSheet.cssRules)) {
     const style = cssRule as CSSStyleRule;
-    const match = regex.exec(style.selectorText);
+    const match = /\.codicon-(.*)::before/.exec(style.selectorText);
     if (match?.[1]) {
       codiconStyles.set(match[1], cssRule.cssText);
     }

@@ -165,7 +165,8 @@ export const allTasks = [
     cmd: `${whichSync('deno')} run -A --unstable-detect-cjs ${config.paths['bin']}/simulator.ts /home/markf/mflorence99/lintel2`,
     watchDirs: [
       `${config.paths['bin']}/simulator`,
-      `${config.paths['extension-js']}`
+      `${config.paths['extension-js']}`,
+      `${config.paths['webview-js']}`
     ]
   }),
 
