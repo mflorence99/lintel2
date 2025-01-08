@@ -1,8 +1,6 @@
 import { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
 
-import { adoptStyles } from 'lit';
-import { classMap } from 'lit/directives/class-map.js';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
@@ -15,12 +13,20 @@ declare global {
 }
 
 // 📘 we must adopt the codicon styles from the global stylesheet
+//    but do this once, efficiently, so we can use them
+//    simply as regular styles as needed
 
-const codiconStyles = new CSSStyleSheet();
+const codiconStyles = new Map<string | null, string>();
+
+const regex = /\.codicon-(.*)::before/gm;
+
 for (const styleSheet of Array.from(document.styleSheets)) {
   for (const cssRule of Array.from(styleSheet.cssRules)) {
-    if ((cssRule as CSSStyleRule).selectorText?.startsWith('.codicon'))
-      codiconStyles.insertRule(cssRule.cssText);
+    const style = cssRule as CSSStyleRule;
+    const match = regex.exec(style.selectorText);
+    if (match?.[1]) {
+      codiconStyles.set(match[1], cssRule.cssText);
+    }
   }
 }
 
@@ -48,19 +54,12 @@ export class CodIcon extends LitElement {
 
   @property() icon: string | null = null;
 
-  override connectedCallback(): void {
-    super.connectedCallback();
-    adoptStyles(this.renderRoot as ShadowRoot, [
-      CodIcon.styles,
-      codiconStyles
-    ]);
-  }
-
   override render(): TemplateResult {
-    const clazz = `codicon codicon-${this.icon}`;
-    const classes = { codicon: true, [clazz]: true };
     return html`
-      <i class=${classMap(classes)}></i>
+      <style>
+        ${codiconStyles.get(this.icon)}
+      </style>
+      <i class="codicon codicon-${this.icon}"></i>
     `;
   }
 }
