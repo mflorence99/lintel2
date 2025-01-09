@@ -5,9 +5,9 @@ import figlet from 'figlet';
 export function figletize(str: string): void {
   console.log(
     `%c${figlet.textSync(str.toUpperCase(), {
-      font: 'Small',
+      font: 'Slant',
       horizontalLayout: 'fitted'
     })}`,
-    'color: cyan'
+    'color: green'
   );
 }

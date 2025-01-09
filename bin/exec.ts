@@ -58,10 +58,8 @@ const run = async (todos: Task[]): Promise<void> => {
         if (!result) break;
       }
     } catch (e: any) {
-      if (!watch) {
-        log({ error: true, data: e.message });
-        Deno.exit(1);
-      }
+      log({ error: true, data: e.message });
+      if (!watch) Deno.exit(1);
     }
   }
 };
