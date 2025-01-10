@@ -55,7 +55,7 @@ export class MatIcon extends LitElement {
   override render(): TemplateResult {
     const style = getComputedStyle(this);
     const variant = style.getPropertyValue('--mat-icon-variant') ?? '';
-    const fontFamily = `Material Icons ${variant}`.trim();
+    const fontFamily = `'Material Icons ${variant}'`.trim();
     return html`
       <i
         class="material-icons"

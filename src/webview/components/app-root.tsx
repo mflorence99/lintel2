@@ -34,6 +34,14 @@ export class AppRoot extends SignalWatcher(LitElement) {
       --cod-icon-size: 48px;
     }
 
+    fa-icon {
+      --fa-icon-color: green;
+      /* --fa-icon-filter: invert(8%) sepia(94%) saturate(4590%)
+        hue-rotate(358deg) brightness(101%) contrast(112%); */
+      --fa-icon-size: 32px;
+      --fa-icon-variant: Pro;
+    }
+
     mat-icon {
       --mat-icon-color: pink;
       /* --mat-icon-filter: invert(8%) sepia(94%) saturate(4590%)
@@ -68,6 +76,11 @@ export class AppRoot extends SignalWatcher(LitElement) {
         <div>
           <cod-icon icon="lightbulb"></cod-icon>
           lightbulb
+        </div>
+
+        <div>
+          <fa-icon icon="pie"></fa-icon>
+          pie
         </div>
 
         <div>
