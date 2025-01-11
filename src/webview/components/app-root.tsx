@@ -28,14 +28,15 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
 
     cod-icon {
-      --cod-icon-color: yellow;
+      --cod-icon-color: white;
       /* --cod-icon-filter: invert(8%) sepia(94%) saturate(4590%)
         hue-rotate(358deg) brightness(101%) contrast(112%); */
-      --cod-icon-size: 48px;
+      --cod-icon-size: 32px;
     }
 
     fa-icon {
-      --fa-icon-color: green;
+      --fa-primary-color: white;
+      --fa-secondary-color: yellow;
       /* --fa-icon-filter: invert(8%) sepia(94%) saturate(4590%)
         hue-rotate(358deg) brightness(101%) contrast(112%); */
       --fa-icon-size: 32px;
@@ -43,11 +44,11 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
 
     mat-icon {
-      --mat-icon-color: pink;
+      --mat-icon-color: white;
       /* --mat-icon-filter: invert(8%) sepia(94%) saturate(4590%)
         hue-rotate(358deg) brightness(101%) contrast(112%); */
       --mat-icon-size: 32px;
-      --mat-icon-variant: Sharp;
+      --mat-icon-variant: Two tone;
     }
   `;
 
@@ -74,18 +75,18 @@ export class AppRoot extends SignalWatcher(LitElement) {
         </label>
 
         <div>
-          <cod-icon icon="lightbulb"></cod-icon>
-          lightbulb
+          <cod-icon animation="spin" icon="gear"></cod-icon>
+          Gear (codicon)
         </div>
 
         <div>
-          <fa-icon icon="pie"></fa-icon>
-          pie
+          <fa-icon animation="beat" icon="gear"></fa-icon>
+          Gear (fontawesome)
         </div>
 
         <div>
-          <mat-icon icon="add_reaction"></mat-icon>
-          PieChart
+          <mat-icon icon="settings"></mat-icon>
+          Gear (material)
         </div>
 
         <md-filled-button

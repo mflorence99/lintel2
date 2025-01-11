@@ -1,6 +1,7 @@
 import { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
 
+import { classMap } from 'lit/directives/class-map.js';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
@@ -20,13 +21,16 @@ declare global {
 //  --mat-icon-color    any color, default: inherit
 //  --mat-icon-filter   any filter, default: none
 //  --mat-icon-size     any size, default: 1em
-//  --mat-icon-variant  outlined, round, sharp, two tone, default: (empty)
+//  --mat-icon-variant  outlined, round, sharp, two tone, default: (none)
 
 @customElement('mat-icon')
 export class MatIcon extends LitElement {
   static override styles = css`
     :host {
       display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+      width: var(--mat-icon-size, 1em);
     }
 
     .material-icons {
@@ -48,6 +52,14 @@ export class MatIcon extends LitElement {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
+    /* 👇 https://github.com/material-components/material-components-web-react/issues/730 */
+    .material-icons-two-tone {
+      background-clip: text;
+      -webkit-background-clip: text;
+      background-color: var(--mat-icon-color, inherit);
+      color: transparent;
+    }
   `;
 
   @property() icon: string | null = null;
@@ -55,10 +67,14 @@ export class MatIcon extends LitElement {
   override render(): TemplateResult {
     const style = getComputedStyle(this);
     const variant = style.getPropertyValue('--mat-icon-variant') ?? '';
-    const fontFamily = `'Material Icons ${variant}'`.trim();
+    const fontFamily = `Material Icons ${variant}`.trim();
+    const isTwotone = variant.toLowerCase() === 'two tone';
     return html`
       <i
-        class="material-icons"
+        class=${classMap({
+          'material-icons': true,
+          'material-icons-two-tone': isTwotone
+        })}
         style=${styleMap({ 'font-family': fontFamily })}>
         ${this.icon}
       </i>

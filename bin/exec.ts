@@ -44,7 +44,6 @@ const run = async (todos: Task[]): Promise<void> => {
           log({ important: todo.name, text: cmd });
           const plist = await psList();
           const existing = plist.find((p) => p.cmd === cmd);
-          if (existing) console.log('YOURE KILLING ME!');
           if (existing) await Deno.kill(existing.pid, 'SIGINT');
           const result = await $.raw`${cmd}`; // 🔥 `clean up syntax coloring`
           if (result.code !== 0) break;
