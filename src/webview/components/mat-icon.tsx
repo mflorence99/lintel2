@@ -1,3 +1,5 @@
+import { makeHostStyle } from './icon-styles';
+
 import { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
 
@@ -25,42 +27,38 @@ declare global {
 
 @customElement('mat-icon')
 export class MatIcon extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      text-align: center;
-      vertical-align: middle;
-      width: var(--mat-icon-size, 1em);
-    }
+  static override styles = [
+    makeHostStyle(),
+    css`
+      .material-icons {
+        color: var(--mat-icon-color, inherit);
+        direction: ltr;
+        display: inline-block;
+        filter: var(--mat-icon-filter, none);
+        font-family: Material Icons;
+        font-feature-settings: 'liga';
+        font-size: var(--mat-icon-size, 1em);
+        font-style: normal;
+        font-weight: normal;
+        letter-spacing: normal;
+        line-height: 1;
+        text-rendering: optimizeLegibility;
+        text-transform: none;
+        white-space: nowrap;
+        word-wrap: normal;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
 
-    .material-icons {
-      color: var(--mat-icon-color, inherit);
-      direction: ltr;
-      display: inline-block;
-      filter: var(--mat-icon-filter, none);
-      font-family: Material Icons;
-      font-feature-settings: 'liga';
-      font-size: var(--mat-icon-size, 1em);
-      font-style: normal;
-      font-weight: normal;
-      letter-spacing: normal;
-      line-height: 1;
-      text-rendering: optimizeLegibility;
-      text-transform: none;
-      white-space: nowrap;
-      word-wrap: normal;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* 👇 https://github.com/material-components/material-components-web-react/issues/730 */
-    .material-icons-two-tone {
-      background-clip: text;
-      -webkit-background-clip: text;
-      background-color: var(--mat-icon-color, inherit);
-      color: transparent;
-    }
-  `;
+      /* 👇 https://github.com/material-components/material-components-web-react/issues/730 */
+      .material-icons-two-tone {
+        background-clip: text;
+        -webkit-background-clip: text;
+        background-color: var(--mat-icon-color, inherit);
+        color: transparent;
+      }
+    `
+  ];
 
   @property() icon: string | null = null;
 

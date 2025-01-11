@@ -1,3 +1,6 @@
+import { makeHostStyle } from './icon-styles';
+import { makeStyleMaps } from './icon-styles';
+
 import { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
 
@@ -17,24 +20,7 @@ declare global {
 //    but do this once, efficiently, so we can use them
 //    simply as regular styles as needed
 
-const faKeyframes = new Map<string | null, string>();
-const faStyles = new Map<string | null, string>();
-for (const styleSheet of Array.from(document.styleSheets)) {
-  for (const cssRule of Array.from(styleSheet.cssRules)) {
-    // 👇 all the FontAwesome keyframes
-    if (cssRule instanceof CSSKeyframesRule) {
-      const keyframe = cssRule;
-      const match = /fa-(.*)/.exec(keyframe.name);
-      if (match?.[1]) faKeyframes.set(match[1], cssRule.cssText);
-    }
-    // 👇 all the FontAwesome styles
-    if (cssRule instanceof CSSStyleRule) {
-      const style = cssRule;
-      const match = /\.fa-(.*)/.exec(style.selectorText);
-      if (match?.[1]) faStyles.set(match[1], cssRule.cssText);
-    }
-  }
-}
+const [faKeyframes, faStyles] = makeStyleMaps(/fa-(.*)/, /\.fa-(.*)/);
 
 // 📘 display fontawesome icon
 
@@ -48,25 +34,21 @@ for (const styleSheet of Array.from(document.styleSheets)) {
 
 @customElement('fa-icon')
 export class FaIcon extends LitElement {
-  static override styles = css`
-    :host {
-      display: inline-block;
-      text-align: center;
-      vertical-align: middle;
-      width: var(--fa-icon-size, 1em);
-    }
-
-    .fa-icon {
-      display: inline-block;
-      filter: var(--fa-icon-filter, none);
-      font-size: var(--fa-icon-size, 1em) !important;
-      font-style: normal;
-      font-weight: normal;
-      position: relative;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-  `;
+  static override styles = [
+    makeHostStyle(),
+    css`
+      .fa-icon {
+        display: inline-block;
+        filter: var(--fa-icon-filter, none);
+        font-size: var(--fa-icon-size, 1em) !important;
+        font-style: normal;
+        font-weight: normal;
+        position: relative;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    `
+  ];
 
   @property() animation:
     | 'beat'

@@ -28,14 +28,14 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
 
     cod-icon {
-      --cod-icon-color: white;
+      --cod-icon-color: salmon;
       /* --cod-icon-filter: invert(8%) sepia(94%) saturate(4590%)
         hue-rotate(358deg) brightness(101%) contrast(112%); */
       --cod-icon-size: 32px;
     }
 
     fa-icon {
-      --fa-primary-color: white;
+      --fa-primary-color: orange;
       --fa-secondary-color: yellow;
       /* --fa-icon-filter: invert(8%) sepia(94%) saturate(4590%)
         hue-rotate(358deg) brightness(101%) contrast(112%); */
@@ -44,11 +44,22 @@ export class AppRoot extends SignalWatcher(LitElement) {
     }
 
     mat-icon {
-      --mat-icon-color: white;
+      --mat-icon-color: palegreen;
       /* --mat-icon-filter: invert(8%) sepia(94%) saturate(4590%)
         hue-rotate(358deg) brightness(101%) contrast(112%); */
       --mat-icon-size: 32px;
       --mat-icon-variant: Two tone;
+    }
+
+    table {
+      td {
+        padding: 4px;
+        text-align: left;
+        vertical-align: middle;
+      }
+      td:first-child {
+        text-align: center;
+      }
     }
   `;
 
@@ -74,20 +85,28 @@ export class AppRoot extends SignalWatcher(LitElement) {
           Y is ${model.get().y}
         </label>
 
-        <div>
-          <cod-icon animation="spin" icon="gear"></cod-icon>
-          Gear (codicon)
-        </div>
-
-        <div>
-          <fa-icon animation="beat" icon="gear"></fa-icon>
-          Gear (fontawesome)
-        </div>
-
-        <div>
-          <mat-icon icon="settings"></mat-icon>
-          Gear (material)
-        </div>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <cod-icon animation="spin" icon="gear"></cod-icon>
+              </td>
+              <td>Gear (codicon)</td>
+            </tr>
+            <tr>
+              <td>
+                <fa-icon animation="beat" icon="gear"></fa-icon>
+              </td>
+              <td>Gear (fontawesome)</td>
+            </tr>
+            <tr>
+              <td>
+                <mat-icon icon="settings"></mat-icon>
+              </td>
+              <td>Gear (material)</td>
+            </tr>
+          </tbody>
+        </table>
 
         <md-filled-button
           @click=${(): void => this.appState.incrementX(10)}>
