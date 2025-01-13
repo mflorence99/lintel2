@@ -1,12 +1,11 @@
-import { makeHostStyle } from './icon-styles';
-import { makeStyleMaps } from './icon-styles';
-
 import { LitElement } from 'lit';
 import { TemplateResult } from 'lit';
 
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
+import { makeHostStyle } from '~webview/components/icon-styles';
+import { makeStyleMaps } from '~webview/components/icon-styles';
 import { property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 

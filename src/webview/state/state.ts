@@ -33,7 +33,7 @@ export abstract class State<T> {
     if (config.logStateChanges)
       console.log(
         '%c👈 prev state',
-        'color: palegreen; text-decoration: line-through',
+        'color: palegreen',
         caller,
         prevState
       );

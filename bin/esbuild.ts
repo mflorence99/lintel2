@@ -8,7 +8,7 @@ type Params = {
   prod: boolean;
   tedious: boolean;
   verbose: boolean;
-  root: string;
+  roots: string[];
   tsconfig?: string;
 };
 
@@ -20,19 +20,20 @@ export async function esbuild({
   prod,
   tedious,
   verbose,
-  root,
+  roots,
   tsconfig
 }: Params): Promise<any> {
   // 👇 perform the build
   const result = await build({
     bundle: true,
-    entryPoints: [`${root}`],
+    entryPoints: roots,
     external: ['esbuild'],
     loader: { '.ttf': 'binary', '.woff': 'binary', '.woff2': 'binary' },
     logLevel: verbose ? 'info' : 'warning',
     metafile: verbose,
     minify: prod,
-    outfile: bundle,
+    outdir: roots.length > 1 ? bundle : undefined,
+    outfile: roots.length > 1 ? undefined : bundle,
     platform,
     sourcemap: prod ? true : 'inline',
     tsconfig

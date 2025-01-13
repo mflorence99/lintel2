@@ -1,3 +1,2 @@
-@import url('@vscode/codicons/dist/codicon.css');
-@import url('material-icons/iconfont/material-icons.css');
-@import url('@fortawesome/fontawesome-pro/css/all.css');
+@import url('./css/md.css');
+@import url('./css/startup.css');

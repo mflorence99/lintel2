@@ -102,7 +102,7 @@ export const allTasks = [
         prod: !!prod,
         tedious: !!tedious,
         verbose: !!verbose,
-        root: `${config.paths['extension-ts']}/index.ts`,
+        roots: [`${config.paths['extension-ts']}/index.ts`],
         tsconfig: config.paths.tsconfig
       })
   }),
@@ -112,11 +112,16 @@ export const allTasks = [
     description: 'Bundle webview CSS with esbuild',
     func: ({ prod, tedious, verbose }) =>
       esbuild({
-        bundle: `${config.paths['webview-js']}/index.css`,
+        bundle: `${config.paths['webview-js']}`,
         prod: !!prod,
         tedious: !!tedious,
         verbose: !!verbose,
-        root: `${config.paths['webview-ts']}/index.css`
+        roots: [
+          `${config.paths['webview-ts']}/index.css`,
+          `${config.paths['webview-ts']}/codicons.css`,
+          `${config.paths['webview-ts']}/fa-icons.css`,
+          `${config.paths['webview-ts']}/material-icons.css`
+        ]
       })
   }),
 
@@ -130,7 +135,7 @@ export const allTasks = [
         prod: !!prod,
         tedious: !!tedious,
         verbose: !!verbose,
-        root: `${config.paths['webview-ts']}/index.ts`,
+        roots: [`${config.paths['webview-ts']}/index.ts`],
         tsconfig: config.paths.tsconfig
       })
   }),

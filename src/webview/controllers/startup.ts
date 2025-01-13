@@ -3,9 +3,8 @@ import { LitElement } from 'lit';
 import { ReactiveController } from 'lit';
 import { ReactiveControllerHost } from 'lit';
 
-import { config } from '~lib/config';
-import { delay } from '~lib/delay';
 import { enablePatches } from 'immer';
+import { nextTick } from '~lib/delay';
 
 // 👇 we use immer patches for tracing while simulating
 declare const lintelExtensionRuntime: ExtensionRuntime;
@@ -23,7 +22,7 @@ export class StartupController implements ReactiveController {
   hostConnected(): void {
     // 👇 tag the host with the "ready" class
     if (this.host instanceof LitElement) {
-      delay(config.delayMillis.short).then(() =>
+      nextTick().then(() =>
         (this.host as LitElement).classList.add('ready')
       );
     }

@@ -1,11 +1,10 @@
-import { appStateContext } from '../state/app-state';
-
 import { AppState } from '~webview/state/app-state';
 import { LitElement } from 'lit';
 import { SignalWatcher } from '@lit-labs/signals';
 import { StartupController } from '~webview/controllers/startup';
 import { TemplateResult } from 'lit';
 
+import { appStateContext } from '~webview/state/app-state';
 import { css } from 'lit';
 import { customElement } from 'lit/decorators.js';
 import { html } from 'lit';
@@ -93,7 +92,7 @@ export class AppRoot extends SignalWatcher(LitElement) {
               </td>
               <td>Gear (codicon)</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td>
                 <fa-icon animation="beat" icon="gear"></fa-icon>
               </td>
@@ -104,7 +103,7 @@ export class AppRoot extends SignalWatcher(LitElement) {
                 <mat-icon icon="settings"></mat-icon>
               </td>
               <td>Gear (material)</td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
 
