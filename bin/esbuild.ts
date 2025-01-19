@@ -4,7 +4,8 @@ import { log } from '~bin/logger';
 
 type Params = {
   bundle: string;
-  platform?: 'node' | 'browser';
+  format?: 'iife' | 'esm' | 'cjs' | undefined;
+  platform?: 'node' | 'browser' | undefined;
   prod: boolean;
   tedious: boolean;
   verbose: boolean;
@@ -16,6 +17,7 @@ type Params = {
 
 export async function esbuild({
   bundle,
+  format,
   platform,
   prod,
   tedious,
@@ -28,6 +30,7 @@ export async function esbuild({
     bundle: true,
     entryPoints: roots,
     external: ['esbuild'],
+    format,
     loader: { '.ttf': 'binary', '.woff': 'binary', '.woff2': 'binary' },
     logLevel: verbose ? 'info' : 'warning',
     metafile: verbose,
@@ -35,7 +38,7 @@ export async function esbuild({
     outdir: roots.length > 1 ? bundle : undefined,
     outfile: roots.length > 1 ? undefined : bundle,
     platform,
-    sourcemap: prod ? true : 'inline',
+    sourcemap: true,
     tsconfig
   }).catch((e: any) => {
     log({ error: true, data: e.message });

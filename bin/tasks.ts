@@ -31,8 +31,9 @@ export const allTasks = [
     subTasks: ['check:extension', 'esbuild:extension'],
     watchDirs: [
       config.paths.lib,
-      config.paths['extension-ts'],
-      `${config.paths.root}/tsconfig-app.json`
+      `${config.paths.root}/tsconfig-app.json`,
+      // 🔥 HACK -- a directory must come last
+      config.paths['extension-ts']
     ]
   }),
 
@@ -51,8 +52,9 @@ export const allTasks = [
     ],
     watchDirs: [
       config.paths.lib,
-      config.paths['webview-ts'],
-      `${config.paths.root}/tsconfig-app.json`
+      `${config.paths.root}/tsconfig-app.json`,
+      // 🔥 HACK -- a directory must come last
+      config.paths['webview-ts']
     ]
   }),
 
@@ -98,6 +100,7 @@ export const allTasks = [
     func: ({ prod, tedious, verbose }) =>
       esbuild({
         bundle: `${config.paths['extension-js']}/index.cjs`,
+        format: 'cjs',
         platform: 'node',
         prod: !!prod,
         tedious: !!tedious,
@@ -169,9 +172,10 @@ export const allTasks = [
     description: 'Run the webview simulator',
     cmd: `${whichSync('deno')} run -A --unstable-detect-cjs ${config.paths['bin']}/simulator.ts /home/markf/mflorence99/lintel2`,
     watchDirs: [
-      `${config.paths['bin']}/simulator`,
       `${config.paths['extension-js']}/index.cjs`,
-      `${config.paths['webview-js']}/index.js`
+      `${config.paths['webview-js']}/index.js`,
+      // 🔥 HACK -- a directory must come last
+      `${config.paths['bin']}/simulator`
     ]
   }),
 

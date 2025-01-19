@@ -6,7 +6,7 @@ import { allTasksLookup } from '~bin/tasks';
 import { cli } from '~bin/cli';
 import { config } from '~bin/config';
 import { debounce } from 'jsr:@std/async/debounce';
-import { figletize } from '~bin/figler';
+import { banner } from '~bin/logger';
 import { log } from '~bin/logger';
 
 import $ from '@david/dax';
@@ -36,7 +36,7 @@ const run = async (todos: Task[]): Promise<void> => {
   for (const todo of todos) {
     try {
       // 👇 this looks pretty, but has no other function
-      figletize(todo.name);
+      banner(todo.name);
       // 👇 could be a command
       const cmds = todo.cmds ?? [todo.cmd];
       for (const cmd of cmds) {
@@ -82,7 +82,8 @@ if (watch) {
     const watcher = Deno.watchFs(allWatchedDirs);
     log({ important: 'watching for changes', data: allWatchedDirs });
     // 🔥 this hack trips the loop first time
-    await $`touch ${allWatchedDirs[0]}/.tickleme`;
+    //    there'd better be a directory at the end of the list!!
+    await $`touch ${allWatchedDirs.at(-1)}/.tickleme`;
     // 👇 create a debounced function that's invoked on changes
     const debounced = debounce(async (event) => {
       log({ important: 'changes detected', data: event.paths });

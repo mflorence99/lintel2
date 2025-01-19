@@ -1,5 +1,5 @@
-import { Config } from '~lib/types/eslint';
 import { ExtensionAPI } from '~extension/types/api';
+import { Linter } from 'eslint';
 
 import { build } from 'esbuild';
 import { findUp } from 'find-up';
@@ -29,17 +29,17 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   if (!configFileName) throw new Error('No ESLint config file found');
 
   // 👇 compile it into one ginormous bundle
+  console.time('esbuild');
   api.log({ text: `Compiling ${configFileName}...` });
   const compiled = await build({
     bundle: true,
     entryPoints: [configFileName],
     // 🔥 TEMPORARY
     external: ['./worker', 'eslint/lib/util/glob-util'],
-    format: 'cjs',
     platform: 'node',
-    sourcemap: 'inline',
     write: false
   });
+  console.timeEnd('esbuild');
 
   // 👇 did the compile work?
   if (!compiled.outputFiles)
@@ -67,24 +67,26 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   `;
 
   // 👇 import the compiled config file
+  console.time('import config');
   const blob = new Blob([javascript], { type: 'text/javascript' });
   const url = URL.createObjectURL(blob);
   await import(url); // 👈 see globalThis.__module__.exports.default
   URL.revokeObjectURL(url); // 👈 GC ObjectURLs
+  console.timeEnd('import config');
 
   // 👇 load eslint itself from same directory as config file
   const eslint = await resolveFromRoot('eslint', api.cwd());
 
   // 👇 pretreat the default configs
   const defaultConfigs = eslint.ESLint.defaultConfig.map(
-    (config: Config) => ({
+    (config: Linter.Config) => ({
       ...config,
-      name: 'ESLint built-in default'
+      name: 'eslint/defaults'
     })
   );
 
   // 👇 we now have an array of configs
-  const allConfigs: Config[] = [
+  const allConfigs: Linter.Config[] = [
     ...defaultConfigs,
     // 👉 maybe an arrary, maybe not
     ...[globalThis.__module__.exports.default].flat()
@@ -105,4 +107,6 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
   }
 
   allConfigs.forEach((config) => console.log(config.name));
+
+  // jsome(allConfigs[6]);
 }

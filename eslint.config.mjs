@@ -11,10 +11,10 @@ export default [
         ]
       }
     },
-    name: 'Lintel2 projects'
+    name: 'local/projects'
   },
   {
     ignores: ['eslint.config.mjs', 'bin/**/*.ts'],
-    name: 'Lintel2 file exclusions'
+    name: 'global/ignores'
   }
 ];

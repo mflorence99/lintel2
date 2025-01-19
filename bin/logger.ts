@@ -1,4 +1,5 @@
 import { parse } from '@std/path/parse';
+import figlet from 'figlet';
 
 import StackTrace from 'stacktrace-js';
 
@@ -40,5 +41,27 @@ export function log({
   console.log(
     parts.map((part) => part.at(0)).join(' '),
     ...parts.map((part) => part.at(1))
+  );
+}
+
+// 📘 log short string using figlet
+
+export function banner(str: string): void {
+  console.log(
+    `%c\n\n  >>> ${str.toUpperCase().padEnd(72, ' ')}\n`,
+    'background-color: black; color: white; font-weight: bold'
+  );
+  console.log();
+}
+
+// 📘 log short string using figlet
+
+export function figletize(str: string): void {
+  console.log(
+    `%c${figlet.textSync(str.toUpperCase(), {
+      font: 'Slant',
+      horizontalLayout: 'fitted'
+    })}`,
+    'color: green'
   );
 }
