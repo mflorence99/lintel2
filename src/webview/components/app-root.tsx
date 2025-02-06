@@ -86,24 +86,24 @@ export class AppRoot extends SignalWatcher(LitElement) {
 
         <table>
           <tbody>
-            <tr>
+            <!-- <tr>
               <td>
                 <cod-icon animation="spin" icon="gear"></cod-icon>
               </td>
               <td>Gear (codicon)</td>
-            </tr>
+            </tr> -->
             <!-- <tr>
               <td>
                 <fa-icon animation="beat" icon="gear"></fa-icon>
               </td>
               <td>Gear (fontawesome)</td>
-            </tr>
+            </tr> -->
             <tr>
               <td>
                 <mat-icon icon="settings"></mat-icon>
               </td>
               <td>Gear (material)</td>
-            </tr> -->
+            </tr>
           </tbody>
         </table>
 

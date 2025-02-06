@@ -106,7 +106,30 @@ export async function initialize(api: ExtensionAPI): Promise<void> {
     break;
   }
 
-  allConfigs.forEach((config) => console.log(config.name));
+  allConfigs.forEach(
+    ({ name, files, ignores, rules, plugins }, index) =>
+      console.log({
+        index,
+        name,
+        files,
+        ignores,
+        settings: rules ? Object.keys(rules).length : 0,
+        plugins: plugins ? Object.keys(plugins) : [],
+        rules: plugins
+          ? Object.values(plugins).map(
+              (plugin) => Object.keys(plugin.rules ?? {}).length
+            )
+          : []
+      })
+  );
 
-  // jsome(allConfigs[6]);
+  // const cfg = new eslint.ESLint({
+  //   cwd: api.cwd()
+  // }).calculateConfigForFile(
+  //   '/home/markf/mflorence99/lintel2/src/webview/components/app-root.tsx'
+  // );
+
+  // jsome(cfg);
+
+  // jsome(allConfigs[9]);
 }
